@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'team.rainfall'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    //阿里云镜像
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet
+    implementation 'com.github.albfernandez:juniversalchardet:2.4.0'
+    shadow fileTree(dir:'libs',includes: ['*.jar'])
+}
+
+shadowJar{
+    dependencies {
+        include(dependency('com.github.albfernandez:juniversalchardet:2.4.0'))
+    }
+}
+
