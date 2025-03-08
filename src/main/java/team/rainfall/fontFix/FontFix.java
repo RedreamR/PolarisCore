@@ -1,15 +1,11 @@
 package team.rainfall.fontFix;
 
 
-import aoc.kingdoms.lukasz.jakowski.AA_Game;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.Keyboard;
 import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
-import aoc.kingdoms.lukasz.jakowski.setting.SettingsManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.graphics.Color;
 import team.rainfall.finality.FinalityLogger;
 
@@ -82,25 +78,6 @@ public class FontFix {
             default:
                 return Color.WHITE;
         }
-    }
-
-    public static boolean isWrapByChar(){
-        String tag = Game.settingsManager.LANGUAGE_TAG;
-        //如果tag为cn_sp或cn_tr或jp，返回true
-        return tag.equals("cn_sp") || tag.equals("cn_tr") || tag.equals("jp");
-    }
-
-    public static boolean containsChineseOrJapanese(String input) {
-        if (input == null || input.isEmpty()) {
-            return false;
-        }
-
-        // 中文字符范围：\u4e00-\u9fa5
-        // 日文平假名范围：\u3040-\u309F
-        // 日文片假名范围：\u30A0-\u30FF
-        String regex = "[\\u4e00-\\u9fa5\\u3040-\\u309F\\u30A0-\\u30FF]+";
-
-        return input.matches(".*" + regex + ".*");
     }
 
 }

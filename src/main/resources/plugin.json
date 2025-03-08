@@ -1,9 +1,10 @@
 {
   "id": "team.rainfall.fontFix",
-  "version": 1,
-  "sdkVersion": 3,
+  "name": "Font Fix",
+  "version": "2.0.0",
+  "sdkVersion": ">=1.2.4",
   "hasTweaker": false,
   "useLuminosity": true,
-  "tweakClasses": ["team.rainfall.fontFix.MixinRenderer","team.rainfall.fontFix.MixinAA_Game$1","team.rainfall.fontFix.MixinFileHandle","team.rainfall.fontFix.MixinRulersManager"]
+  "tweakClasses": ["team.rainfall.fontFix.MixinRenderer","team.rainfall.fontFix.MixinAA_Game$1","team.rainfall.fontFix.MixinFileHandle","team.rainfall.fontFix.MixinRulersManager","team.rainfall.fontFix.MixinGeneralManager"]
 
 }

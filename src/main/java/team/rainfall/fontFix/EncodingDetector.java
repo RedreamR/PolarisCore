@@ -7,20 +7,16 @@ import team.rainfall.finality.FinalityLogger;
 import java.io.*;
 
 public class EncodingDetector {
-
+    UniversalDetector detector = new UniversalDetector(null);
     public final static EncodingDetector INSTANCE = new EncodingDetector();
 
     public String detectStringCharset(FileHandle fileHandle) {
-        if(true) {
-            return "NONE";
-        }
         if(!fileHandle.exists()){
             return "NONE";
         }
         try {
             File file = fileHandle.file();
             FileInputStream fileInputStream = new FileInputStream(file);
-            UniversalDetector detector = new UniversalDetector(null);
             BufferedInputStream reader = new BufferedInputStream(fileInputStream);
             byte[] buff = new byte[1024];
             int len = 0;
@@ -31,16 +27,14 @@ public class EncodingDetector {
             String encoding = detector.getDetectedCharset();
             detector.reset();
             reader.close();
-            return encoding;
+            return encoding == null ? "NONE" : encoding;
         } catch (Exception e) {
             FinalityLogger.error("Error while detecting charset: " + e.getMessage(), e);
         }
         return "NONE";
     }
-
     public String detectInputStreamCharset(InputStream inputStream){
         try {
-            UniversalDetector detector = new UniversalDetector(null);
             BufferedInputStream reader = new BufferedInputStream(inputStream);
             byte[] buff = new byte[1024];
             int len = 0;
@@ -51,7 +45,7 @@ public class EncodingDetector {
             String encoding = detector.getDetectedCharset();
             detector.reset();
             reader.close();
-            return encoding;
+            return encoding == null ? "NONE" : encoding;
         } catch (Exception e) {
             FinalityLogger.error("Error while detecting charset: " + e.getMessage(), e);
         }
