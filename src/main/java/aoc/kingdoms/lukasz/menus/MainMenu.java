@@ -442,7 +442,8 @@ public class MainMenu extends Menu {
                 return !this.getIsHovered() && !isActive ? Colors.HOVER_RIGHT3 : Colors.HOVER_LEFT;
             }
         });
-        String text1 = CFG.isDesktop() ? "Font Fix by Team Rainfall" : "Polaris AoH3 by Team Rainfall";
+
+        String text1 = CFG.isDesktop() ? "Polaris Core by Team Rainfall" : "Polaris AoH3 by Team Rainfall";
         menuElements.add(new Text_Static(text1, CFG.PADDING * 3, CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT * 3 - 1 - CFG.PADDING * 3, CFG.FONT_REGULAR_SMALL) {
             public void actionElement() {
                 MenuManager var10000 = Game.menuManager;
@@ -582,14 +583,11 @@ public class MainMenu extends Menu {
 
         return new MenuElement_Hover(nElements);
     }
+
     public static MenuElement_Hover getHover_FontFix() {
         List<MenuElement_HoverElement> nElements = new ArrayList();
         List<MenuElement_HoverElement_Type> nData = new ArrayList();
-        if(CFG.isDesktop()) {
-            nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center("Font Fix Creator", CFG.FONT_BOLD, Colors.HOVER_LEFT));
-        }else {
-            nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center("Polaris AoH3 Creator", CFG.FONT_BOLD, Colors.HOVER_LEFT));
-        }
+        nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center("Polaris Core Creator", CFG.FONT_BOLD, Colors.HOVER_LEFT));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Team Rainfall", "", Images.world, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_GOLD, Colors.HOVER_GOLD));
@@ -597,24 +595,24 @@ public class MainMenu extends Menu {
         nData.clear();
         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(getRandomStr(), "", Game_Calendar.IMG_MANPOWER, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
         nElements.add(new MenuElement_HoverElement(nData));
-        if(!CFG.isDesktop()){
-            nData.clear();
-            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Polaris AoH3允许任何人完全免费地进行分发。", "", Game_Calendar.IMG_MANPOWER, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
-            nElements.add(new MenuElement_HoverElement(nData));
-            nData.clear();
-            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("如果你是付费得到这个安装包的，你被坑了！！", "", Game_Calendar.IMG_MANPOWER, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
-            nElements.add(new MenuElement_HoverElement(nData));
-        }
+        nData.clear();
+        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(getVersion(), "", Game_Calendar.IMG_MANPOWER, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
+        nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
         return new MenuElement_Hover(nElements);
     }
-
+    public static String getVersion(){
+        if(CFG.isDesktop()){
+            return "Version:"+ FontFix.CORE_VERSION;
+        }
+        return "Version:"+FontFix.POLARIS_VERSION;
+    }
     public static String getRandomStr(){
-       String str1 = "Cutting the edge of a newer world!";
+       String str1 = "What do you want today?";
         if(!Game.lang.get("FontFix_Text1").equals("FontFix_Text1")){
             str1 = Game.lang.get("FontFix_Text1");
         };
-        String str2 = "Let's spark!";
+        String str2 = "Light The Flame.";
         if(!Game.lang.get("FontFix_Text2").equals("FontFix_Text2")) {
             str2 = Game.lang.get("FontFix_Text2");
         }

@@ -1,6 +1,7 @@
 package team.rainfall.fontFix;
 
 
+import aoc.kingdoms.lukasz.jakowski.CFG;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.Keyboard;
@@ -11,15 +12,23 @@ import team.rainfall.finality.FinalityLogger;
 
 import java.util.ArrayList;
 
+import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
+import static aoc.kingdoms.lukasz.jakowski.SoundsManager.musicVolume;
+
 public class FontFix {
     public static ArrayList<FontData> fonts = new ArrayList<>();
     public static boolean titleSet = false;
     public static boolean dontShowMainMenuQQ = true;
-    public static int textureSize = 8192;
+    public static final String CORE_VERSION = "3.1.0";
+    public static final String POLARIS_VERSION = "1.5-test 0501a";
     public static void setTitle() {
         if (!titleSet) {
             try {
-                Gdx.app.getGraphics().setTitle(FileManager.loadFile("customTitle").readString());
+                if (FileManager.loadFile("customTitle").exists()) {
+                    Gdx.app.getGraphics().setTitle(FileManager.loadFile("customTitle").readString());
+                } else {
+                    Gdx.app.getGraphics().setTitle("Age of History 3 - Polaris Core");
+                }
             } catch (Exception ignored) {
                 FinalityLogger.warn("Failed to set custom title");
             }
@@ -27,8 +36,8 @@ public class FontFix {
         }
     }
 
-    public static int loadFont(String sFont, String charset, int fontSize){
-        if(fonts.isEmpty()){
+    public static int loadFont(String sFont, String charset, int fontSize) {
+        if (fonts.isEmpty()) {
             Renderer.loadFont(sFont, charset, fontSize);
             FontData fontData = new FontData();
             fontData.id = Renderer.fontMain.size() - 1;
@@ -38,7 +47,7 @@ public class FontFix {
         }
         //不要重复加载！
         for (FontData font : fonts) {
-            if(font.name.equals(sFont)){
+            if (font.name.equals(sFont)) {
                 return font.id;
             }
         }
@@ -62,6 +71,26 @@ public class FontFix {
         }
     }
 
+    public static void playStartMusic() {
+        try {
+            setTitle();
+            Game.soundsManager.disposeCurrentMusic();
+            if (FileManager.loadFile("startMusic").exists()) {
+                Game.soundsManager.currentMusic = Gdx.audio.newMusic(FileManager.loadFile("audio/music/" + FileManager.loadFile("startMusic").readString()));
+            } else {
+                Game.soundsManager.currentMusic = Gdx.audio.newMusic(FileManager.loadFile("audio/music/" + Game.soundsManager.lTitles.get(0) + Game.soundsManager.getFileType()));
+            }
+            Game.soundsManager.currentMusic.setLooping(false);
+            Game.soundsManager.currentMusic.play();
+            Game.soundsManager.currentMusic.setVolume(musicVolume * masterVolume);
+            Game.soundsManager.currentMusic.setOnCompletionListener(music -> Game.soundsManager.loadNextMusic());
+            return;
+        } catch (Exception ex) {
+            CFG.exceptionStack(ex);
+        }
+        Game.soundsManager.loadNextMusic();
+    }
+
     public static Color readFontColor(String key) {
         String str = Game.lang.get(key);
         str = str.trim().toLowerCase();
@@ -74,15 +103,28 @@ public class FontFix {
                 return Color.GREEN;
             case "blue":
                 return Color.BLUE;
+            case "purple":
+                return Color.PURPLE;
+            case "cyan":
+                return Color.CYAN;
+            case "orange":
+                return Color.ORANGE;
+            case "brown":
+                return Color.BROWN;
+            case "pink":
+                return Color.PINK;
+            case "yellow":
+                return Color.YELLOW;
             case "white":
             default:
                 return Color.WHITE;
         }
     }
-
 }
 
 class FontData {
     String name;
     int id;
 }
+
+

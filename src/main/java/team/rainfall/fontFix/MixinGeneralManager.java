@@ -10,6 +10,7 @@ import team.rainfall.finality.luminosity2.annotations.Mixin;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Mixin(mixinClass = "aoc.kingdoms.lukasz.map.GeneralManager")
 public class MixinGeneralManager {
     public Image noGeneral;

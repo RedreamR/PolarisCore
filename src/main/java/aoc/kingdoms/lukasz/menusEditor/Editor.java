@@ -27,6 +27,7 @@ import aoc.kingdoms.lukasz.menus.Dialog.DialogType;
 import aoc.kingdoms.lukasz.menusMapEditor.EditorSelectProvinces;
 import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,8 +171,8 @@ public class Editor extends Menu {
                 }
 
                 public void actionElement() {
-                    Dialog.GO_TO_LINK = "https://qm.qq.com/q/ALylcUWbUk";
-                    Dialog.setDialogType(DialogType.GO_TO_LINK);
+                        Dialog.GO_TO_LINK = "https://qm.qq.com/q/ALylcUWbUk";
+                        Dialog.setDialogType(DialogType.GO_TO_LINK);
                 }
             });
         }

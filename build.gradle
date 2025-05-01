@@ -17,13 +17,13 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet
-    implementation 'com.github.albfernandez:juniversalchardet:2.4.0'
     shadow fileTree(dir:'libs',includes: ['*.jar'])
+    implementation("com.github.albfernandez:juniversalchardet:2.5.0")
 }
 
 shadowJar{
     dependencies {
-        include(dependency('com.github.albfernandez:juniversalchardet:2.4.0'))
+        include(dependency('com.github.albfernandez:juniversalchardet:2.5.0'))
     }
 }
 

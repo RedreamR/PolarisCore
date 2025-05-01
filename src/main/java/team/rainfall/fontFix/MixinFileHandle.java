@@ -6,18 +6,20 @@ import team.rainfall.finality.luminosity2.annotations.Mixin;
 import com.badlogic.gdx.files.FileHandle;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
 
+import java.nio.charset.Charset;
+
 @Mixin(mixinClass = "com.badlogic.gdx.files.FileHandle")
 public abstract class MixinFileHandle {
 
     public String readString() {
         String charset = null;
-        if (this.path().contains("game/rulersRandom") || this.path().contains("game/randomNames") || this.path().contains("game/rulers") || this.path().contains("game/advisors") || this.path().contains("game/characters") || this.path().matches("mods/.*/map/.*") || this.path().contains("audio/music")){
+        if (EncodeChecker.shouldBeCheck((FileHandle) (Object) this)){
         // || this.path().matches("map/.*/scenarios/.*/descriptions.*") || this.path().matches("map/.*/scenarios/.*/events.*",|| this.path().contains("mods")
             try {
                 charset = EncodingDetector.INSTANCE.detectStringCharset((FileHandle) (Object) this);
                 switch (charset) {
-                    case "GB18030":
-                        charset = "GB18030";
+                    case "UTF-8":
+                        charset = "UTF8";
                         break;
                     case "BIG5":
                         charset = "Big5";
@@ -25,12 +27,14 @@ public abstract class MixinFileHandle {
                     case "Shift_JIS":
                         charset = "Shift_JIS";
                         break;
+                    case "GB18030":
+                        charset = "GB18030";
                     default:
-                        charset = "UTF-8";
+                        charset = Charset.defaultCharset().name();
                         break;
                 }
+                FinalityLogger.debug("PC.charset "+this.path()+";"+charset);
             }catch (NullPointerException ignored){
-
             } catch (Throwable throwable) {
                 FinalityLogger.error("Error while detecting charset", throwable);
             }
