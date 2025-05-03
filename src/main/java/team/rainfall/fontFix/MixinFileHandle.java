@@ -33,7 +33,7 @@ public abstract class MixinFileHandle {
                         charset = Charset.defaultCharset().name();
                         break;
                 }
-                FinalityLogger.debug("PC.charset "+this.path()+";"+charset);
+                //FinalityLogger.debug("PC.charset "+this.path()+";"+charset);
             }catch (NullPointerException ignored){
             } catch (Throwable throwable) {
                 FinalityLogger.error("Error while detecting charset", throwable);

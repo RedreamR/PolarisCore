@@ -16,11 +16,14 @@ import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.musicVolume;
 
 public class FontFix {
+    //是否尝试过加载compactScale
+    public static boolean tried = false;
+    public static CompactScale compactScale = null;
     public static ArrayList<FontData> fonts = new ArrayList<>();
     public static boolean titleSet = false;
     public static boolean dontShowMainMenuQQ = true;
     public static final String CORE_VERSION = "3.1.0";
-    public static final String POLARIS_VERSION = "1.5-test 0501a";
+    public static final String POLARIS_VERSION = "1.5";
     public static void setTitle() {
         if (!titleSet) {
             try {
