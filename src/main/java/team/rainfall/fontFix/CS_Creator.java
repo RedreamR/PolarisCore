@@ -76,8 +76,8 @@ public class CS_Creator {
     }
 
     public static void main(String[] args) throws IOException {
-        File inputDirectory = new File("D:\\SteamLibrary\\steamapps\\common\\Age of History 3\\map\\Earth3\\data\\scales\\2");
-        File outputFile = new File("D:\\SteamLibrary\\steamapps\\common\\Age of History 3\\map\\Earth3\\data\\scales\\2\\compactScale");
+        File inputDirectory = new File("D:\\SteamLibrary\\steamapps\\common\\Age of History 3\\map\\Earth3\\data\\scales\\1");
+        File outputFile = new File("D:\\SteamLibrary\\steamapps\\common\\Age of History 3\\map\\Earth3\\data\\scales\\1\\compactScale");
         createCompactFile(outputFile, inputDirectory);
     }
 }

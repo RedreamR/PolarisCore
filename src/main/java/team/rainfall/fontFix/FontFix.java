@@ -23,7 +23,7 @@ public class FontFix {
     public static boolean titleSet = false;
     public static boolean dontShowMainMenuQQ = true;
     public static final String CORE_VERSION = "3.1.0";
-    public static final String POLARIS_VERSION = "1.5";
+    public static final String POLARIS_VERSION = "1.6";
     public static void setTitle() {
         if (!titleSet) {
             try {
