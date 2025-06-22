@@ -14,6 +14,7 @@ import team.rainfall.finality.luminosity2.annotations.Mixin;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Mixin(mixinClass = "aoc.kingdoms.lukasz.jakowski.Renderer.Renderer")
 public class MixinRenderer {
 

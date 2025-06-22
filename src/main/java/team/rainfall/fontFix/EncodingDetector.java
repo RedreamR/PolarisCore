@@ -11,7 +11,6 @@ public class EncodingDetector {
     public final static EncodingDetector INSTANCE = new EncodingDetector();
 
     public String detectStringCharset(FileHandle fileHandle) {
-
         if(!fileHandle.exists()){
             return "NONE";
         }

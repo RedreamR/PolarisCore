@@ -15,8 +15,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import team.rainfall.finality.FinalityLogger;
-import team.rainfall.fontFix.FontFix;
-import team.rainfall.fontFix.TextSpliter;
+import team.rainfall.fontFix.TextSplitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,7 @@ public class MenuElement_HoverElement_Type_Text_Desc implements MenuElement_Hove
     public final void init(String sText, int nFontID, Color oColor) {
         this.oColor = oColor;
         this.fontID = nFontID;
-        String[] words = TextSpliter.splitText(sText);
+        String[] words = TextSplitter.splitText(sText);
         int maxW = (int)((float) ImageManager.getImage(Images.title1Red).getWidth() * 0.85f);
         int textPosX = 0;
 
@@ -57,6 +56,12 @@ public class MenuElement_HoverElement_Type_Text_Desc implements MenuElement_Hove
         int i = 0;
 
         for(int iSize = words.length; i < iSize; ++i) {
+            if(words[i].equals("\\n")){
+                this.sLines.add(currentLine.toString());
+                currentLine = new StringBuilder();
+                textPosX = tTextWidth;
+                continue;
+            }
             Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), words[i]);
             tTextWidth = (int)Renderer.glyphLayout.width;
             textPosX += tTextWidth;
@@ -64,7 +69,6 @@ public class MenuElement_HoverElement_Type_Text_Desc implements MenuElement_Hove
                 currentLine.append(words[i]);
                 this.iTextWidth = Math.max(this.iTextWidth, Math.min(textPosX, maxW));
             } else if(!words[i].isEmpty()){
-                FinalityLogger.debug("DESC "+currentLine);
                 this.sLines.add(currentLine.toString());
                 currentLine = new StringBuilder(words[i]);
                 textPosX = tTextWidth;
@@ -74,7 +78,6 @@ public class MenuElement_HoverElement_Type_Text_Desc implements MenuElement_Hove
         if (currentLine.length() > 0) {
             Renderer.glyphLayout.setText(Renderer.fontMain.get(this.fontID), currentLine.toString());
             tempHeight = (int)Renderer.glyphLayout.height;
-            FinalityLogger.debug("DESC_F "+currentLine);
             this.sLines.add(currentLine.toString());
         }
 

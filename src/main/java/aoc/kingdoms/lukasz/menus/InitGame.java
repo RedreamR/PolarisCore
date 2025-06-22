@@ -58,11 +58,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import team.rainfall.finality.FinalityLogger;
+import team.rainfall.fontFix.Config;
+import team.rainfall.fontFix.FontFix;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InitGame extends Menu {
+    public static long timer2 = System.currentTimeMillis();
     static long timer = System.currentTimeMillis();
     public String loadingName = "";
     public static Image background = null;
@@ -78,12 +81,29 @@ public class InitGame extends Menu {
     public boolean reloadBoldFont = false;
 
     public InitGame() {
+        timer2 = System.currentTimeMillis();
         List<MenuElement> menuElements = new ArrayList();
         this.initMenu((MenuTitle)null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements, true);
         numOfProvincesBGToLoad = CFG.isDesktop() ? GameValues.value.LOADING_NUM_OF_PROVINCES_PC : GameValues.value.LOADING_NUM_OF_PROVINCES_MOBILE;
     }
 
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
+
+        if(System.currentTimeMillis() - timer2 < Config.getConfig().SplashScreen_FadeIn && FontFix.isSplash()){
+            oSB.setColor(Color.BLACK);
+            Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
+            oSB.setColor(255,255,255, (float) (System.currentTimeMillis() - timer2) / Config.getConfig().SplashScreen_FadeIn);
+            ImageManager.getImage(Images.logo).draw(oSB, iTranslateX + (CFG.GAME_WIDTH - ImageManager.getImage(Images.logo).getWidth()) / 2, iTranslateY + (CFG.GAME_HEIGHT - ImageManager.getImage(Images.logo).getHeight()) / 2);
+            return;
+        }
+        if(System.currentTimeMillis() - timer2 < Config.getConfig().SplashScreen_FadeOut + Config.getConfig().SplashScreen_FadeIn && FontFix.isSplash()){
+            oSB.setColor(Color.BLACK);
+            Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
+            //设置颜色为随时间变化逐渐透明
+            oSB.setColor(255,255,255,1 - (float) (System.currentTimeMillis() - timer2 - Config.getConfig().SplashScreen_FadeIn) / Config.getConfig().SplashScreen_FadeOut);
+            ImageManager.getImage(Images.logo).draw(oSB, iTranslateX + (CFG.GAME_WIDTH - ImageManager.getImage(Images.logo).getWidth()) / 2, iTranslateY + (CFG.GAME_HEIGHT - ImageManager.getImage(Images.logo).getHeight()) / 2);
+            return;
+        }
         this.initGame();
         if (background != null) {
             oSB.setColor(new Color(0.047058824F, 0.047058824F, 0.047058824F, 1.0F));
@@ -145,6 +165,7 @@ public class InitGame extends Menu {
     }
 
     public void initGame() {
+
         if (this.takeABreak > 0) {
             --this.takeABreak;
         } else {

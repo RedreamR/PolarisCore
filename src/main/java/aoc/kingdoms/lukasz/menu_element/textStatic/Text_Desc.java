@@ -6,21 +6,17 @@
 package aoc.kingdoms.lukasz.menu_element.textStatic;
 
 import aoc.kingdoms.lukasz.jakowski.CFG;
-import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.GlyphLayout_Game;
 import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import aoc.kingdoms.lukasz.menu.Colors;
 import aoc.kingdoms.lukasz.menu_element.MenuElement_Type;
 import aoc.kingdoms.lukasz.textures.Images;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import team.rainfall.finality.FinalityLogger;
-import team.rainfall.fontFix.FontFix;
-import team.rainfall.fontFix.TextSpliter;
+import team.rainfall.fontFix.TextSplitter;
 
-import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +40,20 @@ public class Text_Desc extends Text_Static {
         this.setPosY(iPosY);
         this.setWidth(iWidth);
         this.updateTextPosition();
-        String[] words = TextSpliter.splitText(sText);
+        String[] words = TextSplitter.splitText(sText);
         int maxW = iWidth - CFG.PADDING * 2;
         int textPosX = 0;
         StringBuilder currentLine = new StringBuilder();
         int i = 0;
         int tTextWidth = 0;
         for(int iSize = words.length; i < iSize; ++i) {
+            FinalityLogger.debug("SPLIT ["+i+"] "+words[i]);
+            if(words[i].equals("\\n")){
+                this.sLines.add(currentLine.toString());
+                currentLine = new StringBuilder();
+                textPosX = tTextWidth;
+                continue;
+            }
             Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID),currentLine  + words[i]);
             textPosX = (int) Renderer.glyphLayout.width;
             if (textPosX < maxW && !words[i].isEmpty()) {

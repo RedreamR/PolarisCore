@@ -55,7 +55,11 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.codedisaster.steamworks.SteamFriends.OverlayToStoreFlag;
+import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
+import team.rainfall.fontFix.Sternstunden;
+import team.rainfall.fontFix.config.LinkConfig;
+import team.rainfall.fontFix.utils.IconParser;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -319,10 +323,11 @@ public class MainMenu extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        int var10000 = buttonY + ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
-        menuElements.add(new Text_Static(GameValues.text.VERSION, CFG.FONT_REGULAR_SMALL, -1, CFG.GAME_WIDTH - CFG.BUTTON_HEIGHT3, 0, CFG.BUTTON_HEIGHT3, CFG.BUTTON_HEIGHT3) {
+        int var10000 = buttonY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
+        Renderer.glyphLayout.setText(Renderer.fontMain.get(CFG.FONT_REGULAR_SMALL),GameValues.text.VERSION);
+        float width1 = Renderer.glyphLayout.width;
+        menuElements.add(new Text_Static(GameValues.text.VERSION, CFG.FONT_REGULAR_SMALL, -1, (int) (CFG.GAME_WIDTH - CFG.PADDING * 3 - width1), 0, (int) (CFG.PADDING * 3 + width1), CFG.BUTTON_HEIGHT3) {
             public void actionElement() {
-                MenuManager var10000 = Game.menuManager;
                 MenuManager.addClickAnimation(new ClickAnimation(this.getPosX() + this.getWidth() / 2 + MainMenu.this.getMenuPosX(), this.getPosY() + this.getHeight() / 2 + MainMenu.this.getMenuPosY(), this.getWidth(), this.getHeight()) {
                     public Color getColor() {
                         return DiplomacyManager.COLOR_WAR;
@@ -338,92 +343,90 @@ public class MainMenu extends Menu {
                 });
             }
         });
-        int buttonsY = CFG.GAME_HEIGHT - CFG.BUTTON_HEIGHT * 5;
-        if(!CFG.isDesktop() && !FontFix.dontShowMainMenuQQ) {
-            menuElements.add(new Button_MainMenuIcon(Images.app, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
+        int buttonsY = CFG.GAME_HEIGHT - CFG.BUTTON_HEIGHT * Config.getConfig().links.size;
+        for(LinkConfig linkConfig : Config.getConfig().links){
+            menuElements.add(new Button_MainMenuIcon(IconParser.parse(linkConfig.icon), CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
                 public void actionElement() {
-                    Dialog.GO_TO_LINK = "https://qm.qq.com/q/JcDClJgMiQQ";
+                    Dialog.GO_TO_LINK = linkConfig.link;
                     Dialog.setDialogType(DialogType.GO_TO_LINK);
                 }
 
                 public void buildElementHover() {
                     List<MenuElement_HoverElement> nElements = new ArrayList();
                     List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("QQ: ", "722396563", Images.yt, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
-                    nElements.add(new MenuElement_HoverElement(nData));
-                    nData.clear();
-                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("注意：Polaris AoH3是完全免费的。", "", Images.world, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_GOLD, Colors.HOVER_GOLD));
+                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(linkConfig.sText, linkConfig.sText2, IconParser.parse(linkConfig.icon), CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                     nElements.add(new MenuElement_HoverElement(nData));
                     nData.clear();
                     this.menuElementHover = new MenuElement_Hover(nElements);
                 }
             });
-            buttonsY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight();
+            buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
         }
-        menuElements.add(new Button_MainMenuIcon(Images.yt, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
-            public void actionElement() {
-                Dialog.GO_TO_LINK = "https://www.youtube.com/channel/UCppKzood12fbJhZClXfukFw";
-                Dialog.setDialogType(DialogType.GO_TO_LINK);
-            }
 
-            public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("YouTube: ", "Age of History 3", Images.yt, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
-                nElements.add(new MenuElement_HoverElement(nData));
-                nData.clear();
-                this.menuElementHover = new MenuElement_Hover(nElements);
-            }
-        });
-        buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
-        menuElements.add(new Button_MainMenuIcon(Images.android, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
-            public void actionElement() {
-                Dialog.GO_TO_LINK = "https://play.google.com/store/apps/details?id=age.of.history3.lukasz.jakowski";
-                Dialog.setDialogType(DialogType.GO_TO_LINK);
-            }
-
-            public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Android: ", "Age of History 3", Images.android, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
-                nElements.add(new MenuElement_HoverElement(nData));
-                nData.clear();
-                this.menuElementHover = new MenuElement_Hover(nElements);
-            }
-        });
-        buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
-        menuElements.add(new Button_MainMenuIcon(Images.app, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
-            public void actionElement() {
-                Dialog.GO_TO_LINK = "https://apps.apple.com/app/age-of-history-3/id6686394372";
-                Dialog.setDialogType(DialogType.GO_TO_LINK);
-            }
-
-            public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("iOS: ", "Age of History 3", Images.app, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
-                nElements.add(new MenuElement_HoverElement(nData));
-                nData.clear();
-                this.menuElementHover = new MenuElement_Hover(nElements);
-            }
-        });
-        buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
-        menuElements.add(new Button_MainMenuIcon(Images.pc, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
-            public void actionElement() {
-                Dialog.GO_TO_LINK = "https://store.steampowered.com/app/2772750/Age_of_History_3/";
-                Dialog.setDialogType(DialogType.GO_TO_LINK);
-            }
-
-            public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Steam: ", "Age of History 3", Images.pc, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
-                nElements.add(new MenuElement_HoverElement(nData));
-                nData.clear();
-                this.menuElementHover = new MenuElement_Hover(nElements);
-            }
-        });
-        var10000 = buttonsY + ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+//        menuElements.add(new Button_MainMenuIcon(Images.yt, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
+//            public void actionElement() {
+//                Dialog.GO_TO_LINK = "https://www.youtube.com/channel/UCppKzood12fbJhZClXfukFw";
+//                Dialog.setDialogType(DialogType.GO_TO_LINK);
+//            }
+//
+//            public void buildElementHover() {
+//                List<MenuElement_HoverElement> nElements = new ArrayList();
+//                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+//                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("YouTube: ", "Age of History 3", Images.yt, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+//                nElements.add(new MenuElement_HoverElement(nData));
+//                nData.clear();
+//                this.menuElementHover = new MenuElement_Hover(nElements);
+//            }
+//        });
+//        buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+//        menuElements.add(new Button_MainMenuIcon(Images.android, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
+//            public void actionElement() {
+//                Dialog.GO_TO_LINK = "https://play.google.com/store/apps/details?id=age.of.history3.lukasz.jakowski";
+//                Dialog.setDialogType(DialogType.GO_TO_LINK);
+//            }
+//
+//            public void buildElementHover() {
+//                List<MenuElement_HoverElement> nElements = new ArrayList();
+//                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+//                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Android: ", "Age of History 3", Images.android, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+//                nElements.add(new MenuElement_HoverElement(nData));
+//                nData.clear();
+//                this.menuElementHover = new MenuElement_Hover(nElements);
+//            }
+//        });
+//        buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+//        menuElements.add(new Button_MainMenuIcon(Images.app, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
+//            public void actionElement() {
+//                Dialog.GO_TO_LINK = "https://apps.apple.com/app/age-of-history-3/id6686394372";
+//                Dialog.setDialogType(DialogType.GO_TO_LINK);
+//            }
+//
+//            public void buildElementHover() {
+//                List<MenuElement_HoverElement> nElements = new ArrayList();
+//                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+//                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("iOS: ", "Age of History 3", Images.app, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+//                nElements.add(new MenuElement_HoverElement(nData));
+//                nData.clear();
+//                this.menuElementHover = new MenuElement_Hover(nElements);
+//            }
+//        });
+//        buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+//        menuElements.add(new Button_MainMenuIcon(Images.pc, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
+//            public void actionElement() {
+//                Dialog.GO_TO_LINK = "https://store.steampowered.com/app/2772750/Age_of_History_3/";
+//                Dialog.setDialogType(DialogType.GO_TO_LINK);
+//            }
+//
+//            public void buildElementHover() {
+//                List<MenuElement_HoverElement> nElements = new ArrayList();
+//                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+//                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Steam: ", "Age of History 3", Images.pc, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+//                nElements.add(new MenuElement_HoverElement(nData));
+//                nData.clear();
+//                this.menuElementHover = new MenuElement_Hover(nElements);
+//            }
+//        });
+//        var10000 = buttonsY + ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
         menuElements.add(new Text_Static("Lukasz Jakowski", CFG.PADDING * 3, CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT - CFG.PADDING * 3, CFG.FONT_REGULAR_SMALL) {
             public void actionElement() {
                 MenuManager var10000 = Game.menuManager;
@@ -463,6 +466,9 @@ public class MainMenu extends Menu {
             }
         });
         this.initMenu((MenuTitle)null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements, true);
+        if(!menuElements.get(menuElements.size() - 1).getText().contains("Team Rainfall")){
+            System.exit(0);
+        }
         bgTIME = System.currentTimeMillis();
         bgTIME_CHANGE = System.currentTimeMillis();
     }
@@ -596,16 +602,16 @@ public class MainMenu extends Menu {
         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(getRandomStr(), "", Game_Calendar.IMG_MANPOWER, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
-        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(getVersion(), "", Game_Calendar.IMG_MANPOWER, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
+        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(getVersion(), "", Images.time, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
         return new MenuElement_Hover(nElements);
     }
     public static String getVersion(){
         if(CFG.isDesktop()){
-            return "Version:"+ FontFix.CORE_VERSION;
+            return "Polaris Core "+Game.lang.get("Version")+":"+ FontFix.CORE_VERSION;
         }
-        return "Version:"+FontFix.POLARIS_VERSION;
+        return "Polaris AoH3 "+Game.lang.get("Version")+":"+ FontFix.POLARIS_VERSION;
     }
     public static String getRandomStr(){
        String str1 = "What do you want today?";

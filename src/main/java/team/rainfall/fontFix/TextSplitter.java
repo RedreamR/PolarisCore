@@ -1,19 +1,32 @@
 package team.rainfall.fontFix;
-import aoc.kingdoms.lukasz.jakowski.Game;
 
 import java.util.List;
 import java.util.ArrayList;
 
 
-public class TextSpliter {
+public class TextSplitter {
     public static String[] splitText(String input) {
         List<String> result = new ArrayList<>();
         StringBuilder currentWord = new StringBuilder();
         boolean isPreviousCJK = false;
-
+        boolean isPreviousBackSlash = false;
         for (int i = 0; i < input.length(); i++) {
             char ch = input.charAt(i);
-
+            if(ch == '\\'){
+                result.add(currentWord.toString());
+                currentWord.setLength(0);
+                currentWord.append(ch);
+                isPreviousBackSlash = true;
+                continue;
+            } else if (isPreviousBackSlash && ch == 'n') {
+                currentWord.append('n');
+                result.add(currentWord.toString());
+                currentWord.setLength(0);
+                isPreviousBackSlash = false;
+                continue;
+            } else if (isPreviousBackSlash) {
+                isPreviousBackSlash = false;
+            }
             // 判断字符是否为中文或日文
             if (isCJKCharacter(ch)) {
                 if (!isPreviousCJK && currentWord.length() > 0) {

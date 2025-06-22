@@ -10,6 +10,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import team.rainfall.finality.FinalityLogger;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
@@ -22,8 +25,31 @@ public class FontFix {
     public static ArrayList<FontData> fonts = new ArrayList<>();
     public static boolean titleSet = false;
     public static boolean dontShowMainMenuQQ = true;
-    public static final String CORE_VERSION = "3.1.0";
+    public static boolean forceToLoadLibrary = false;
+    public static final String CORE_VERSION = "3.2.0";
     public static final String POLARIS_VERSION = "1.6";
+    public static int isSplash = 0;
+    public static boolean isSplash(){
+        if(isSplash == 0 && FileManager.loadFile("splashScreen").exists()){
+            isSplash = 1;
+            return true;
+        } else if (isSplash == 0 && !FileManager.loadFile("splashScreen").exists()) {
+            isSplash = 2;
+            return false;
+        } else return isSplash == 1;
+    }
+    public static void loadLibrary(){
+        if(!CFG.isDesktop()) {
+            System.loadLibrary("sternstunden");
+        }
+        if(CFG.isDesktop() || forceToLoadLibrary){
+            try {
+                NativeLibraryLoader.loadLibrary("sternstunden");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
     public static void setTitle() {
         if (!titleSet) {
             try {
@@ -119,9 +145,15 @@ public class FontFix {
             case "yellow":
                 return Color.YELLOW;
             case "white":
-            default:
                 return Color.WHITE;
         }
+        if(key.startsWith("#")) {
+            try {
+                return Color.valueOf(key.replaceAll("#", ""));
+            }catch (Exception ignored){}
+        }
+        return Color.WHITE;
+
     }
 }
 
