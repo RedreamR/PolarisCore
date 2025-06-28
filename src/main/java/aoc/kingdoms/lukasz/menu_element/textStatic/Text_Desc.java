@@ -47,7 +47,6 @@ public class Text_Desc extends Text_Static {
         int i = 0;
         int tTextWidth = 0;
         for(int iSize = words.length; i < iSize; ++i) {
-            FinalityLogger.debug("SPLIT ["+i+"] "+words[i]);
             if(words[i].equals("\\n")){
                 this.sLines.add(currentLine.toString());
                 currentLine = new StringBuilder();
