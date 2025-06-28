@@ -8,4 +8,6 @@ public class PolarisConfigData {
     public Array<LinkConfig> links = new Array<>();
     public int SplashScreen_FadeIn = 1500;
     public int SplashScreen_FadeOut = 500;
+    public float MainMenu_PanelX = 0.1f;
+    public String MainMenu_Alignment = "left";
 }

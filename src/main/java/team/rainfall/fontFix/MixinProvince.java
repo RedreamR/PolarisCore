@@ -17,7 +17,6 @@ import team.rainfall.finality.luminosity2.annotations.Shadow;
 
 import java.awt.*;
 
-import static team.rainfall.fontFix.FontFix.loadLibrary;
 
 @Mixin(mixinClass = "aoc.kingdoms.lukasz.map.province.Province")
 public class MixinProvince {

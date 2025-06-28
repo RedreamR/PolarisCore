@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 
+import java.awt.*;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -36,7 +37,12 @@ public class MixinRenderer {
 
     public static final void loadFont(String sFont, String charset, int fontSize) {
         float texSize = charset.getBytes().length;
-        int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
+        if(Sternstunden.i == -1){
+            FontFix.loadLibrary();
+            Sternstunden.run();
+            Sternstunden.i = 1024;
+        }
+        int texSize2 = (int) (texSize * ((float) 2 / 3) + Sternstunden.i);
         FinalityLogger.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
         if(!CFG.isDesktop()) FreeTypeFontGenerator.setMaxTextureSize(4096);

@@ -24,10 +24,9 @@ public class FontFix {
     public static CompactScale compactScale = null;
     public static ArrayList<FontData> fonts = new ArrayList<>();
     public static boolean titleSet = false;
-    public static boolean dontShowMainMenuQQ = true;
     public static boolean forceToLoadLibrary = false;
     public static final String CORE_VERSION = "3.2.0";
-    public static final String POLARIS_VERSION = "1.6";
+    public static final String POLARIS_VERSION = "2.0-preview1";
     public static int isSplash = 0;
     public static boolean isSplash(){
         if(isSplash == 0 && FileManager.loadFile("splashScreen").exists()){
@@ -42,8 +41,9 @@ public class FontFix {
         if(!CFG.isDesktop()) {
             System.loadLibrary("sternstunden");
         }
-        if(CFG.isDesktop() || forceToLoadLibrary){
+        if(CFG.isDesktop() && forceToLoadLibrary){
             try {
+                FinalityLogger.debug("Try to load library");
                 NativeLibraryLoader.loadLibrary("sternstunden");
             } catch (IOException e) {
                 throw new RuntimeException(e);

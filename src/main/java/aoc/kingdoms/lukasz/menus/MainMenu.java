@@ -5,11 +5,7 @@
 
 package aoc.kingdoms.lukasz.menus;
 
-import aoc.kingdoms.lukasz.jakowski.CFG;
-import aoc.kingdoms.lukasz.jakowski.FileManager;
-import aoc.kingdoms.lukasz.jakowski.Game;
-import aoc.kingdoms.lukasz.jakowski.GameValues;
-import aoc.kingdoms.lukasz.jakowski.Game_Calendar;
+import aoc.kingdoms.lukasz.jakowski.*;
 import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import aoc.kingdoms.lukasz.jakowski.SaveLoad.LoadSavedGameManager;
 import aoc.kingdoms.lukasz.jakowski.SaveLoad.SaveGameManager;
@@ -85,8 +81,17 @@ public class MainMenu extends Menu {
         List<MenuElement> menuElements = new ArrayList();
         int paddingTopBot = CFG.PADDING * 2 + CFG.PADDING / 2;
         int paddingLeft = Images.boxTitleBORDERWIDTH + CFG.PADDING * 2 + CFG.PADDING / 2;
-        this.iXPos = (int)((float)CFG.GAME_WIDTH / (10.0F * CFG.GUI_SCALE));
         this.iWidth = (int)Math.max((float)CFG.LEFT_MENU_WIDTH, (float)Math.min(this.iWidth, CFG.GAME_WIDTH / 4) * CFG.GUI_SCALE);
+        int width2 = 0;
+        switch (Config.getConfig().MainMenu_Alignment){
+            case "center":
+                width2 = this.iWidth / 2;
+                break;
+            case "right":
+                width2 = - this.iWidth / 2;
+                break;
+        }
+        this.iXPos = (int)((float)CFG.GAME_WIDTH * Config.getConfig().MainMenu_PanelX / CFG.GUI_SCALE) - width2;
         this.iHeight = paddingTopBot * 2 + paddingTopBot / 2 + (CFG.BUTTON_HEIGHT + CFG.PADDING * 2) * 6;
         this.iYPos = (int)(0.5F * (float)(CFG.GAME_HEIGHT - this.iHeight - ImageManager.getImage(Images.mainTitle).getHeight()));
         if (this.iXPos + this.iWidth > CFG.GAME_WIDTH) {
@@ -446,7 +451,7 @@ public class MainMenu extends Menu {
             }
         });
 
-        String text1 = CFG.isDesktop() ? "Polaris Core by Team Rainfall" : "Polaris AoH3 by Team Rainfall";
+        String text1 = CFG.isDesktop() ? "Polaris Core by Team Rainfall" : Sternstunden.getCopyrightString();
         menuElements.add(new Text_Static(text1, CFG.PADDING * 3, CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT * 3 - 1 - CFG.PADDING * 3, CFG.FONT_REGULAR_SMALL) {
             public void actionElement() {
                 MenuManager var10000 = Game.menuManager;
@@ -605,6 +610,11 @@ public class MainMenu extends Menu {
         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(getVersion(), "", Images.time, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
+        if(CFG.isAndroid() || FontFix.forceToLoadLibrary) {
+            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Sternstunden "+ Game.lang.get("Version")+":"+Sternstunden.getVersion(), "", Images.technology, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
+            nElements.add(new MenuElement_HoverElement(nData));
+            nData.clear();
+        }
         return new MenuElement_Hover(nElements);
     }
     public static String getVersion(){
