@@ -176,6 +176,12 @@ public class Editor extends Menu {
                 }
             });
         }
+        menuElements.add(new Text_Desc_Simple("Rainfall,the storm approaches.\\n§2We are Team Rainfall", paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2) {
+            public void actionElement() {
+                Game.menuManager.addToastGold("Terms of Use", Images.technology2);
+            }
+        });
+        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
         buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
         buttonY += ((MenuElement)menuElements.get(0)).getHeight() + buttonYPadding * 2;
         this.initMenu(new MenuTitle("", 1.0F, titleHeight, true, true), menuX, titleHeight + menuY, CFG.LEFT_MENU_WIDTH, Math.min(buttonY, CFG.GAME_HEIGHT - titleHeight - menuY - CFG.PADDING * 2), menuElements, true, false);

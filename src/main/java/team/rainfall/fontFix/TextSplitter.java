@@ -37,7 +37,7 @@ public class TextSplitter {
                 isPreviousCJK = true;
             } else if (Character.isWhitespace(ch)) {
                 if (currentWord.length() > 0) {
-                    result.add(currentWord.toString() + " ");
+                    result.add(currentWord + " ");
                     currentWord.setLength(0);
                 }
                 isPreviousCJK = false;

@@ -16,13 +16,17 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.fontFix.TextSplitter;
+import team.rainfall.fontFix.text.Line;
+import team.rainfall.fontFix.text.TextColorRenderer;
+import team.rainfall.fontFix.text.TextProcessor;
+import team.rainfall.fontFix.text.Word;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Text_Desc extends Text_Static {
-    public List<String> sLines = new ArrayList();
-    public int iLineSize = 0;
+    public ArrayList<Line> ffLines = new ArrayList<>();
+
 
     public Text_Desc(String sText, int iPosX, int iPosY, int iWidth) {
         this.init(sText, iPosX, iPosY, iWidth, CFG.FONT_REGULAR_SMALL);
@@ -40,58 +44,16 @@ public class Text_Desc extends Text_Static {
         this.setPosY(iPosY);
         this.setWidth(iWidth);
         this.updateTextPosition();
-        String[] words = TextSplitter.splitText(sText);
         int maxW = iWidth - CFG.PADDING * 2;
-        int textPosX = 0;
-        StringBuilder currentLine = new StringBuilder();
-        int i = 0;
-        int tTextWidth = 0;
-        for(int iSize = words.length; i < iSize; ++i) {
-            if(words[i].equals("\\n")){
-                this.sLines.add(currentLine.toString());
-                currentLine = new StringBuilder();
-                textPosX = tTextWidth;
-                continue;
-            }
-            Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID),currentLine  + words[i]);
-            textPosX = (int) Renderer.glyphLayout.width;
-            if (textPosX < maxW && !words[i].isEmpty()) {
-                currentLine.append(words[i]);
-                this.iTextWidth = Math.max(this.iTextWidth, Math.min(textPosX, maxW));
-            } else if(!words[i].isEmpty()){
-                this.sLines.add(currentLine.toString());
-                currentLine = new StringBuilder(words[i]);
-                textPosX = tTextWidth;
-            }
+        this.ffLines = TextProcessor.warp(TextProcessor.tokenize(sText),maxW,nFontID);
+        this.iTextWidth = (int) Math.max(maxW,ffLines.get(0).lineWidth);
+        this.iTextHeight = (int) ffLines.get(0).lineHeight;
+        for (Line ffLine : this.ffLines) {
+           if(this.iTextHeight < ffLine.lineHeight){
+               this.iTextHeight = (int) ffLine.lineHeight;
+           }
         }
-
-        if (currentLine.length() > 0) {
-            this.sLines.add(currentLine.toString());
-        }
-
-        GlyphLayout_Game glyphLayout;
-
-        if (!this.sLines.isEmpty() && !((String) this.sLines.get(0)).isEmpty()) {
-            glyphLayout = new GlyphLayout_Game();
-            glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), (CharSequence)this.sLines.get(0));
-            this.iTextHeight = (int)glyphLayout.height;
-        } else {
-            glyphLayout = new GlyphLayout_Game();
-            glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), "ABC");
-            this.iTextHeight = (int)glyphLayout.height;
-        }
-
-        this.iLineSize = this.sLines.size();
-
-        for(i = 0; i < this.iLineSize; ++i) {
-            glyphLayout = new GlyphLayout_Game();
-            glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), (CharSequence)this.sLines.get(i));
-            if (glyphLayout.width > (float)this.getWidth()) {
-                this.setWidth((int)glyphLayout.width);
-            }
-        }
-
-        this.setHeight(this.iTextHeight * this.sLines.size() + (this.sLines.size() - 1) * CFG.PADDING * 2 + this.getPaddingY() * 2);
+        this.setHeight(this.iTextHeight * this.ffLines.size() + (this.ffLines.size() - 1) * CFG.PADDING * 2 + this.getPaddingY() * 2);
     }
 
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
@@ -104,9 +66,8 @@ public class Text_Desc extends Text_Static {
         oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.45F));
         Renderer.drawBox(oSB, Images.statsRectBGBorder, this.getPosX() + iTranslateX, this.getPosY() + iTranslateY, this.getWidth(), this.getHeight(), 1.0F);
         oSB.setColor(Color.WHITE);
-
-        for(int i = 0; i < this.iLineSize; ++i) {
-            Renderer.drawTextWithShadow(oSB, this.fontID, (String)this.sLines.get(i), this.getPosX() + this.getPadding() + iTranslateX, this.getPosY() + this.getPaddingY() + (this.iTextHeight + CFG.PADDING * 2) * i + iTranslateY, this.getColor(isActive));
+        for(int i = 0; i < this.ffLines.size(); ++i) {
+            TextColorRenderer.drawLine(oSB, this.fontID, this.ffLines.get(i), this.getPosX() + this.getPadding() + iTranslateX, this.getPosY() + this.getPaddingY() + (this.iTextHeight + CFG.PADDING * 2) * i + iTranslateY, this.getColor(isActive));
         }
 
     }
