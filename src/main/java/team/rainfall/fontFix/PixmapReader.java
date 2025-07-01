@@ -48,8 +48,8 @@ public class PixmapReader {
             }
 
             // 重置ByteBuffer
-            ((Buffer)pixelBuf).position(0);
-            ((Buffer)pixelBuf).limit(pixelBuf.capacity());
+            pixelBuf.position(0);
+            pixelBuf.limit(pixelBuf.capacity());
 
         } catch (Exception e) {
             throw new GdxRuntimeException("Couldn't read Pixmap from byte array", e);
