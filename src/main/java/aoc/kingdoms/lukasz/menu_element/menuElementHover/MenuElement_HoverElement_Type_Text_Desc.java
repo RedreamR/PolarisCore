@@ -16,13 +16,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.fontFix.TextSplitter;
+import team.rainfall.fontFix.text.Line;
+import team.rainfall.fontFix.text.TextColorRenderer;
+import team.rainfall.fontFix.text.TextProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuElement_HoverElement_Type_Text_Desc implements MenuElement_HoverElement_Type {
-    public List<String> sLines = new ArrayList();
-    public int iLineSize = 0;
+    public ArrayList<Line> ffLines = new ArrayList<>();
     public int iTextWidth = 0;
     public int iTextHeight = 0;
     private Color oColor;
@@ -47,68 +49,26 @@ public class MenuElement_HoverElement_Type_Text_Desc implements MenuElement_Hove
     public final void init(String sText, int nFontID, Color oColor) {
         this.oColor = oColor;
         this.fontID = nFontID;
-        String[] words = TextSplitter.splitText(sText);
+        FinalityLogger.debug("HOVER "+sText);
         int maxW = (int)((float) ImageManager.getImage(Images.title1Red).getWidth() * 0.85f);
-        int textPosX = 0;
-
-        StringBuilder currentLine = new StringBuilder();
-        int tTextWidth = 0;
-        int i = 0;
-
-        for(int iSize = words.length; i < iSize; ++i) {
-            if(words[i].equals("\\n")){
-                this.sLines.add(currentLine.toString());
-                currentLine = new StringBuilder();
-                textPosX = tTextWidth;
-                continue;
+        this.ffLines = TextProcessor.warp(TextProcessor.tokenize(sText),maxW,nFontID);
+        this.iTextHeight = (int) ffLines.get(0).lineHeight;
+        int maxWidthInLines = 0;
+        for (Line ffLine : this.ffLines) {
+            if(this.iTextHeight < ffLine.lineHeight){
+                this.iTextHeight = (int) ffLine.lineHeight;
             }
-            Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), words[i]);
-            tTextWidth = (int)Renderer.glyphLayout.width;
-            textPosX += tTextWidth;
-            if (textPosX < maxW && !words[i].isEmpty()) {
-                currentLine.append(words[i]);
-                this.iTextWidth = Math.max(this.iTextWidth, Math.min(textPosX, maxW));
-            } else if(!words[i].isEmpty()){
-                this.sLines.add(currentLine.toString());
-                currentLine = new StringBuilder(words[i]);
-                textPosX = tTextWidth;
+            if(maxWidthInLines < ffLine.lineWidth){
+                maxWidthInLines = (int) ffLine.lineWidth;
             }
         }
-        int tempHeight = 0;
-        if (currentLine.length() > 0) {
-            Renderer.glyphLayout.setText(Renderer.fontMain.get(this.fontID), currentLine.toString());
-            tempHeight = (int)Renderer.glyphLayout.height;
-            this.sLines.add(currentLine.toString());
-        }
-
-        if (!this.sLines.isEmpty() && !((String) this.sLines.get(0)).isEmpty()) {
-            Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), (CharSequence)this.sLines.get(0));
-            this.iTextHeight = (int)Renderer.glyphLayout.height;
-        }
-
-        if(!this.sLines.isEmpty() && ((String) this.sLines.get(0)).isEmpty() && !this.sLines.get(0).isEmpty()){
-            this.sLines.remove(0);
-            Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), (CharSequence)this.sLines.get(0));
-            this.iTextHeight = (int)(Renderer.glyphLayout.height);
-        }
-        if(this.iTextHeight < tempHeight ){
-            iTextHeight = tempHeight;
-        }
-        this.iLineSize = this.sLines.size();
-
-        for(i = 0; i < this.iLineSize; ++i) {
-            GlyphLayout_Game glyphLayout = new GlyphLayout_Game();
-            glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), (CharSequence)this.sLines.get(i));
-            if (glyphLayout.width > (float)this.iTextWidth) {
-                this.iTextWidth = (int)glyphLayout.width;
-            }
-        }
+        this.iTextWidth = Math.min(maxW,maxWidthInLines);
 
     }
 
     public void draw(SpriteBatch oSB, int nPosX, int nPosY, float nAlpha, int iMaxWidth) {
-        for(int i = 0; i < this.iLineSize; ++i) {
-            Renderer.drawTextWithShadow(oSB, this.fontID, (String)this.sLines.get(i), nPosX, nPosY + CFG.PADDING + CFG.PADDING / 2 + (int)(((float)CFG.TEXT_HEIGHT - (float)CFG.TEXT_HEIGHT * 0.9F) / 2.0F) + (this.iTextHeight + CFG.PADDING * 2) * i, new Color(this.oColor.r, this.oColor.g, this.oColor.b, nAlpha));
+        for(int i = 0; i < this.ffLines.size(); ++i) {
+            TextColorRenderer.drawLine(oSB, this.fontID, this.ffLines.get(i), nPosX, nPosY + CFG.PADDING + CFG.PADDING / 2 + (int)(((float)CFG.TEXT_HEIGHT - (float)CFG.TEXT_HEIGHT * 0.9F) / 2.0F) + (this.iTextHeight + CFG.PADDING * 2) * i, new Color(this.oColor.r, this.oColor.g, this.oColor.b, nAlpha));
         }
 
     }
@@ -118,6 +78,6 @@ public class MenuElement_HoverElement_Type_Text_Desc implements MenuElement_Hove
     }
 
     public int getHeight() {
-        return CFG.PADDING + CFG.TEXT_HEIGHT_SMALL * this.iLineSize + CFG.PADDING * 2 * (this.iLineSize - 1);
+        return CFG.PADDING + CFG.TEXT_HEIGHT_SMALL * this.ffLines.size() + CFG.PADDING * 2 * (this.ffLines.size() - 1);
     }
 }
