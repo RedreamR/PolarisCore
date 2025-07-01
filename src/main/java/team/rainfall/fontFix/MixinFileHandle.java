@@ -17,7 +17,6 @@ public abstract class MixinFileHandle {
         // || this.path().matches("map/.*/scenarios/.*/descriptions.*") || this.path().matches("map/.*/scenarios/.*/events.*",|| this.path().contains("mods")
             try {
                 charset = EncodingDetector.INSTANCE.detectStringCharset((FileHandle) (Object) this);
-                charset.hashCode();
                 switch (charset) {
                     case "UTF-8":
                         charset = "UTF8";
