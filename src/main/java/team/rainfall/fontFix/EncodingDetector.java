@@ -14,6 +14,9 @@ public class EncodingDetector {
         if(!fileHandle.exists()){
             return "NONE";
         }
+        if(!Config.getConfig().forceEncoding.equals("auto") && Config.getConfig().forceEncoding != null){
+            return Config.getConfig().forceEncoding;
+        }
         try {
             File file = fileHandle.file();
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -34,6 +37,9 @@ public class EncodingDetector {
         return "NONE";
     }
     public String detectInputStreamCharset(InputStream inputStream){
+        if(!Config.getConfig().forceEncoding.equals("auto") && Config.getConfig().forceEncoding != null){
+            return Config.getConfig().forceEncoding;
+        }
         try {
             BufferedInputStream reader = new BufferedInputStream(inputStream);
             byte[] buff = new byte[1024];

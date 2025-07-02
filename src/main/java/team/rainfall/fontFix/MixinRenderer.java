@@ -37,12 +37,7 @@ public class MixinRenderer {
 
     public static final void loadFont(String sFont, String charset, int fontSize) {
         float texSize = charset.getBytes().length;
-        if(Sternstunden.i == -1){
-            FontFix.loadLibrary();
-            Sternstunden.run();
-            Sternstunden.i = 1024;
-        }
-        int texSize2 = (int) (texSize * ((float) 2 / 3) + Sternstunden.i);
+        int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
         FinalityLogger.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
         if(!CFG.isDesktop()) FreeTypeFontGenerator.setMaxTextureSize(4096);

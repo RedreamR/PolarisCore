@@ -53,7 +53,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.codedisaster.steamworks.SteamFriends.OverlayToStoreFlag;
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
-import team.rainfall.fontFix.Sternstunden;
 import team.rainfall.fontFix.config.LinkConfig;
 import team.rainfall.fontFix.utils.IconParser;
 
@@ -451,7 +450,7 @@ public class MainMenu extends Menu {
             }
         });
 
-        String text1 = CFG.isDesktop() ? "Polaris Core by Team Rainfall" : Sternstunden.getCopyrightString();
+        String text1 = CFG.isDesktop() ? "Polaris Core by Team Rainfall" : "Polaris AoH3 by Team Rainfall";
         menuElements.add(new Text_Static(text1, CFG.PADDING * 3, CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT * 3 - 1 - CFG.PADDING * 3, CFG.FONT_REGULAR_SMALL) {
             public void actionElement() {
                 MenuManager var10000 = Game.menuManager;
@@ -610,8 +609,8 @@ public class MainMenu extends Menu {
         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(getVersion(), "", Images.time, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
-        if(CFG.isAndroid() || FontFix.forceToLoadLibrary) {
-            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Sternstunden "+ Game.lang.get("Version")+":"+Sternstunden.getVersion(), "", Images.technology, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
+        if(CFG.isAndroid()) {
+            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Sternstunden "+ Game.lang.get("Version")+":1003", "", Images.technology, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();
         }

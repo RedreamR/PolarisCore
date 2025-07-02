@@ -24,7 +24,6 @@ public class FontFix {
     public static CompactScale compactScale = null;
     public static ArrayList<FontData> fonts = new ArrayList<>();
     public static boolean titleSet = false;
-    public static boolean forceToLoadLibrary = false;
     public static final String CORE_VERSION = "3.2.0";
     public static final String POLARIS_VERSION = "2.0-preview1";
     public static int isSplash = 0;
@@ -36,19 +35,6 @@ public class FontFix {
             isSplash = 2;
             return false;
         } else return isSplash == 1;
-    }
-    public static void loadLibrary(){
-        if(!CFG.isDesktop()) {
-            System.loadLibrary("sternstunden");
-        }
-        if(CFG.isDesktop() && forceToLoadLibrary){
-            try {
-                FinalityLogger.debug("Try to load library");
-                NativeLibraryLoader.loadLibrary("sternstunden");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
     public static void setTitle() {
         if (!titleSet) {
