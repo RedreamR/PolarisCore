@@ -13,6 +13,7 @@ public class Config {
         if(configData == null){
             try {
                 Json json = new Json();
+                json.setIgnoreUnknownFields(true);
                 json.setElementType(PolarisConfigData.class, "links", LinkConfig.class);
                 configData = json.fromJson(PolarisConfigData.class, FileManager.loadFile("rainfall/polaris_core.json"));
             }catch (Exception e){

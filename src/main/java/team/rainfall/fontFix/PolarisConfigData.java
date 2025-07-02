@@ -12,5 +12,4 @@ public class PolarisConfigData {
     public int SplashScreen_FadeOut = 500;
     public float MainMenu_PanelX = 0.1f;
     public String MainMenu_Alignment = "left";
-    public String forceEncoding = "auto";
 }
