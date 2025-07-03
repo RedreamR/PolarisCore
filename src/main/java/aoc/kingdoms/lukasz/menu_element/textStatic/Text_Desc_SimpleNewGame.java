@@ -22,11 +22,13 @@ public class Text_Desc_SimpleNewGame extends Text_Desc {
         super(sText, iPosX, iPosY, iWidth);
         if (!NewGameCiv.expandCivDesc) {
             if (this.ffLines.size() > 3) {
-                iLineSize = 2;
+                iLineSize = 3;
                 this.ffLines.get(2).words.add(new Word("..",'0'));
             }
 
-            this.setHeight(this.iTextHeight * this.ffLines.size() + (this.ffLines.size() - 1) * CFG.PADDING * 2 + this.getPaddingY() * 2);
+            this.setHeight(this.iTextHeight * this.iLineSize + (this.iLineSize - 1) * CFG.PADDING * 2 + this.getPaddingY() * 2);
+        }else {
+            iLineSize = ffLines.size();
         }
 
     }
