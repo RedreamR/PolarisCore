@@ -21,7 +21,7 @@ public class FontFix {
     public static ArrayList<FontData> fonts = new ArrayList<>();
     public static boolean titleSet = false;
     public static final String CORE_VERSION = "3.2.0";
-    public static final String POLARIS_VERSION = "2.0-preview1";
+    public static final String POLARIS_VERSION = "2.1";
     public static int isSplash = 0;
     public static boolean isSplash(){
         if(isSplash == 0 && FileManager.loadFile("splashScreen").exists()){
@@ -31,6 +31,9 @@ public class FontFix {
             isSplash = 2;
             return false;
         } else return isSplash == 1;
+    }
+    public static String langGet(String key,String fallback){
+        return Game.lang.get(key).equals(fallback) ? fallback : Game.lang.get(key);
     }
     public static void setTitle() {
         if (!titleSet) {
