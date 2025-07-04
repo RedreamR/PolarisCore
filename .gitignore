@@ -4,8 +4,6 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-src/main/resources/sternstunden.dll
-src/main/java/team/rainfall/fontFix/Sternstunden.java
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

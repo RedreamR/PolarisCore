@@ -53,6 +53,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.codedisaster.steamworks.SteamFriends.OverlayToStoreFlag;
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
+import team.rainfall.fontFix.Sternstunden;
 import team.rainfall.fontFix.config.LinkConfig;
 import team.rainfall.fontFix.utils.IconParser;
 
@@ -80,25 +81,25 @@ public class MainMenu extends Menu {
         List<MenuElement> menuElements = new ArrayList();
         int paddingTopBot = CFG.PADDING * 2 + CFG.PADDING / 2;
         int paddingLeft = Images.boxTitleBORDERWIDTH + CFG.PADDING * 2 + CFG.PADDING / 2;
-        this.iWidth = (int)Math.max((float)CFG.LEFT_MENU_WIDTH, (float)Math.min(this.iWidth, CFG.GAME_WIDTH / 4) * CFG.GUI_SCALE);
+        this.iWidth = (int) Math.max((float) CFG.LEFT_MENU_WIDTH, (float) Math.min(this.iWidth, CFG.GAME_WIDTH / 4) * CFG.GUI_SCALE);
         int width2 = 0;
-        switch (Config.getConfig().MainMenu_Alignment){
+        switch (Config.getConfig().MainMenu_Alignment) {
             case "center":
                 width2 = this.iWidth / 2;
                 break;
             case "right":
-                width2 = - this.iWidth / 2;
+                width2 = -this.iWidth / 2;
                 break;
         }
-        this.iXPos = (int)((float)CFG.GAME_WIDTH * Config.getConfig().MainMenu_PanelX / CFG.GUI_SCALE) - width2;
+        this.iXPos = (int) ((float) CFG.GAME_WIDTH * Config.getConfig().MainMenu_PanelX / CFG.GUI_SCALE) - width2;
         this.iHeight = paddingTopBot * 2 + paddingTopBot / 2 + (CFG.BUTTON_HEIGHT + CFG.PADDING * 2) * 6;
-        this.iYPos = (int)(0.5F * (float)(CFG.GAME_HEIGHT - this.iHeight - ImageManager.getImage(Images.mainTitle).getHeight()));
+        this.iYPos = (int) (0.5F * (float) (CFG.GAME_HEIGHT - this.iHeight - ImageManager.getImage(Images.mainTitle).getHeight()));
         if (this.iXPos + this.iWidth > CFG.GAME_WIDTH) {
             this.iXPos = CFG.PADDING * 2;
         }
 
-        Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(CFG.FONT_REGULAR_SMALL), GameValues.text.VERSION);
-        Game.versionWidth = (int)Renderer.glyphLayout.width;
+        Renderer.glyphLayout.setText((BitmapFont) Renderer.fontMain.get(CFG.FONT_REGULAR_SMALL), GameValues.text.VERSION);
+        Game.versionWidth = (int) Renderer.glyphLayout.width;
         menuElements.add(new ButtonMainTitle("", 0, -1, this.iXPos, this.iYPos, this.iWidth, true) {
             public void actionElement() {
                 MenuManager var10000 = Game.menuManager;
@@ -182,7 +183,7 @@ public class MainMenu extends Menu {
 
                     }
                 });
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+                buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
             } else {
                 FileHandle file;
                 if (FileManager.IS_MAC) {
@@ -199,7 +200,7 @@ public class MainMenu extends Menu {
                     List<String> tempSaveKey = new ArrayList();
 
                     int bestID;
-                    for(bestID = 0; bestID < tempTags.length; ++bestID) {
+                    for (bestID = 0; bestID < tempTags.length; ++bestID) {
                         SaveGameManager.SaveDetails readSD = LoadSavedGameManager.loadSave_Details(tempTags[bestID]);
                         if (readSD != null) {
                             tempSaveDetails.add(readSD);
@@ -209,14 +210,14 @@ public class MainMenu extends Menu {
 
                     bestID = 0;
 
-                    for(int i = tempSaveDetails.size() - 1; i > 0; --i) {
-                        if (((SaveGameManager.SaveDetails)tempSaveDetails.get(i)).time > ((SaveGameManager.SaveDetails)tempSaveDetails.get(bestID)).time) {
+                    for (int i = tempSaveDetails.size() - 1; i > 0; --i) {
+                        if (((SaveGameManager.SaveDetails) tempSaveDetails.get(i)).time > ((SaveGameManager.SaveDetails) tempSaveDetails.get(bestID)).time) {
                             bestID = i;
                         }
                     }
 
-                    savedGame = (SaveGameManager.SaveDetails)tempSaveDetails.get(bestID);
-                    savedGameKey = (String)tempSaveKey.get(bestID);
+                    savedGame = (SaveGameManager.SaveDetails) tempSaveDetails.get(bestID);
+                    savedGameKey = (String) tempSaveKey.get(bestID);
                     loadFlag(savedGame.sCivTag);
                     menuElements.add(new Button_LoadGame_MainMenu(Game.lang.get("Continue") + ": " + Game.lang.getCiv(savedGame.sCivTag), "" + savedGame.iDay + " " + Game_Calendar.getMonthName(savedGame.iMonth) + " " + Game.gameAges.getYear(savedGame.iYear), this.iXPos + paddingLeft, buttonY, this.iWidth - paddingLeft * 2) {
                         public void actionElement() {
@@ -224,11 +225,11 @@ public class MainMenu extends Menu {
                             Game.menuManager.setViewIDWithoutAnimation(View.LOAD_SAVED_GAME);
                         }
                     });
-                    buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+                    buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
                 } else {
                     menuElements.add(new ButtonGame2(Game.lang.get("Continue"), 1, -1, this.iXPos + paddingLeft, buttonY, this.iWidth - paddingLeft * 2, false) {
                     });
-                    buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+                    buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
                 }
             }
         } catch (Exception var11) {
@@ -242,7 +243,7 @@ public class MainMenu extends Menu {
                 Game.menuManager.setOrderOfMenu_Scenarios();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+        buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
         int statsW = CFG.BUTTON_WIDTH;
         if (FileManager.loadFile("game/Multiplayer.txt").exists()) {
             menuElements.add(new ButtonGame2Sparks_Hovered(Game.lang.get("Campaign"), 1, -1, this.iXPos + paddingLeft, buttonY, (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, true) {
@@ -265,13 +266,13 @@ public class MainMenu extends Menu {
             });
         }
 
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+        buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
         menuElements.add(new ButtonGame2(Game.lang.get("LoadGame"), 1, -1, this.iXPos + paddingLeft, buttonY, this.iWidth - paddingLeft * 2, true) {
             public void actionElement() {
                 Game.menuManager.setViewID(View.LOAD_GAMES_LIST);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2 + paddingTopBot / 2;
+        buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2 + paddingTopBot / 2;
         menuElements.add(new ButtonGame2(Game.lang.get("Editor"), 1, -1, this.iXPos + paddingLeft, buttonY, (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, true) {
             public void actionElement() {
                 ProvinceBorderManager.clearProvinceBorder();
@@ -307,13 +308,13 @@ public class MainMenu extends Menu {
                 Game.menuManager.setViewID(View.SETTINGS);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+        buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
         menuElements.add(new ButtonGame2(Game.lang.get("ExitGame"), 1, -1, this.iXPos + paddingLeft, buttonY, this.iWidth - paddingLeft * 2 - CFG.PADDING - statsW, true) {
             public void actionElement() {
                 Dialog.setDialogType(DialogType.EXIT_GAME);
             }
         });
-        menuElements.add(new ButtonGame2_IMG((String)null, 1, -1, this.iXPos + paddingLeft + this.iWidth - paddingLeft * 2 - statsW, buttonY, statsW, true, Images.development) {
+        menuElements.add(new ButtonGame2_IMG((String) null, 1, -1, this.iXPos + paddingLeft + this.iWidth - paddingLeft * 2 - statsW, buttonY, statsW, true, Images.development) {
             public void actionElement() {
                 Game.menuManager.setViewID(View.MAINMENU_STATS);
             }
@@ -328,7 +329,7 @@ public class MainMenu extends Menu {
             }
         });
         int var10000 = buttonY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
-        Renderer.glyphLayout.setText(Renderer.fontMain.get(CFG.FONT_REGULAR_SMALL),GameValues.text.VERSION);
+        Renderer.glyphLayout.setText(Renderer.fontMain.get(CFG.FONT_REGULAR_SMALL), GameValues.text.VERSION);
         float width1 = Renderer.glyphLayout.width;
         menuElements.add(new Text_Static(GameValues.text.VERSION, CFG.FONT_REGULAR_SMALL, -1, (int) (CFG.GAME_WIDTH - CFG.PADDING * 3 - width1), 0, (int) (CFG.PADDING * 3 + width1), CFG.BUTTON_HEIGHT3) {
             public void actionElement() {
@@ -348,7 +349,7 @@ public class MainMenu extends Menu {
             }
         });
         int buttonsY = CFG.GAME_HEIGHT - CFG.BUTTON_HEIGHT * Config.getConfig().links.size;
-        for(LinkConfig linkConfig : Config.getConfig().links){
+        for (LinkConfig linkConfig : Config.getConfig().links) {
             menuElements.add(new Button_MainMenuIcon(IconParser.parse(linkConfig.icon), CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
                 public void actionElement() {
                     Dialog.GO_TO_LINK = linkConfig.link;
@@ -364,7 +365,7 @@ public class MainMenu extends Menu {
                     this.menuElementHover = new MenuElement_Hover(nElements);
                 }
             });
-            buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+            buttonsY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight();
         }
 
 //        menuElements.add(new Button_MainMenuIcon(Images.yt, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
@@ -450,7 +451,7 @@ public class MainMenu extends Menu {
             }
         });
 
-        String text1 = CFG.isDesktop() ? "Polaris Core by Team Rainfall" : "Polaris AoH3 by Team Rainfall";
+        String text1 = CFG.isDesktop() ? "Polaris Core by Team Rainfall" : Sternstunden.getCopyrightString();
         menuElements.add(new Text_Static(text1, CFG.PADDING * 3, CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT * 3 - 1 - CFG.PADDING * 3, CFG.FONT_REGULAR_SMALL) {
             public void actionElement() {
                 MenuManager var10000 = Game.menuManager;
@@ -469,9 +470,9 @@ public class MainMenu extends Menu {
                 return !this.getIsHovered() && !isActive ? Colors.HOVER_RIGHT3 : Colors.HOVER_LEFT;
             }
         });
-        this.initMenu((MenuTitle)null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements, true);
-        if(!menuElements.get(menuElements.size() - 1).getText().contains("Team Rainfall")){
-            System.exit(0);
+        this.initMenu((MenuTitle) null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements, true);
+        if (!menuElements.get(menuElements.size() - 1).getText().contains("Team Rainfall")) {
+            Gdx.app.exit();
         }
         bgTIME = System.currentTimeMillis();
         bgTIME_CHANGE = System.currentTimeMillis();
@@ -481,7 +482,7 @@ public class MainMenu extends Menu {
         if (bgAlpha < 1.0F) {
             oSB.setColor(0.0F, 0.0F, 0.0F, 1.0F);
             Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
-            bgAlpha = Math.min(1.0F, (float)(CFG.currentTimeMillis - bgTIME) / (float)GameValues.text.MAIN_MENU_BG_ANIMATION_TIME);
+            bgAlpha = Math.min(1.0F, (float) (CFG.currentTimeMillis - bgTIME) / (float) GameValues.text.MAIN_MENU_BG_ANIMATION_TIME);
         }
 
         oSB.setColor(new Color(0.050980393F, 0.08627451F, 0.13333334F, 1.0F * bgAlpha));
@@ -501,7 +502,7 @@ public class MainMenu extends Menu {
         oSB.setColor(new Color(Colors.COLOR_GRADIENT.r, Colors.COLOR_GRADIENT.g, Colors.COLOR_GRADIENT.b, 0.3F));
         Images.gradientXY.draw(oSB, this.iXPos + iTranslateX, this.iYPos + ImageManager.getImage(Images.mainTitle).getHeight() + iTranslateY, this.iWidth, this.iHeight, false, true);
         oSB.setColor(Color.WHITE);
-        if ((CFG.isDesktop() && GameValues.text.MAIN_MENU_BG_ENABLE_AUTO_BG_CHANGE || !CFG.isDesktop() && GameValues.text.MAIN_MENU_BG_ENABLE_AUTO_BG_CHANGE_MOBILE) && CFG.currentTimeMillis > bgTIME_CHANGE + (long)GameValues.text.MAIN_MENU_BG_CHANGE_BG_EVERY_X_MS) {
+        if ((CFG.isDesktop() && GameValues.text.MAIN_MENU_BG_ENABLE_AUTO_BG_CHANGE || !CFG.isDesktop() && GameValues.text.MAIN_MENU_BG_ENABLE_AUTO_BG_CHANGE_MOBILE) && CFG.currentTimeMillis > bgTIME_CHANGE + (long) GameValues.text.MAIN_MENU_BG_CHANGE_BG_EVERY_X_MS) {
             bgTIME_CHANGE = CFG.currentTimeMillis;
             Game.addSimpleTask(new Game.SimpleTask("loadBackground") {
                 public void update() {
@@ -577,7 +578,7 @@ public class MainMenu extends Menu {
         nData.clear();
         boolean lineAdded = false;
         if (GameValues.text.MAIN_MENU_LOGO_HOVER_TEXT != null) {
-            for(int i = 0; i < GameValues.text.MAIN_MENU_LOGO_HOVER_TEXT.length; ++i) {
+            for (int i = 0; i < GameValues.text.MAIN_MENU_LOGO_HOVER_TEXT.length; ++i) {
                 if (GameValues.text.MAIN_MENU_LOGO_HOVER_TEXT[i] != null && !lineAdded) {
                     lineAdded = true;
                     nData.add(new MenuElement_HoverElement_Type_Line());
@@ -597,7 +598,7 @@ public class MainMenu extends Menu {
     public static MenuElement_Hover getHover_FontFix() {
         List<MenuElement_HoverElement> nElements = new ArrayList();
         List<MenuElement_HoverElement_Type> nData = new ArrayList();
-        nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center("Polaris Core Creator", CFG.FONT_BOLD, Colors.HOVER_LEFT));
+        nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(CFG.isDesktop() ? "Polaris Core Creator" : "Polaris AoH3 Creator", CFG.FONT_BOLD, Colors.HOVER_LEFT));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Team Rainfall", "", Images.world, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_GOLD, Colors.HOVER_GOLD));
@@ -609,32 +610,35 @@ public class MainMenu extends Menu {
         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(getVersion(), "", Images.time, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
-        if(CFG.isAndroid()) {
-            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Sternstunden "+ Game.lang.get("Version")+":1003", "", Images.technology, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
+        if (CFG.isAndroid()) {
+            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Sternstunden " + Game.lang.get("Version") + ":" + Sternstunden.getVersion(), "", Images.technology, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();
         }
         return new MenuElement_Hover(nElements);
     }
-    public static String getVersion(){
-        if(CFG.isDesktop()){
-            return "Polaris Core "+Game.lang.get("Version")+":"+ FontFix.CORE_VERSION;
+
+    public static String getVersion() {
+        if (CFG.isDesktop()) {
+            return "Polaris Core " + Game.lang.get("Version") + ":" + FontFix.CORE_VERSION;
         }
-        return "Polaris AoH3 "+Game.lang.get("Version")+":"+ FontFix.POLARIS_VERSION;
+        return "Polaris AoH3 " + Game.lang.get("Version") + ":" + FontFix.POLARIS_VERSION;
     }
-    public static String getRandomStr(){
-       String str1 = "What do you want today?";
-        if(!Game.lang.get("FontFix_Text1").equals("FontFix_Text1")){
+
+    public static String getRandomStr() {
+        String str1 = "What do you want today?";
+        if (!Game.lang.get("FontFix_Text1").equals("FontFix_Text1")) {
             str1 = Game.lang.get("FontFix_Text1");
-        };
-        String str2 = "Light The Flame.";
-        if(!Game.lang.get("FontFix_Text2").equals("FontFix_Text2")) {
+        }
+        ;
+        String str2 = "Light the flame.";
+        if (!Game.lang.get("FontFix_Text2").equals("FontFix_Text2")) {
             str2 = Game.lang.get("FontFix_Text2");
         }
 
         LocalDate today = LocalDate.now(ZoneId.systemDefault());
         DayOfWeek dayOfWeek = today.getDayOfWeek();
-        switch (dayOfWeek.getValue()){
+        switch (dayOfWeek.getValue()) {
             case 6:
                 return str1;
             case 2:

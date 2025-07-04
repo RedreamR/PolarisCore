@@ -5,14 +5,10 @@ import aoc.kingdoms.lukasz.jakowski.CFG;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.Keyboard;
-import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import team.rainfall.finality.FinalityLogger;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.*;
 import java.util.ArrayList;
 
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
@@ -51,29 +47,6 @@ public class FontFix {
         }
     }
 
-    public static int loadFont(String sFont, String charset, int fontSize) {
-        if (fonts.isEmpty()) {
-            Renderer.loadFont(sFont, charset, fontSize);
-            FontData fontData = new FontData();
-            fontData.id = Renderer.fontMain.size() - 1;
-            fontData.name = sFont;
-            fonts.add(fontData);
-            return fontData.id;
-        }
-        //不要重复加载！
-        for (FontData font : fonts) {
-            if (font.name.equals(sFont)) {
-                return font.id;
-            }
-        }
-        Renderer.loadFont(sFont, charset, fontSize);
-        FontData fontData = new FontData();
-        fontData.id = Renderer.fontMain.size() - 1;
-        fontData.name = sFont;
-        fonts.add(fontData);
-        return fontData.id;
-    }
-
     public static void paste() {
         if (Keyboard.keyboardMode && Gdx.app.getClipboard().hasContents()) {
             Keyboard.keyboardMessage = Keyboard.keyboardMessage + Gdx.app.getClipboard().getContents();
@@ -107,6 +80,9 @@ public class FontFix {
     }
 
     public static Color readFontColor(String key) {
+        if(CFG.isAndroid() && Sternstunden.bridge == null){
+            Sternstunden.init();
+        }
         String str = Game.lang.get(key);
         str = str.trim().toLowerCase();
         switch (str) {
