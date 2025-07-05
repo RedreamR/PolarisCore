@@ -41,7 +41,7 @@ import team.rainfall.fontFix.FontFix;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Settings_Menu extends Menu {
+public class  Settings_Menu extends Menu {
     public static View goBackToMenu;
     public static long provinceInView_Time;
     public static long drawProvinces_Time;
