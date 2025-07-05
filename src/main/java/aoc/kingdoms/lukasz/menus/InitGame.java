@@ -88,7 +88,6 @@ public class InitGame extends Menu {
     }
 
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
-
         if(System.currentTimeMillis() - timer2 < Config.getConfig().SplashScreen_FadeIn && FontFix.isSplash()){
             oSB.setColor(Color.BLACK);
             Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);

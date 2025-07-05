@@ -3,6 +3,7 @@ package team.rainfall.fontFix;
 import aoc.kingdoms.lukasz.jakowski.CFG;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
+import aoc.kingdoms.lukasz.map.IdeologiesManager;
 import aoc.kingdoms.lukasz.textures.Image;
 import com.badlogic.gdx.files.FileHandle;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
@@ -20,6 +21,7 @@ public class MixinGeneralManager {
 
     public String getGeneralRandomName(int iCivID) {
         String sCivTAG = Game.getCiv(iCivID).realTag;
+        String civTagWithGP = Game.getCiv(iCivID).realTag + "_gp" + Game.ideologiesManager.getIdeology(Game.getCiv(iCivID).getIdeologyID()).GOV_GROUP_ID;
         String civTagWithGov = Game.getCiv(iCivID).getCivTag();
         FileHandle fileList;
 
@@ -31,6 +33,24 @@ public class MixinGeneralManager {
             }
         } else if (FileManager.loadFile("game/rulersRandom/link/" + civTagWithGov + ".txt").exists()) {
             fileList = FileManager.loadFile("game/rulersRandom/link/" + civTagWithGov + ".txt");
+            sCivTAG = fileList.readString();
+            if (FileManager.loadFile("game/randomNames/names/" + sCivTAG + ".txt").exists()) {
+                FileHandle fileList2 = FileManager.loadFile("game/randomNames/names/" + sCivTAG + ".txt");
+                String[] tSplit = fileList2.readString().split(";");
+                if (tSplit.length > 0) {
+                    return tSplit[Game.oR.nextInt(tSplit.length)];
+                }
+            }
+        }
+
+        if (FileManager.loadFile("game/randomNames/names/" + civTagWithGP + ".txt").exists()) {
+            fileList = FileManager.loadFile("game/randomNames/names/" + civTagWithGP + ".txt");
+            String[] tSplit = fileList.readString().split(";");
+            if (tSplit.length > 0) {
+                return tSplit[Game.oR.nextInt(tSplit.length)];
+            }
+        } else if (FileManager.loadFile("game/rulersRandom/link/" + civTagWithGP + ".txt").exists()) {
+            fileList = FileManager.loadFile("game/rulersRandom/link/" + civTagWithGP + ".txt");
             sCivTAG = fileList.readString();
             if (FileManager.loadFile("game/randomNames/names/" + sCivTAG + ".txt").exists()) {
                 FileHandle fileList2 = FileManager.loadFile("game/randomNames/names/" + sCivTAG + ".txt");
