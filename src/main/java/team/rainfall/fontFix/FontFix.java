@@ -33,7 +33,7 @@ public class FontFix {
         } else return isSplash == 1;
     }
     public static String langGet(String key,String fallback){
-        return Game.lang.get(key).equals(fallback) ? fallback : Game.lang.get(key);
+        return Game.lang.get(key).equals(key) ? fallback : Game.lang.get(key);
     }
     public static void setTitle() {
         if (!titleSet) {
