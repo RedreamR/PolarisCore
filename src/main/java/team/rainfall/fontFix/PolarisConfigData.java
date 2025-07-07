@@ -13,4 +13,6 @@ public class PolarisConfigData {
     public float MainMenu_PanelX = 0.1f;
     public String MainMenu_Alignment = "left";
     public boolean forceFlagNearest = false;
+    //A simple method to detect encode,may cause detection mistake
+    public boolean fastEncodeCheck = true;
 }

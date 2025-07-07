@@ -19,7 +19,7 @@ public class EncodingDetector {
             FileInputStream fileInputStream = new FileInputStream(file);
             BufferedInputStream reader = new BufferedInputStream(fileInputStream);
             byte[] buff = new byte[1024];
-            int len = 0;
+            int len;
             while ((len = reader.read(buff)) != -1 && !detector.isDone()) {
                 detector.handleData(buff, 0, len);
             }

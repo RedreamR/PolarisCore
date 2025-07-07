@@ -4,15 +4,16 @@ package com.badlogic.gdx.utils;
 
 import com.badlogic.gdx.files.FileHandle;
 import team.rainfall.finality.FinalityLogger;
+import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.EncodingDetector;
 
 import java.io.InputStreamReader;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
-public class JsonReader implements BaseJsonReader
-{
+public class JsonReader implements BaseJsonReader {
     private static final byte[] _json_actions;
     private static final short[] _json_key_offsets;
     private static final char[] _json_trans_keys;
@@ -57,16 +58,13 @@ public class JsonReader implements BaseJsonReader
                     final char[] newData = new char[data.length * 2];
                     System.arraycopy(data, 0, newData, 0, data.length);
                     data = newData;
-                }
-                else {
+                } else {
                     offset += length;
                 }
             }
-        }
-        catch (final IOException ex) {
+        } catch (final IOException ex) {
             throw new SerializationException("Error reading input.", ex);
-        }
-        finally {
+        } finally {
             StreamUtils.closeQuietly(reader);
         }
         return this.parse(data, 0, offset);
@@ -92,18 +90,17 @@ public class JsonReader implements BaseJsonReader
                     charset = "UTF-8";
                     break;
             }
-        }catch (NullPointerException ignored){
+        } catch (NullPointerException ignored) {
         } catch (Throwable throwable) {
             FinalityLogger.error("Error while detecting charset", throwable);
         }
 
-        if(charset == null){
+        if (charset == null) {
             charset = "UTF-8";
         }
         try {
             reader = new InputStreamReader(input, charset);
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             throw new SerializationException("Error reading stream.", ex);
         }
         return this.parse(reader);
@@ -115,10 +112,28 @@ public class JsonReader implements BaseJsonReader
         String charset = "";
         String str = file.name();
         boolean isSkip = str.contains("ProvincePoint") || str.contains("ProvinceNeighboringProvinces");
-        try {
-            if(isSkip){
+        if (!str.equals("polaris_core.json") && Config.getConfig().fastEncodeCheck) {
+            String str1 = file.path();
+            if (str1.contains("saves")) {
+                charset = Charset.defaultCharset().toString();
+            } else {
                 charset = "UTF-8";
-            }else {
+            }
+            try {
+                reader = file.reader(charset);
+            } catch (final Exception ex) {
+                throw new SerializationException("Error reading file: " + file, ex);
+            }
+            try {
+                return this.parse(reader);
+            } catch (final Exception ex) {
+                throw new SerializationException("Error parsing file: " + file, ex);
+            }
+        }
+        try {
+            if (isSkip) {
+                charset = "UTF-8";
+            } else {
                 charset = EncodingDetector.INSTANCE.detectStringCharset(file);
                 switch (charset) {
                     case "GB18030":
@@ -135,26 +150,25 @@ public class JsonReader implements BaseJsonReader
                         break;
                 }
             }
-        }catch (NullPointerException ignored){
+        } catch (NullPointerException ignored) {
         } catch (Throwable throwable) {
             FinalityLogger.error("Error while detecting charset", throwable);
         }
-
-        if(charset == null){
+        if (charset == null) {
             charset = "UTF-8";
         }
+
         try {
             reader = file.reader(charset);
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             throw new SerializationException("Error reading file: " + file, ex);
         }
         try {
             return this.parse(reader);
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             throw new SerializationException("Error parsing file: " + file, ex);
         }
+
     }
 
     public JsonValue parse(final char[] data, final int offset, final int length) {
@@ -175,7 +189,8 @@ public class JsonReader implements BaseJsonReader
             top = 0;
             int _trans = 0;
             int _goto_targ = 0;
-            Label_2931: {
+            Label_2931:
+            {
                 Label_0070:
                 while (true) {
                     while (true) {
@@ -194,7 +209,8 @@ public class JsonReader implements BaseJsonReader
                                 int _keys = JsonReader._json_key_offsets[cs];
                                 _trans = JsonReader._json_index_offsets[cs];
                                 int _klen = JsonReader._json_single_lengths[cs];
-                                Label_0392: {
+                                Label_0392:
+                                {
                                     if (_klen > 0) {
                                         int _lower = _keys;
                                         int _upper = _keys + _klen - 1;
@@ -202,8 +218,7 @@ public class JsonReader implements BaseJsonReader
                                             final int _mid = _lower + (_upper - _lower >> 1);
                                             if (data[p] < JsonReader._json_trans_keys[_mid]) {
                                                 _upper = _mid - 1;
-                                            }
-                                            else {
+                                            } else {
                                                 if (data[p] <= JsonReader._json_trans_keys[_mid]) {
                                                     _trans += _mid - _keys;
                                                     break Label_0392;
@@ -222,8 +237,7 @@ public class JsonReader implements BaseJsonReader
                                             final int _mid = _lower + (_upper - _lower >> 1 & 0xFFFFFFFE);
                                             if (data[p] < JsonReader._json_trans_keys[_mid]) {
                                                 _upper = _mid - 2;
-                                            }
-                                            else {
+                                            } else {
                                                 if (data[p] <= JsonReader._json_trans_keys[_mid + 1]) {
                                                     _trans += _mid - _keys >> 1;
                                                     break Label_0392;
@@ -250,17 +264,18 @@ public class JsonReader implements BaseJsonReader
                                                 if (needsUnescape) {
                                                     value = this.unescape(value);
                                                 }
-                                                Label_1233: {
+                                                Label_1233:
+                                                {
                                                     if (stringIsName) {
                                                         stringIsName = false;
                                                         if (debug) {
                                                             System.out.println("name: " + value);
                                                         }
                                                         names.add(value);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         final String name = (names.size > 0) ? names.pop() : null;
-                                                        Label_1184: {
+                                                        Label_1184:
+                                                        {
                                                             if (stringIsUnquoted) {
                                                                 if (value.equals("true")) {
                                                                     if (debug) {
@@ -320,8 +335,7 @@ public class JsonReader implements BaseJsonReader
                                                                         }
                                                                         this.number(name, Double.parseDouble(value), value);
                                                                         break Label_1233;
-                                                                    }
-                                                                    catch (final NumberFormatException ex2) {
+                                                                    } catch (final NumberFormatException ex2) {
                                                                         break Label_1184;
                                                                     }
                                                                 }
@@ -332,8 +346,8 @@ public class JsonReader implements BaseJsonReader
                                                                     try {
                                                                         this.number(name, Long.parseLong(value), value);
                                                                         break Label_1233;
+                                                                    } catch (final NumberFormatException ex3) {
                                                                     }
-                                                                    catch (final NumberFormatException ex3) {}
                                                                 }
                                                             }
                                                         }
@@ -404,8 +418,7 @@ public class JsonReader implements BaseJsonReader
                                                         ++p;
                                                     }
                                                     --p;
-                                                }
-                                                else {
+                                                } else {
                                                     while ((p + 1 < eof && data[p] != '*') || data[p + 1] != '/') {
                                                         ++p;
                                                     }
@@ -424,7 +437,8 @@ public class JsonReader implements BaseJsonReader
                                                 s = p;
                                                 needsUnescape = false;
                                                 stringIsUnquoted = true;
-                                                Label_2009: {
+                                                Label_2009:
+                                                {
                                                     if (stringIsName) {
                                                         do {
                                                             switch (data[p]) {
@@ -455,8 +469,7 @@ public class JsonReader implements BaseJsonReader
                                                                 System.out.println("unquotedChar (name): '" + data[p] + "'");
                                                             }
                                                         } while (++p != eof);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         do {
                                                             switch (data[p]) {
                                                                 case '\\': {
@@ -555,17 +568,18 @@ public class JsonReader implements BaseJsonReader
                                 if (needsUnescape) {
                                     value2 = this.unescape(value2);
                                 }
-                                Label_2921: {
+                                Label_2921:
+                                {
                                     if (stringIsName) {
                                         stringIsName = false;
                                         if (debug) {
                                             System.out.println("name: " + value2);
                                         }
                                         names.add(value2);
-                                    }
-                                    else {
+                                    } else {
                                         final String name3 = (names.size > 0) ? names.pop() : null;
-                                        Label_2872: {
+                                        Label_2872:
+                                        {
                                             if (stringIsUnquoted) {
                                                 if (value2.equals("true")) {
                                                     if (debug) {
@@ -625,8 +639,7 @@ public class JsonReader implements BaseJsonReader
                                                         }
                                                         this.number(name3, Double.parseDouble(value2), value2);
                                                         break Label_2921;
-                                                    }
-                                                    catch (final NumberFormatException ex4) {
+                                                    } catch (final NumberFormatException ex4) {
                                                         break Label_2872;
                                                     }
                                                 }
@@ -637,8 +650,8 @@ public class JsonReader implements BaseJsonReader
                                                     try {
                                                         this.number(name3, Long.parseLong(value2), value2);
                                                         break Label_2921;
+                                                    } catch (final NumberFormatException ex5) {
                                                     }
-                                                    catch (final NumberFormatException ex5) {}
                                                 }
                                             }
                                         }
@@ -656,8 +669,7 @@ public class JsonReader implements BaseJsonReader
                     }
                 }
             }
-        }
-        catch (final RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             parseRuntimeEx = ex;
         }
         final JsonValue root = this.root;
@@ -681,8 +693,7 @@ public class JsonReader implements BaseJsonReader
                 throw new SerializationException("Error parsing JSON, unmatched brace.");
             }
             throw new SerializationException("Error parsing JSON, unmatched bracket.");
-        }
-        else {
+        } else {
             if (parseRuntimeEx != null) {
                 throw new SerializationException("Error parsing JSON: " + new String(data), parseRuntimeEx);
             }
@@ -691,43 +702,43 @@ public class JsonReader implements BaseJsonReader
     }
 
     private static byte[] init__json_actions_0() {
-        return new byte[] { 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 2, 0, 7, 2, 0, 8, 2, 1, 3, 2, 1, 5 };
+        return new byte[]{0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 2, 0, 7, 2, 0, 8, 2, 1, 3, 2, 1, 5};
     }
 
     private static short[] init__json_key_offsets_0() {
-        return new short[] { 0, 0, 11, 13, 14, 16, 25, 31, 37, 39, 50, 57, 64, 73, 74, 83, 85, 87, 96, 98, 100, 101, 103, 105, 116, 123, 130, 141, 142, 153, 155, 157, 168, 170, 172, 174, 179, 184, 184 };
+        return new short[]{0, 0, 11, 13, 14, 16, 25, 31, 37, 39, 50, 57, 64, 73, 74, 83, 85, 87, 96, 98, 100, 101, 103, 105, 116, 123, 130, 141, 142, 153, 155, 157, 168, 170, 172, 174, 179, 184, 184};
     }
 
     private static char[] init__json_trans_keys_0() {
-        return new char[] { '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '*', '/', '\"', '*', '/', '\r', ' ', '\"', ',', '/', ':', '}', '\t', '\n', '\r', ' ', '/', ':', '\t', '\n', '\r', ' ', '/', ':', '\t', '\n', '*', '/', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '\t', '\n', '\r', ' ', ',', '/', '}', '\t', '\n', '\r', ' ', ',', '/', '}', '\r', ' ', '\"', ',', '/', ':', '}', '\t', '\n', '\"', '\r', ' ', '\"', ',', '/', ':', '}', '\t', '\n', '*', '/', '*', '/', '\r', ' ', '\"', ',', '/', ':', '}', '\t', '\n', '*', '/', '*', '/', '\"', '*', '/', '*', '/', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '\t', '\n', '\r', ' ', ',', '/', ']', '\t', '\n', '\r', ' ', ',', '/', ']', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '\"', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '*', '/', '*', '/', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '*', '/', '*', '/', '*', '/', '\r', ' ', '/', '\t', '\n', '\r', ' ', '/', '\t', '\n', '\0' };
+        return new char[]{'\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '*', '/', '\"', '*', '/', '\r', ' ', '\"', ',', '/', ':', '}', '\t', '\n', '\r', ' ', '/', ':', '\t', '\n', '\r', ' ', '/', ':', '\t', '\n', '*', '/', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '\t', '\n', '\r', ' ', ',', '/', '}', '\t', '\n', '\r', ' ', ',', '/', '}', '\r', ' ', '\"', ',', '/', ':', '}', '\t', '\n', '\"', '\r', ' ', '\"', ',', '/', ':', '}', '\t', '\n', '*', '/', '*', '/', '\r', ' ', '\"', ',', '/', ':', '}', '\t', '\n', '*', '/', '*', '/', '\"', '*', '/', '*', '/', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '\t', '\n', '\r', ' ', ',', '/', ']', '\t', '\n', '\r', ' ', ',', '/', ']', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '\"', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '*', '/', '*', '/', '\r', ' ', '\"', ',', '/', ':', '[', ']', '{', '\t', '\n', '*', '/', '*', '/', '*', '/', '\r', ' ', '/', '\t', '\n', '\r', ' ', '/', '\t', '\n', '\0'};
     }
 
     private static byte[] init__json_single_lengths_0() {
-        return new byte[] { 0, 9, 2, 1, 2, 7, 4, 4, 2, 9, 7, 7, 7, 1, 7, 2, 2, 7, 2, 2, 1, 2, 2, 9, 7, 7, 9, 1, 9, 2, 2, 9, 2, 2, 2, 3, 3, 0, 0 };
+        return new byte[]{0, 9, 2, 1, 2, 7, 4, 4, 2, 9, 7, 7, 7, 1, 7, 2, 2, 7, 2, 2, 1, 2, 2, 9, 7, 7, 9, 1, 9, 2, 2, 9, 2, 2, 2, 3, 3, 0, 0};
     }
 
     private static byte[] init__json_range_lengths_0() {
-        return new byte[] { 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 };
+        return new byte[]{0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0};
     }
 
     private static short[] init__json_index_offsets_0() {
-        return new short[] { 0, 0, 11, 14, 16, 19, 28, 34, 40, 43, 54, 62, 70, 79, 81, 90, 93, 96, 105, 108, 111, 113, 116, 119, 130, 138, 146, 157, 159, 170, 173, 176, 187, 190, 193, 196, 201, 206, 207 };
+        return new short[]{0, 0, 11, 14, 16, 19, 28, 34, 40, 43, 54, 62, 70, 79, 81, 90, 93, 96, 105, 108, 111, 113, 116, 119, 130, 138, 146, 157, 159, 170, 173, 176, 187, 190, 193, 196, 201, 206, 207};
     }
 
     private static byte[] init__json_indicies_0() {
-        return new byte[] { 1, 1, 2, 3, 4, 3, 5, 3, 6, 1, 0, 7, 7, 3, 8, 3, 9, 9, 3, 11, 11, 12, 13, 14, 3, 15, 11, 10, 16, 16, 17, 18, 16, 3, 19, 19, 20, 21, 19, 3, 22, 22, 3, 21, 21, 24, 3, 25, 3, 26, 3, 27, 21, 23, 28, 29, 29, 28, 30, 31, 32, 3, 33, 34, 34, 33, 13, 35, 15, 3, 34, 34, 12, 36, 37, 3, 15, 34, 10, 16, 3, 36, 36, 12, 3, 38, 3, 3, 36, 10, 39, 39, 3, 40, 40, 3, 13, 13, 12, 3, 41, 3, 15, 13, 10, 42, 42, 3, 43, 43, 3, 28, 3, 44, 44, 3, 45, 45, 3, 47, 47, 48, 49, 50, 3, 51, 52, 53, 47, 46, 54, 55, 55, 54, 56, 57, 58, 3, 59, 60, 60, 59, 49, 61, 52, 3, 60, 60, 48, 62, 63, 3, 51, 52, 53, 60, 46, 54, 3, 62, 62, 48, 3, 64, 3, 51, 3, 53, 62, 46, 65, 65, 3, 66, 66, 3, 49, 49, 48, 3, 67, 3, 51, 52, 53, 49, 46, 68, 68, 3, 69, 69, 3, 70, 70, 3, 8, 8, 71, 8, 3, 72, 72, 73, 72, 3, 3, 3, 0 };
+        return new byte[]{1, 1, 2, 3, 4, 3, 5, 3, 6, 1, 0, 7, 7, 3, 8, 3, 9, 9, 3, 11, 11, 12, 13, 14, 3, 15, 11, 10, 16, 16, 17, 18, 16, 3, 19, 19, 20, 21, 19, 3, 22, 22, 3, 21, 21, 24, 3, 25, 3, 26, 3, 27, 21, 23, 28, 29, 29, 28, 30, 31, 32, 3, 33, 34, 34, 33, 13, 35, 15, 3, 34, 34, 12, 36, 37, 3, 15, 34, 10, 16, 3, 36, 36, 12, 3, 38, 3, 3, 36, 10, 39, 39, 3, 40, 40, 3, 13, 13, 12, 3, 41, 3, 15, 13, 10, 42, 42, 3, 43, 43, 3, 28, 3, 44, 44, 3, 45, 45, 3, 47, 47, 48, 49, 50, 3, 51, 52, 53, 47, 46, 54, 55, 55, 54, 56, 57, 58, 3, 59, 60, 60, 59, 49, 61, 52, 3, 60, 60, 48, 62, 63, 3, 51, 52, 53, 60, 46, 54, 3, 62, 62, 48, 3, 64, 3, 51, 3, 53, 62, 46, 65, 65, 3, 66, 66, 3, 49, 49, 48, 3, 67, 3, 51, 52, 53, 49, 46, 68, 68, 3, 69, 69, 3, 70, 70, 3, 8, 8, 71, 8, 3, 72, 72, 73, 72, 3, 3, 3, 0};
     }
 
     private static byte[] init__json_trans_targs_0() {
-        return new byte[] { 35, 1, 3, 0, 4, 36, 36, 36, 36, 1, 6, 5, 13, 17, 22, 37, 7, 8, 9, 7, 8, 9, 7, 10, 20, 21, 11, 11, 11, 12, 17, 19, 37, 11, 12, 19, 14, 16, 15, 14, 12, 18, 17, 11, 9, 5, 24, 23, 27, 31, 34, 25, 38, 25, 25, 26, 31, 33, 38, 25, 26, 33, 28, 30, 29, 28, 26, 32, 31, 25, 23, 2, 36, 2 };
+        return new byte[]{35, 1, 3, 0, 4, 36, 36, 36, 36, 1, 6, 5, 13, 17, 22, 37, 7, 8, 9, 7, 8, 9, 7, 10, 20, 21, 11, 11, 11, 12, 17, 19, 37, 11, 12, 19, 14, 16, 15, 14, 12, 18, 17, 11, 9, 5, 24, 23, 27, 31, 34, 25, 38, 25, 25, 26, 31, 33, 38, 25, 26, 33, 28, 30, 29, 28, 26, 32, 31, 25, 23, 2, 36, 2};
     }
 
     private static byte[] init__json_trans_actions_0() {
-        return new byte[] { 13, 0, 15, 0, 0, 7, 3, 11, 1, 11, 17, 0, 20, 0, 0, 5, 1, 1, 1, 0, 0, 0, 11, 13, 15, 0, 7, 3, 1, 1, 1, 1, 23, 0, 0, 0, 0, 0, 0, 11, 11, 0, 11, 11, 11, 11, 13, 0, 15, 0, 0, 7, 9, 3, 1, 1, 1, 1, 26, 0, 0, 0, 0, 0, 0, 11, 11, 0, 11, 11, 11, 1, 0, 0 };
+        return new byte[]{13, 0, 15, 0, 0, 7, 3, 11, 1, 11, 17, 0, 20, 0, 0, 5, 1, 1, 1, 0, 0, 0, 11, 13, 15, 0, 7, 3, 1, 1, 1, 1, 23, 0, 0, 0, 0, 0, 0, 11, 11, 0, 11, 11, 11, 11, 13, 0, 15, 0, 0, 7, 9, 3, 1, 1, 1, 1, 26, 0, 0, 0, 0, 0, 0, 11, 11, 0, 11, 11, 11, 1, 0, 0};
     }
 
     private static byte[] init__json_eof_actions_0() {
-        return new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 };
+        return new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0};
     }
 
     private void addChild(@Null final String name, final JsonValue child) {
@@ -735,13 +746,11 @@ public class JsonReader implements BaseJsonReader
         if (this.current == null) {
             this.current = child;
             this.root = child;
-        }
-        else if (this.current.isArray() || this.current.isObject()) {
+        } else if (this.current.isArray() || this.current.isObject()) {
             child.parent = this.current;
             if (this.current.size == 0) {
                 this.current.child = child;
-            }
-            else {
+            } else {
                 final JsonValue last = this.lastChild.pop();
                 last.next = child;
                 child.prev = last;
@@ -749,8 +758,7 @@ public class JsonReader implements BaseJsonReader
             this.lastChild.add(child);
             final JsonValue current = this.current;
             ++current.size;
-        }
-        else {
+        } else {
             this.root = this.current;
         }
     }
@@ -805,8 +813,7 @@ public class JsonReader implements BaseJsonReader
             char c = value.charAt(i++);
             if (c != '\\') {
                 buffer.append(c);
-            }
-            else {
+            } else {
                 if (i == length) {
                     break;
                 }
@@ -814,8 +821,7 @@ public class JsonReader implements BaseJsonReader
                 if (c == 'u') {
                     buffer.append(Character.toChars(Integer.parseInt(value.substring(i, i + 4), 16)));
                     i += 4;
-                }
-                else {
+                } else {
                     switch (c) {
                         case '\"':
                         case '/':
