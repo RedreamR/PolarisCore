@@ -12,7 +12,7 @@ import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
 
 @Mixin(mixinClass = "aoc.kingdoms.lukasz.map.civilization.Civilization")
-public class MixinCivlization {
+public class MixinCivilization {
     @Shadow
     public String realTag;
     @Shadow
@@ -24,8 +24,6 @@ public class MixinCivlization {
         Civilization civilization = (Civilization) (Object) this;
         int gpID = Game.ideologiesManager.getIdeology(civilization.getIdeologyID()).GOV_GROUP_ID;
         String s = "_gp" + gpID;
-        FinalityLogger.debug("FontFix.Flag "+"gfx/flagsXH/" + this.realTag+s + ".png");
-        FinalityLogger.debug("FontFix.Flag "+"gfx/flagsXH/" + this.getCivTag() + ".png");
         if (FileManager.loadFile("gfx/flagsXH/" + this.getCivTag() + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flagsXH/" + this.getCivTag() + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
         } else if (FileManager.loadFile("gfx/flagsXH/" + this.realTag+s + ".png").exists()) {
