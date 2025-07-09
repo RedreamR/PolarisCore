@@ -8,9 +8,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
+import team.rainfall.fluctlight.Fluctlight;
 
 import java.awt.*;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Mixin(mixinClass = "aoc.kingdoms.lukasz.jakowski.Renderer.Renderer")
 public class MixinRenderer {
-
+    public SpriteBatch oSB;
     public static List<BitmapFont> fontMain;
     public static int fontMainSize;
     public static List<BitmapFont> fontBorder;
@@ -34,7 +36,18 @@ public class MixinRenderer {
         fontMain.clear();
         fontMainSize = 0;
     }
+    public void dispose() {
+        this.oSB.dispose();
+        Fluctlight.getInstance().dispose();
+        for(int i = 0; i < fontMain.size(); ++i) {
+            ((BitmapFont)fontMain.get(i)).dispose();
+        }
 
+        for(int i = 0; i < fontBorder.size(); ++i) {
+            ((BitmapFont)fontBorder.get(i)).dispose();
+        }
+
+    }
     public static final void loadFont(String sFont, String charset, int fontSize) {
         float texSize = charset.getBytes().length;
         int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);

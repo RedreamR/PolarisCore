@@ -58,6 +58,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import team.rainfall.finality.FinalityLogger;
+import team.rainfall.fluctlight.Fluctlight;
+import team.rainfall.fluctlight.Task;
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
 
@@ -65,6 +67,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InitGame extends Menu {
+    Task<Integer> task = new Task<Integer>() {
+        @Override
+        public Integer run() {
+            Game.mapScenarios.loadScenario_40(false);
+            Game.mapScenarios.loadScenario_41(false);
+            return 0;
+        }
+    };
+    Task<Integer> task2 = new Task<Integer>() {
+        @Override
+        public Integer run() {
+            Game.mapScenarios.loadScenario_49(false);
+            Game.mapScenarios.loadScenario_50(false);
+            return 0;
+        }
+    };
     public static long timer2 = System.currentTimeMillis();
     static long timer = System.currentTimeMillis();
     public String loadingName = "";
@@ -525,6 +543,8 @@ public class InitGame extends Menu {
                     this.setLoadText("Loading Scenario #3A Civilizations Names");
                 } else if (iStepID == 83) {
                     Game.mapScenarios.loadScenario_3_A();
+                    Fluctlight.getInstance().addTask(task);
+                    Fluctlight.getInstance().addTask(task2);
                     this.setLoadText("Loading Scenario #3B Flags");
                 } else if (iStepID == 84) {
                     Game.mapScenarios.loadScenario_3_B();
@@ -643,10 +663,11 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_39(false);
                     this.setLoadText("Loading Scenario #40");
                 } else if (iStepID == 123) {
-                    Game.mapScenarios.loadScenario_40(false);
+                    task.blockOn();
+                    //Game.mapScenarios.loadScenario_40(false);
                     this.setLoadText("Loading Scenario #41");
                 } else if (iStepID == 124) {
-                    Game.mapScenarios.loadScenario_41(false);
+                    //Game.mapScenarios.loadScenario_41(false);
                     this.setLoadText("Loading Scenario #42");
                 } else if (iStepID == 125) {
                     Game.mapScenarios.loadScenario_42();
@@ -670,10 +691,10 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_48();
                     this.setLoadText("Loading Scenario #49");
                 } else if (iStepID == 132) {
-                    Game.mapScenarios.loadScenario_49(false);
+                    task2.blockOn();
                     this.setLoadText("Loading Scenario #50");
                 } else if (iStepID == 133) {
-                    Game.mapScenarios.loadScenario_50(false);
+                    //Game.mapScenarios.loadScenario_50(false);
                     this.setLoadText("Loading Scenario #51");
                 } else if (iStepID == 134) {
                     Game.mapScenarios.loadScenario_51(false);

@@ -7,12 +7,16 @@ import team.rainfall.finality.FinalityLogger;
 import java.io.*;
 
 public class EncodingDetector {
+    private static String bypassEncoding = null;
     UniversalDetector detector = new UniversalDetector(null);
     public final static EncodingDetector INSTANCE = new EncodingDetector();
 
     public String detectStringCharset(FileHandle fileHandle) {
         if(!fileHandle.exists()){
             return "NONE";
+        }
+        if(bypassEncoding != null){
+            return bypassEncoding;
         }
         try {
             File file = fileHandle.file();
@@ -50,5 +54,11 @@ public class EncodingDetector {
             FinalityLogger.error("Error while detecting charset: " + e.getMessage(), e);
         }
         return "NONE";
+    }
+    public static void setBypassEncoding(String s){
+        bypassEncoding = s;
+    }
+    public static void resetBypassEncoding(){
+        bypassEncoding = null;
     }
 }

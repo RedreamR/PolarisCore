@@ -7,6 +7,7 @@ import aoc.kingdoms.lukasz.map.civilization.Civilization;
 import aoc.kingdoms.lukasz.textures.Image;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
 
@@ -18,10 +19,13 @@ public class MixinCivlization {
     public boolean isFlagNearest = false;
     @Shadow
     private Image civFlag = null;
+
     public final boolean loadFlag() {
         Civilization civilization = (Civilization) (Object) this;
         int gpID = Game.ideologiesManager.getIdeology(civilization.getIdeologyID()).GOV_GROUP_ID;
         String s = "_gp" + gpID;
+        FinalityLogger.debug("FontFix.Flag "+"gfx/flagsXH/" + this.realTag+s + ".png");
+        FinalityLogger.debug("FontFix.Flag "+"gfx/flagsXH/" + this.getCivTag() + ".png");
         if (FileManager.loadFile("gfx/flagsXH/" + this.getCivTag() + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flagsXH/" + this.getCivTag() + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
         } else if (FileManager.loadFile("gfx/flagsXH/" + this.realTag+s + ".png").exists()) {

@@ -71,7 +71,6 @@ public class TextProcessor {
             Renderer.glyphLayout.setText(bitmapFont, currentLine + token);
             Word word = new Word(token, currentColorSign);
             if (Renderer.glyphLayout.width < maxWidth) {
-                FinalityLogger.debug("ADD TOKEN "+token+" width "+Renderer.glyphLayout.width+","+maxWidth);
                 currentLine.append(token);
                 words.add(word);
             } else {
