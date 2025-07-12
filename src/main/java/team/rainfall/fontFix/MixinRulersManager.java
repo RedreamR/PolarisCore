@@ -3,12 +3,15 @@ package team.rainfall.fontFix;
 import aoc.kingdoms.lukasz.jakowski.*;
 import aoc.kingdoms.lukasz.map.Ruler;
 import aoc.kingdoms.lukasz.map.RulersManager;
+import aoc.kingdoms.lukasz.map.civilization.CivilizationBonuses;
 import aoc.kingdoms.lukasz.textures.Image;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,9 @@ public class MixinRulersManager {
     public static List<Integer> nextRulerIMG_2 = new ArrayList();
     @Shadow
     public static List<String> groups = new ArrayList();
+
+
+
     public static String getRulerRandomName(int iCivID, String sCivTAG) {
         sCivTAG = Game.getCiv(iCivID).realTag;
         String civTagWithGov = Game.getCiv(iCivID).getCivTag();
@@ -122,9 +128,10 @@ public class MixinRulersManager {
 
                     if (fileList != null) {
                         String fileContent = fileList.readString();
-                        Json json = new Json();
+                        Json json = new Json();;
+                        json.setElementType(RulersManager.Rulers.class,"Bonuses",CivilizationBonuses.class);
                         json.setElementType(RulersManager.ConfigRulersData.class, "Rulers", RulersManager.Rulers.class);
-                        RulersManager.ConfigRulersData data = (RulersManager.ConfigRulersData)json.fromJson(RulersManager.ConfigRulersData.class, fileContent);
+                        RulersManager.ConfigRulersData data = json.fromJson(RulersManager.ConfigRulersData.class, fileContent);
                         List<RulersManager.Rulers> tempRulers = new ArrayList();
                         int tRulersSize = 0;
 
@@ -135,24 +142,27 @@ public class MixinRulersManager {
 
                         if (!tempRulers.isEmpty()) {
                             int bestID = 0;
-                            if (((RulersManager.Rulers)tempRulers.get(bestID)).ReignYear < Game_Calendar.currentYear) {
+                            if (tempRulers.get(bestID).ReignYear < Game_Calendar.currentYear) {
                                 for(int i = tRulersSize - 1; i > 0; --i) {
-                                    if (((RulersManager.Rulers)tempRulers.get(i)).ReignYear <= Game_Calendar.currentYear) {
+                                    if (tempRulers.get(i).ReignYear <= Game_Calendar.currentYear) {
                                         bestID = i;
                                         break;
                                     }
                                 }
                             }
 
-                            if (((RulersManager.Rulers)tempRulers.get(bestID)).ReignYear <= Game_Calendar.currentYear && ((RulersManager.Rulers)tempRulers.get(bestID)).BornYear > Game_Calendar.currentYear - 96 && ((RulersManager.Rulers)tempRulers.get(bestID)).BornYear < Game_Calendar.currentYear) {
-                                Game.getCiv(iCivID).ruler = new Ruler(iCivID, ((RulersManager.Rulers)tempRulers.get(bestID)).Name, "" + ((RulersManager.Rulers)tempRulers.get(bestID)).ImageID, ((RulersManager.Rulers)tempRulers.get(bestID)).BornDay, ((RulersManager.Rulers)tempRulers.get(bestID)).BornMonth, ((RulersManager.Rulers)tempRulers.get(bestID)).BornYear, ((RulersManager.Rulers)tempRulers.get(bestID)).ReignYear, false, false);
+                            if (tempRulers.get(bestID).ReignYear <= Game_Calendar.currentYear && tempRulers.get(bestID).BornYear > Game_Calendar.currentYear - 96 && tempRulers.get(bestID).BornYear < Game_Calendar.currentYear) {
+                                if(getBonuses(tempRulers.get(bestID)) != null){
+                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(bestID).Name, "" + tempRulers.get(bestID).ImageID, tempRulers.get(bestID).BornDay, tempRulers.get(bestID).BornMonth, tempRulers.get(bestID).BornYear, tempRulers.get(bestID).ReignYear, false, false,getBonuses(tempRulers.get(bestID)));
+                                }else {
+                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(bestID).Name, "" + tempRulers.get(bestID).ImageID, tempRulers.get(bestID).BornDay, tempRulers.get(bestID).BornMonth, tempRulers.get(bestID).BornYear, tempRulers.get(bestID).ReignYear, false, false);
+                                }
+                                Game.getCiv(iCivID).ruler.Desc = getDesc(tempRulers.get(bestID));
                                 tempRulers.clear();
-                                tempRulers = null;
                                 return;
                             }
 
                             tempRulers.clear();
-                            tempRulers = null;
                         }
                     }
                 }
@@ -162,18 +172,18 @@ public class MixinRulersManager {
             }
 
             int nMonth = Game.oR.nextInt(12);
-            if ((Game.ideologiesManager.getIdeology(Game.getCiv(iCivID).getIdeologyID()).KingsImages || !((Game_Ages.Data_Ages)Game.gameAges.lAges.get(Game_Calendar.CURRENT_AGEID)).ENABLE_NON_KINGS_IMG) && !((Game_Ages.Data_Ages)Game.gameAges.lAges.get(Game_Calendar.CURRENT_AGEID)).FORCE_NON_KINGS_IMG) {
+            if ((Game.ideologiesManager.getIdeology(Game.getCiv(iCivID).getIdeologyID()).KingsImages || !Game.gameAges.lAges.get(Game_Calendar.CURRENT_AGEID).ENABLE_NON_KINGS_IMG) && !Game.gameAges.lAges.get(Game_Calendar.CURRENT_AGEID).FORCE_NON_KINGS_IMG) {
                 Game.getCiv(iCivID).ruler = new Ruler(iCivID, getRulerRandomName(iCivID, sCivTAG), "" + nextRulerIMG.get(Game.getCiv(iCivID).iGroupID), Game.oR.nextInt(Game_Calendar.getNumOfDaysInMonth(nMonth)), nMonth, Game_Calendar.currentYear - GameValues.court.RULER_YEARS_OLD_MIN - Game.oR.nextInt(GameValues.court.RULER_YEARS_OLD_RANDOM), Game_Calendar.currentYear, true, true);
-                int nextIMG = (Integer)nextRulerIMG.get(Game.getCiv(iCivID).iGroupID) + 1;
-                if (nextIMG >= (Integer)NUM_OF_RANDOM_RULERS.get(Game.getCiv(iCivID).iGroupID)) {
+                int nextIMG = nextRulerIMG.get(Game.getCiv(iCivID).iGroupID) + 1;
+                if (nextIMG >= NUM_OF_RANDOM_RULERS.get(Game.getCiv(iCivID).iGroupID)) {
                     nextIMG = 0;
                 }
 
                 nextRulerIMG.set(Game.getCiv(iCivID).iGroupID, nextIMG);
             } else {
                 Game.getCiv(iCivID).ruler = new Ruler(iCivID, getRulerRandomName(iCivID, sCivTAG), "" + nextRulerIMG_2.get(Game.getCiv(iCivID).iGroupID), Game.oR.nextInt(Game_Calendar.getNumOfDaysInMonth(nMonth)), nMonth, Game_Calendar.currentYear - GameValues.court.RULER_YEARS_OLD_MIN - Game.oR.nextInt(GameValues.court.RULER_YEARS_OLD_RANDOM), Game_Calendar.currentYear, true, false);
-                int nextIMG = (Integer)nextRulerIMG_2.get(Game.getCiv(iCivID).iGroupID) + 1;
-                if (nextIMG >= (Integer)NUM_OF_RANDOM_RULERS_2.get(Game.getCiv(iCivID).iGroupID)) {
+                int nextIMG = nextRulerIMG_2.get(Game.getCiv(iCivID).iGroupID) + 1;
+                if (nextIMG >= NUM_OF_RANDOM_RULERS_2.get(Game.getCiv(iCivID).iGroupID)) {
                     nextIMG = 0;
                 }
 
@@ -184,5 +194,31 @@ public class MixinRulersManager {
             CFG.exceptionStack(ex);
         }
 
+    }
+    private static String getDesc(RulersManager.Rulers rulers){
+        try {
+            for (Field field : rulers.getClass().getFields()) {
+                if (field.getName().equals("Desc")) {
+                    return (String) field.get(rulers);
+                }
+            }
+        } catch (Exception e){
+            FinalityLogger.error("FontFix.rulerDesc Err ",e);
+            return null;
+        }
+        return null;
+    }
+    private static CivilizationBonuses getBonuses(RulersManager.Rulers rulers){
+        try {
+            for (Field field : rulers.getClass().getFields()) {
+                if (field.getName().equals("Bonuses")) {
+                    return (CivilizationBonuses) field.get(rulers);
+                }
+            }
+        } catch (Exception e){
+            FinalityLogger.error("FontFix.rulerDesc Err ",e);
+            return null;
+        }
+        return null;
     }
 }

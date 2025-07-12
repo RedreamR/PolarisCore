@@ -84,7 +84,7 @@ public class AI_Missions {
                             int a = 0;
 
                             for(int currentScore = 0; a < MissionTree.lMissions.get(i).event.options.size(); ++a) {
-                                currentScore += (int) Game.getCiv(civID).lMissions.get(i).event.options.get(a).ai;
+                                currentScore += (int) MissionTree.lMissions.get(i).event.options.get(a).ai;
                                 if ((float)score <= (float)currentScore) {
                                     takeID = a;
                                     break;

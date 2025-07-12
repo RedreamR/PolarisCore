@@ -15,4 +15,5 @@ public class PolarisConfigData {
     public boolean forceFlagNearest = false;
     //A simple method to detect encode,may cause detection mistake
     public boolean fastEncodeCheck = true;
+    public boolean useFluctlight = true;
 }
