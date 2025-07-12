@@ -4,12 +4,18 @@ import aoc.kingdoms.lukasz.jakowski.CFG;
 import aoc.kingdoms.lukasz.jakowski.CharactersManager;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
+import aoc.kingdoms.lukasz.map.advisors.Advisor;
+import aoc.kingdoms.lukasz.map.civilization.CivilizationBonuses;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
+import team.rainfall.fontFix.utils.AdvisorHelper;
+import team.rainfall.fontFix.utils.PoolAdvisor;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +43,39 @@ public class MixinMapScenarios {
                     FileHandle fileList = FileManager.loadFile("map/" + Game.map.getFile_ActiveMap_Path() + "scenarios/" + this.lScenarios_TagsList.get(Game.scenarioID) + "/" + "Characters.json");
                     Json json = new Json();
                     ArrayList<JsonValue> tempArrayData = (ArrayList<JsonValue>)json.fromJson(ArrayList.class, fileList);
-
                     for(JsonValue jValue : tempArrayData) {
                         try {
                             CharactersManager.ScenarioCharacters tData = json.readValue(CharactersManager.ScenarioCharacters.class, jValue);
                             int civID = Game.getCivID(tData.CivTAG);
                             if (civID > 0) {
+                                String[] admin2 = getField(tData,"Administrative2");
+                                String[] eco2 = getField(tData,"Economic2");
+                                String[] inno2 = getField(tData,"Innovation2");
+                                String[] military2 = getField(tData,"Military2");
+                                if (admin2 != null) {
+                                    for (String string : admin2) {
+                                        Advisor advisor = AdvisorHelper.loadAdvisor(civID,string,0);
+                                        AdvisorHelper.poolAdvisors.add(new PoolAdvisor(advisor,civID,0));
+                                    }
+                                }
+                                if (eco2 != null) {
+                                    for (String string : eco2) {
+                                        Advisor advisor = AdvisorHelper.loadAdvisor(civID,string,1);
+                                        AdvisorHelper.poolAdvisors.add(new PoolAdvisor(advisor,civID,1));
+                                    }
+                                }
+                                if (inno2 != null) {
+                                    for (String string : inno2) {
+                                        Advisor advisor = AdvisorHelper.loadAdvisor(civID,string,2);
+                                        AdvisorHelper.poolAdvisors.add(new PoolAdvisor(advisor,civID,2));
+                                    }
+                                }
+                                if (military2 != null) {
+                                    for (String string : military2) {
+                                        Advisor advisor = AdvisorHelper.loadAdvisor(civID,string,3);
+                                        AdvisorHelper.poolAdvisors.add(new PoolAdvisor(advisor,civID,3));
+                                    }
+                                }
                                 if (tData.Administrative != null && !tData.Administrative.isEmpty()) {
                                     CharactersManager.loadAdvisor(civID, tData.Administrative, 0);
                                 }
@@ -78,6 +111,19 @@ public class MixinMapScenarios {
                 CFG.exceptionStack(ex);
             }
         }
+    }
 
+    public static String[] getField(CharactersManager.ScenarioCharacters characters,String str){
+        try {
+            for (Field field : characters.getClass().getFields()) {
+                if (field.getName().equals(str)) {
+                    return (String[]) field.get(characters);
+                }
+            }
+        } catch (Exception e){
+            FinalityLogger.error("FontFix.rulerDesc Err ",e);
+            return null;
+        }
+        return null;
     }
 }
