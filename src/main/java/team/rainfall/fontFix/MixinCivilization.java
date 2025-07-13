@@ -26,29 +26,25 @@ public class MixinCivilization {
         String s = "_gp" + gpID;
         if (FileManager.loadFile("gfx/flagsXH/" + this.getCivTag() + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flagsXH/" + this.getCivTag() + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
-        } else if (FileManager.loadFile("gfx/flagsXH/" + this.realTag+s + ".png").exists()) {
+        } else if (!Config.getConfig().fastLoadFlag && FileManager.loadFile("gfx/flagsXH/" + this.realTag+s + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flagsXH/" + this.realTag+s + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
         } else if (FileManager.loadFile("gfx/flagsXH/" + this.realTag + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flagsXH/" + this.realTag + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
         } else if (FileManager.loadFile("gfx/flagsH/" + this.getCivTag() + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flagsH/" + this.getCivTag() + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
-        }else if (FileManager.loadFile("gfx/flagsH/" + this.realTag+s + ".png").exists()) {
+        }else if (!Config.getConfig().fastLoadFlag && FileManager.loadFile("gfx/flagsH/" + this.realTag+s + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flagsH/" + this.realTag+s + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
         } else if (FileManager.loadFile("gfx/flagsH/" + this.realTag + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flagsH/" + this.realTag + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
         } else if (FileManager.loadFile("gfx/flags/" + this.getCivTag() + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flags/" + this.getCivTag() + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Nearest);
             this.isFlagNearest = true;
-        }else if (FileManager.loadFile("gfx/flags/" + this.realTag+s + ".png").exists()) {
+        }else if (!Config.getConfig().fastLoadFlag && FileManager.loadFile("gfx/flags/" + this.realTag+s + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flags/" + this.realTag+s + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Nearest);
             this.isFlagNearest = true;
         } else if (FileManager.loadFile("gfx/flags/" + this.realTag + ".png").exists()) {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flags/" + this.realTag + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Nearest);
             this.isFlagNearest = true;
-        } else if (FileManager.loadFile("mods/GameCivs/gfx/flagsH/" + this.getCivTag() + ".png").exists()) {
-            this.civFlag = new Image(new Texture(FileManager.loadFile("mods/GameCivs/gfx/flagsH/" + this.getCivTag() + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
-        } else if (FileManager.loadFile("mods/GameCivs/gfx/flagsH/" + this.realTag + ".png").exists()) {
-            this.civFlag = new Image(new Texture(FileManager.loadFile("mods/GameCivs/gfx/flagsH/" + this.realTag + ".png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Linear);
         } else {
             this.civFlag = new Image(new Texture(FileManager.loadFile("gfx/flagsXH/ran.png"), Pixmap.Format.RGB888, false), Texture.TextureFilter.Nearest);
             this.isFlagNearest = true;

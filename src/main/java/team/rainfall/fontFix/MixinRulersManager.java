@@ -132,7 +132,7 @@ public class MixinRulersManager {
                         json.setElementType(RulersManager.Rulers.class,"Bonuses",CivilizationBonuses.class);
                         json.setElementType(RulersManager.ConfigRulersData.class, "Rulers", RulersManager.Rulers.class);
                         RulersManager.ConfigRulersData data = json.fromJson(RulersManager.ConfigRulersData.class, fileContent);
-                        List<RulersManager.Rulers> tempRulers = new ArrayList();
+                        List<RulersManager.Rulers> tempRulers = new ArrayList<>();
                         int tRulersSize = 0;
 
                         for(Object e : data.Rulers) {
