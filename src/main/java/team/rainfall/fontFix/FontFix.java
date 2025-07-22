@@ -9,8 +9,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import team.rainfall.finality.FinalityLogger;
 
-import java.util.ArrayList;
-
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.musicVolume;
 
@@ -18,10 +16,9 @@ public class FontFix {
     //是否尝试过加载compactScale
     public static boolean tried = false;
     public static CompactScale compactScale = null;
-    public static ArrayList<FontData> fonts = new ArrayList<>();
     public static boolean titleSet = false;
-    public static final String CORE_VERSION = "3.2.0";
-    public static final String POLARIS_VERSION = "2.1";
+    public static final String CORE_VERSION = "3.2.1";
+    public static final String POLARIS_VERSION = "2.3";
     public static int isSplash = 0;
     public static boolean isSplash(){
         if(isSplash == 0 && FileManager.loadFile("splashScreen").exists()){
@@ -120,11 +117,6 @@ public class FontFix {
         return Color.WHITE;
 
     }
-}
-
-class FontData {
-    String name;
-    int id;
 }
 
 

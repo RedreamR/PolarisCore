@@ -1,9 +1,6 @@
 package team.rainfall.fontFix;
 
 import aoc.kingdoms.lukasz.jakowski.FileManager;
-import aoc.kingdoms.lukasz.textures.Images;
-import com.alibaba.fastjson2.JSON;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.fontFix.config.LinkConfig;
