@@ -7,6 +7,9 @@ public abstract class Task<T> {
         isFinished = true;
         this.result = (T) result;
     }
+    public boolean isFinished(){
+        return isFinished;
+    }
     public T blockOn(){
         while (!isFinished){
             try {

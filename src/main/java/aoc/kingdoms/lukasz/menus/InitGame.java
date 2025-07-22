@@ -68,6 +68,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InitGame extends Menu {
+
     Task<Integer> task = new Task<Integer>() {
         @Override
         public Integer run() {
@@ -79,8 +80,14 @@ public class InitGame extends Menu {
     Task<Integer> task2 = new Task<Integer>() {
         @Override
         public Integer run() {
-            Game.mapScenarios.loadScenario_49(false);
             Game.mapScenarios.loadScenario_50(false);
+            return 0;
+        }
+    };
+    Task<Integer> task2_b = new Task<Integer>() {
+        @Override
+        public Integer run() {
+            Game.mapScenarios.loadScenario_49(false);
             return 0;
         }
     };
@@ -91,6 +98,7 @@ public class InitGame extends Menu {
             return 0;
         }
     };
+    public static boolean finished64 = false;
     public static long timer2 = System.currentTimeMillis();
     static long timer = System.currentTimeMillis();
     public String loadingName = "";
@@ -107,6 +115,7 @@ public class InitGame extends Menu {
     public boolean reloadBoldFont = false;
 
     public InitGame() {
+        finished64 = false;
         timer2 = System.currentTimeMillis();
         List<MenuElement> menuElements = new ArrayList();
         this.initMenu((MenuTitle)null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements, true);
@@ -228,7 +237,7 @@ public class InitGame extends Menu {
                         return;
                     }
                 } else if (iStepID == 4) {
-                    if (this.reloadBoldFont && Game.settingsManager.LANGUAGE_TAG.length() > 0) {
+                    if (this.reloadBoldFont && !Game.settingsManager.LANGUAGE_TAG.isEmpty()) {
                         Renderer.clearFonts();
                         Renderer.charset = Game.lang.get("charset");
                         Renderer.loadFont(Game.lang.get("font"), Game.lang.get("charset"), Game.settingsManager.FONT_MAIN_SIZE);
@@ -555,6 +564,7 @@ public class InitGame extends Menu {
                         Fluctlight.getInstance().addTask(task3);
                         Fluctlight.getInstance().addTask(task);
                         Fluctlight.getInstance().addTask(task2);
+                        Fluctlight.getInstance().addTask(task2_b);
                     }
                     this.setLoadText("Loading Scenario #3B Flags");
                 } else if (iStepID == 84) {
@@ -710,7 +720,12 @@ public class InitGame extends Menu {
                     this.setLoadText("Loading Scenario #49");
                 } else if (iStepID == 132) {
                     if(Config.getConfig().useFluctlight) {
+                        if(!task2.isFinished() || !task2_b.isFinished()){
+                            MissionTree.loadMissions_Civs();
+                            finished64 = true;
+                        }
                         task2.blockOn();
+                        task2_b.blockOn();
                     }else {
                         Game.mapScenarios.loadScenario_49(false);
                     }
@@ -759,7 +774,9 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_63();
                     this.setLoadText("Loading Scenario #64");
                 } else if (iStepID == 147) {
-                    Game.mapScenarios.loadScenario_64();
+                    if(!finished64) {
+                        Game.mapScenarios.loadScenario_64();
+                    }
                     this.setLoadText("Loading");
                 } else if (iStepID == 148) {
                     ShipManager.loadShipLines();
@@ -777,6 +794,7 @@ public class InitGame extends Menu {
                     EventsManager.loadScenarioEventsTag = (String)Game.mapScenarios.lScenarios_TagsList.get(Game.scenarioID);
                     EventsManager.loadEvents();
                     EventsManager.loadEvents_Scenario();
+                    Fluctlight.getInstance().dispose();
                     this.setLoadText("Loading HRE");
                 } else {
                     if (iStepID != 153) {
