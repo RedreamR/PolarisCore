@@ -26,16 +26,7 @@ public class MixinRenderer {
     public static List<BitmapFont> fontBorder;
     public static int fontBorderSize;
 
-    public static final void clearFonts() {
-        FontFix.fonts.clear();
-        for(int i = 0; i < fontMainSize; ++i) {
-            ((BitmapFont)fontMain.get(i)).dispose();
-            fontMain.set(i, null);
-        }
 
-        fontMain.clear();
-        fontMainSize = 0;
-    }
     public void dispose() {
         this.oSB.dispose();
         Fluctlight.getInstance().dispose();

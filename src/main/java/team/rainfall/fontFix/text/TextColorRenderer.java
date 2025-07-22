@@ -13,6 +13,8 @@ import team.rainfall.fontFix.utils.ColorUtil;
 
 public class TextColorRenderer {
     public static final boolean noColor = false;
+    public static boolean noShadow = false;
+    public static boolean underline = false;
     public static void drawLine2(SpriteBatch oSB, int fontID, Line line, int nPosX, int nPosY, Color color){
         StringBuilder sameColorLine = new StringBuilder();
         GlyphLayout_Game glyphLayout = new GlyphLayout_Game();
@@ -20,13 +22,11 @@ public class TextColorRenderer {
         char prevColor = 0;
         for (int i = 0;i < line.words.size();i++){
             Word word = line.words.get(i);
-
             if(prevColor == word.colorSign) {
                 sameColorLine.append(line.words.get(i).string);
             }else {
                 if(sameColorLine.length() > 0) {
                     glyphLayout.setText(Renderer.fontMain.get(fontID),sameColorLine.toString());
-
                     Renderer.drawText(oSB, fontID, sameColorLine.toString(), nPosX + nowX, nPosY, getColor(prevColor,color));
                     nowX += (int) glyphLayout.width;
                 }
@@ -35,7 +35,6 @@ public class TextColorRenderer {
             prevColor = word.colorSign;
         }
         if(sameColorLine.length() > 0) {
-
             Renderer.drawText(oSB, fontID, sameColorLine.toString(), nPosX + nowX, nPosY, getColor(prevColor,color));
         }
     }
@@ -52,8 +51,11 @@ public class TextColorRenderer {
             }else {
                 if(sameColorLine.length() > 0) {
                     glyphLayout.setText(Renderer.fontMain.get(fontID),sameColorLine.toString());
-
-                    Renderer.drawTextWithShadow(oSB, fontID, sameColorLine.toString(), nPosX + nowX, nPosY, getColor(prevColor,color));
+                    if(noShadow){
+                        Renderer.drawText(oSB, fontID, sameColorLine.toString(), nPosX + nowX, nPosY, getColor(prevColor, color));
+                    }else {
+                        Renderer.drawTextWithShadow(oSB, fontID, sameColorLine.toString(), nPosX + nowX, nPosY, getColor(prevColor, color));
+                    }
                     nowX += (int) glyphLayout.width;
                 }
                 sameColorLine = new StringBuilder(word.string);
@@ -61,7 +63,6 @@ public class TextColorRenderer {
             prevColor = word.colorSign;
         }
         if(sameColorLine.length() > 0) {
-
             Renderer.drawTextWithShadow(oSB, fontID, sameColorLine.toString(), nPosX + nowX, nPosY, getColor(prevColor,color));
         }
     }
@@ -85,5 +86,17 @@ public class TextColorRenderer {
         }
         return fallback;
     }
-
+    public static boolean formatAction(char c){
+        switch (c){
+            case '~':
+                noShadow = true;
+                break;
+            case '!':
+                underline = true;
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
 }
