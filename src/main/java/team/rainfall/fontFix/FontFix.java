@@ -5,8 +5,10 @@ import aoc.kingdoms.lukasz.jakowski.CFG;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.Keyboard;
+import aoc.kingdoms.lukasz.menusInGame.InGame_CivBonuses;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import org.lwjgl.system.CallbackI;
 import team.rainfall.finality.FinalityLogger;
 
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
@@ -115,6 +117,20 @@ public class FontFix {
             }catch (Exception ignored){}
         }
         return Color.WHITE;
+
+    }
+    public static void actionNationSpirit() {
+        if (Game.menuManager.getVisibleInGame_CivBonuses()) {
+            InGame_CivBonuses.nationSpirit = false;
+            Game.menuManager.setVisibleInGame_CivBonuses(false);
+        } else {
+            InGame_CivBonuses.nationSpirit = true;
+            Game.menuManager.rebuildInGame_CivBonuses();
+            Game.menuManager.setVisibleInGame_CivBonuses(true);
+            if (Game.menuManager.getVisibleInGame_Armies()) {
+                Game.menuManager.setVisibleInGame_Armies(false);
+            }
+        }
 
     }
 }

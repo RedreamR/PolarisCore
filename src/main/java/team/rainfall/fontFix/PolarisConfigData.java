@@ -16,5 +16,5 @@ public class PolarisConfigData {
     //A simple method to detect encode,may cause detection mistake
     public boolean fastEncodeCheck = true;
     public boolean useFluctlight = true;
-    public boolean fastLoadFlag = false;
+    public boolean fastLoadFlag = true;
 }

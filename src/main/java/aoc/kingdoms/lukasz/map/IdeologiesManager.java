@@ -67,9 +67,9 @@ public class IdeologiesManager {
             this.iIdeologiesSize = this.lIdeologies.size();
 
             for(int i = 0; i < this.iIdeologiesSize; ++i) {
-                ((Ideology)this.lIdeologies.get(i)).Color[0] /= 255.0F;
-                ((Ideology)this.lIdeologies.get(i)).Color[1] /= 255.0F;
-                ((Ideology)this.lIdeologies.get(i)).Color[2] /= 255.0F;
+                this.lIdeologies.get(i).Color[0] /= 255.0F;
+                this.lIdeologies.get(i).Color[1] /= 255.0F;
+                this.lIdeologies.get(i).Color[2] /= 255.0F;
             }
         } catch (GdxRuntimeException var10) {
         }

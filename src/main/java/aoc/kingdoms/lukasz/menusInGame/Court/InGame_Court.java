@@ -84,6 +84,8 @@ import aoc.kingdoms.lukasz.textures.ImageManager;
 import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import team.rainfall.fontFix.FontFix;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,7 +117,7 @@ public class InGame_Court extends Menu {
 
         RulersManager.loadRulerIMG(iActiveCivID);
         menuElements.add(new Text_Title_v2Center(Game.ideologiesManager.getIdeology(Game.getCiv(iActiveCivID).getIdeologyID()).RulerTitle, -1, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 6));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+        buttonY += ((MenuElement)menuElements.get(0)).getHeight() + CFG.PADDING * 2;
         int rulerBGY = buttonY - CFG.PADDING;
         menuElements.add(new ButtonRuler2(iActiveCivID, paddingLeft, buttonY) {
             public void actionElement() {
@@ -210,6 +212,13 @@ public class InGame_Court extends Menu {
                 Game.menuManager.rebuildInGame_Government();
                 Game.menuManager.setVisibleInGame_Court(true);
                 InGame_Court.lTime = 0L;
+            }
+        });
+        buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+        menuElements.add(new ButtonNS(Game.getCiv(iActiveCivID).getIdeologyID(), buttonX, buttonY, tWidth, statsH) {
+            public void actionElement() {
+                InGame_CivBonuses.iCivID = iActiveCivID;
+                FontFix.actionNationSpirit();
             }
         });
 
@@ -459,9 +468,8 @@ public class InGame_Court extends Menu {
                     }
                 }
             }
-
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get(GameValues.court.ADVISOR_NAME_ADMINISTRATIVE), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, Game.getCiv(iActiveCivID).advisorAdministration.sName != null ? Game.lang.get("XYearsOld", Math.min(99, Game_Calendar.currentYear - Game.getCiv(iActiveCivID).advisorAdministration.iYearOfBirth)) : ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
             tWidth = menuWidth - ButtonAdvisor.getButtonWidth() - paddingLeft * 2 - CFG.PADDING;
             int maxIconW = ImageManager.getImage(Images.gold).getWidth();
             if (Game.getCiv(iActiveCivID).advisorAdministration.sName == null) {
@@ -3041,6 +3049,7 @@ public class InGame_Court extends Menu {
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("CivilizationBonuses"), CivilizationRanking.getCivilizationRank_IMG(Game.player.iCivID), paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_CivBonuses.iCivID = Game.player.iCivID;
+                    InGame_CivBonuses.nationSpirit = false;
                     InGame_Civ.actionCivBonuses();
                 }
 

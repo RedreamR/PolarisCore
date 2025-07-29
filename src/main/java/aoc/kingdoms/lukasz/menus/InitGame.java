@@ -62,6 +62,7 @@ import team.rainfall.fluctlight.Fluctlight;
 import team.rainfall.fluctlight.Task;
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
+import team.rainfall.fontFix.NationalSpiritManager;
 import team.rainfall.fontFix.PolarisConfigData;
 
 import java.util.ArrayList;
@@ -777,8 +778,9 @@ public class InitGame extends Menu {
                     if(!finished64) {
                         Game.mapScenarios.loadScenario_64();
                     }
-                    this.setLoadText("Loading");
+                    this.setLoadText("Loading National Spirits");
                 } else if (iStepID == 148) {
+                    NationalSpiritManager.INSTANCE.loadNS();
                     ShipManager.loadShipLines();
                     this.setLoadText("Loading");
                 } else if (iStepID == 149) {
@@ -885,6 +887,9 @@ public class InitGame extends Menu {
         Images.insideBot530 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "insideBot530.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
         Images.title630 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "title630.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
         Images.insideTop630 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "insideTop630.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
+        if(FileManager.loadFile("ui/" + CFG.getRescouresPath() + "menus/" + "nsEntry.png").exists()) {
+            NationalSpiritManager.nsEntryImg = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "nsEntry.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
+        }
         Images.insideBot630 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "insideBot630.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
     }
 
