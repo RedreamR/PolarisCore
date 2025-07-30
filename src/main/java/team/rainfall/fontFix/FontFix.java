@@ -19,8 +19,8 @@ public class FontFix {
     public static boolean tried = false;
     public static CompactScale compactScale = null;
     public static boolean titleSet = false;
-    public static final String CORE_VERSION = "3.2.1";
-    public static final String POLARIS_VERSION = "2.3";
+    public static final String CORE_VERSION = "3.3.0";
+    public static final String POLARIS_VERSION = "2.4 Patch 1";
     public static int isSplash = 0;
     public static boolean isSplash(){
         if(isSplash == 0 && FileManager.loadFile("splashScreen").exists()){
