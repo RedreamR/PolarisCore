@@ -149,7 +149,13 @@ public class InGame_Console extends Menu {
                                 } catch (Exception var3) {
                                 }
                             }
-                        } else if (tempCommand[0].equals(GameValues.console.CONSOLE_COMMAND_KILL_RULER)) {
+                        }else if(tempCommand[0].equals("vars")){
+                            StringBuilder sb = new StringBuilder();
+                            for (String string : Game.getCiv(Game.player.iCivID).eventsDataVariables.v) {
+                                sb.append(string).append(";");
+                            }
+                            addMessage("vars:"+sb);
+                        }else if (tempCommand[0].equals(GameValues.console.CONSOLE_COMMAND_KILL_RULER)) {
                             if (Game.iActiveProvince >= 0 && Game.getProvince(Game.iActiveProvince).getCivID() > 0) {
                                 RulersManager.deathOfRuler(Game.getProvince(Game.iActiveProvince).getCivID());
                             }
