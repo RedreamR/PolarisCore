@@ -62,7 +62,9 @@ public class InGame_CivBonuses extends Menu {
                     String s2 = string.replace("$$NationalSpirit_","");
                     String[] s3 = s2.split("-");
                     NationalSpirit nationalSpirit = NationalSpiritManager.INSTANCE.getNS(s3[0]);
-                    menuElements.add(new ButtonNS_Info(nationalSpirit,paddingLeft + menuWidth * (a / 5),buttonY,buttonW,buttonH2,true));
+                    float fl = a / 5f;
+                    menuElements.add(new ButtonNS_Info(nationalSpirit, (int) (paddingLeft + menuWidth * fl),buttonY,buttonW,buttonH2,true));
+                    FinalityLogger.debug("NationalSpirit.COM "+(paddingLeft + menuWidth * fl)+" a "+a+" pdLeft"+paddingLeft);
                     a++;
                     if(a > 4){
                         a = 0;
