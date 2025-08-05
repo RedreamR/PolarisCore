@@ -15,15 +15,7 @@ import aoc.kingdoms.lukasz.map.civilization.CivilizationBonuses;
 import aoc.kingdoms.lukasz.menu.Colors;
 import aoc.kingdoms.lukasz.menu_element.MenuElement;
 import aoc.kingdoms.lukasz.menu_element.button.ButtonStatsRectIMG_Bonuses_Right_Color;
-import aoc.kingdoms.lukasz.menu_element.menuElementHover.MenuElement_Hover;
-import aoc.kingdoms.lukasz.menu_element.menuElementHover.MenuElement_HoverElement;
-import aoc.kingdoms.lukasz.menu_element.menuElementHover.MenuElement_HoverElement_Type;
-import aoc.kingdoms.lukasz.menu_element.menuElementHover.MenuElement_HoverElement_Type_Button_TextBonus;
-import aoc.kingdoms.lukasz.menu_element.menuElementHover.MenuElement_HoverElement_Type_Button_TextBonusReligion;
-import aoc.kingdoms.lukasz.menu_element.menuElementHover.MenuElement_HoverElement_Type_Image;
-import aoc.kingdoms.lukasz.menu_element.menuElementHover.MenuElement_HoverElement_Type_Line;
-import aoc.kingdoms.lukasz.menu_element.menuElementHover.MenuElement_HoverElement_Type_Religion;
-import aoc.kingdoms.lukasz.menu_element.menuElementHover.MenuElement_HoverElement_Type_Text;
+import aoc.kingdoms.lukasz.menu_element.menuElementHover.*;
 import aoc.kingdoms.lukasz.textures.Image;
 import aoc.kingdoms.lukasz.textures.ImageManager;
 import aoc.kingdoms.lukasz.textures.Images;
@@ -333,9 +325,14 @@ public class ReligionManager {
         nData.add(new MenuElement_HoverElement_Type_Button_TextBonusReligion(Game.lang.get("Religion") + ": ", this.getReligion(religionID).Name, religionID, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
-        nData.add(new MenuElement_HoverElement_Type_Line());
-        nElements.add(new MenuElement_HoverElement(nData));
-        nData.clear();
+        if(Game.religionManager.getReligion(religionID).Desc != null) {
+            nData.add(new MenuElement_HoverElement_Type_Line());
+            nElements.add(new MenuElement_HoverElement(nData));
+            nData.clear();
+            nData.add(new MenuElement_HoverElement_Type_Text_Desc(Game.religionManager.getReligion(religionID).Desc, CFG.FONT_REGULAR_SMALL, Colors.HOVER_LEFT2));
+            nElements.add(new MenuElement_HoverElement(nData));
+        }
+
         int sizeBefore = nElements.size();
         if (this.getReligion(religionID).MonthlyIncome != 0.0F) {
             nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("MonthlyIncome") + ": ", (this.getReligion(religionID).MonthlyIncome > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).MonthlyIncome, 100), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, this.getReligion(religionID).MonthlyIncome > 0.0F ? Colors.COLOR_TEXT_MODIFIER_POSITIVE : Colors.COLOR_TEXT_MODIFIER_NEGATIVE));

@@ -60,10 +60,7 @@ import com.badlogic.gdx.utils.Json;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.fluctlight.Fluctlight;
 import team.rainfall.fluctlight.Task;
-import team.rainfall.fontFix.Config;
-import team.rainfall.fontFix.FontFix;
-import team.rainfall.fontFix.NationalSpiritManager;
-import team.rainfall.fontFix.PolarisConfigData;
+import team.rainfall.fontFix.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1125,8 +1122,136 @@ public class InitGame extends Menu {
         Images.hreBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "hreBig.png");
         Images.invasion = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "invasion.png");
     }
+    private final void loadImages_5_new() {
+        Images.heart = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "heart.png");
+        Images.war = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "war.png");
+        Images.warBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "warBig.png");
+        Images.defensivePactBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "defensivePactBig.png");
+        Images.insultBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "insultBig.png");
+        Images.weariness = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "weariness.png");
+        Images.relations = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "relations.png");
+        Images.relationsDown = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "relationsDown.png");
+        Images.relationsUp = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "relationsUp.png");
+        Images.insult = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "insult.png");
+        Images.battleBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "battleBig.png");
+        Images.interveneBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "interveneBig.png");
+        Images.compare = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "compare.png");
+        Images.compareBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "compareBig.png");
+        Images.intervene = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "intervene.png");
+        Images.nonAggressionBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "nonAggressionBig.png");
+        Images.militaryAccessBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "militaryAccessBig.png");
+        Images.allianceBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "allianceBig.png");
+        Images.rivalsBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "rivalsBig.png");
+        Images.guaranteeIndependenceBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "guaranteeIndependenceBig.png");
+        Images.giftBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "giftBig.png");
+        Images.economyUp = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "economyUp.png");
+        Images.economyDown = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "economyDown.png");
+        Images.economyUp2 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "economyUp2.png");
+        Images.economyDown2 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "economyDown2.png");
+        Images.tax = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "tax.png");
+        Images.taxUp = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "taxUp.png");
+        Images.council = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "council.png");
+        Images.brush = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "brush.png");
+        Images.victoryPoints = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "victoryPoints.png");
+        Images.rank = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "rank.png");
+        Images.x = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "x.png");
+        Images.v = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "v.png");
+        Images.religion = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "religion.png");
+        Images.swords = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "swords.png");
+        Images.core = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "core.png");
+        Images.warPeace = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "warPeace.png");
+        Images.warPeaceBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "warPeaceBig.png");
+        Images.warDemands = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "warDemands.png");
+        Images.warDemandsBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "warDemandsBig.png");
+        Images.warSurrender = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "warSurrender.png");
+        Images.truce = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "truce.png");
+        Images.spy = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "spy.png");
+        Images.spyBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "spyBig.png");
+        Images.frontLine = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "frontLine.png");
+        Images.aggressiveExpansion = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "aggressiveExpansion.png");
+        Images.mercenaries = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "mercenaries.png");
+        Images.sandbox = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "sandbox.png");
+        Images.goldenGold = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "goldenGold.png");
+        Images.goldenGreen = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "goldenGreen.png");
+        Images.goldenBlue = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "goldenBlue.png");
+        Images.stats = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "stats.png");
+        Images.development = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "development.png");
+        Images.rankBronze = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "rankBronze.png");
+        Images.rankSilver = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "rankSilver.png");
+        Images.rankGold = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "rankGold.png");
+        Images.rankBlack = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "rankBlack.png");
+        Images.diplomacy = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "diplomacy.png");
+        Images.legacy = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "legacy.png");
+        Images.corruption = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "corruption.png");
+        Images.disbandArmy = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "disbandArmy.png");
+        Images.splitArmy = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "splitArmy.png");
+        Images.mergeArmy = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "mergeArmy.png");
+        Images.reorganizeArmy = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "reorganizeArmy.png");
+        Images.disbandArmy2 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "disbandArmy2.png");
+        Images.splitArmy2 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "splitArmy2.png");
+        Images.mergeArmy2 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "mergeArmy2.png");
+        Images.reorganizeArmy2 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "reorganizeArmy2.png");
+        Images.disbandArmy3 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "disbandArmy3.png");
+        Images.splitArmy3 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "splitArmy3.png");
+        Images.mergeArmy3 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "mergeArmy3.png");
+        Images.reorganizeArmy3 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "reorganizeArmy3.png");
+        Images.gift = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "gift.png");
+        Images.loan = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "loan.png");
+        Images.nonAggression = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "nonAggression.png");
+        Images.nonAggressionExpired = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "nonAggressionExpired.png");
+        Images.defensivePactExpired = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "defensivePactExpired.png");
+        Images.allianceExpired = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "allianceExpired.png");
+        Images.truceExpired = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "truceExpired.png");
+        Images.militaryAccessExpired = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "militaryAccessExpired.png");
+        Images.guaranteeIndependenceExpired = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "guaranteeIndependenceExpired.png");
+        Images.rivals = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "rivals.png");
+        Images.alliance = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "alliance.png");
+        Images.union = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "union.png");
+        Images.unionBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "unionBig.png");
+        Images.militaryAccess = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "militaryAccess.png");
+        Images.militaryAccess2 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "militaryAccess2.png");
+        Images.guaranteeIndependence = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "guaranteeIndependence.png");
+        Images.buildings = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "buildings.png");
+        Images.construction = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "construction.png");
+        Images.currentSituation = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "currentSituation.png");
+        Images.plunder = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "plunder.png");
+        Images.peace = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "peace.png");
+        Images.disease = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "disease.png");
+        Images.vassal = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "vassal.png");
+        Images.vassalBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "vassalBig.png");
+        Images.resourceNone = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "resourceNone.png");
+        Images.skill = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "skill.png");
+        Images.civRank_0 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "civRank_0.png");
+        Images.civRank_1 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "civRank_1.png");
+        Images.civRank_2 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "civRank_2.png");
+        Images.civRank_3 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "civRank_3.png");
+        Images.civRank_4 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "civRank_4.png");
+        Images.civRank_5 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "civRank_5.png");
+        Images.capital = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "capital.png");
+        Images.stability = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "stability.png");
+        Images.civStability = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "civStability.png");
+        if (ImageManager.getImage(Images.disbandArmy).getWidth() > ButtonArmyIcon.maxWidth) {
+            ButtonArmyIcon.maxWidth = ImageManager.getImage(Images.disbandArmy).getWidth();
+        }
 
+        if (ImageManager.getImage(Images.splitArmy).getWidth() > ButtonArmyIcon.maxWidth) {
+            ButtonArmyIcon.maxWidth = ImageManager.getImage(Images.splitArmy).getWidth();
+        }
+
+        if (ImageManager.getImage(Images.mergeArmy).getWidth() > ButtonArmyIcon.maxWidth) {
+            ButtonArmyIcon.maxWidth = ImageManager.getImage(Images.mergeArmy).getWidth();
+        }
+
+        if (ImageManager.getImage(Images.reorganizeArmy).getWidth() > ButtonArmyIcon.maxWidth) {
+            ButtonArmyIcon.maxWidth = ImageManager.getImage(Images.reorganizeArmy).getWidth();
+        }
+
+        Game.unionManagerFlags.loadImages();
+    }
     private final void loadImages_5() {
+        if(Config.getConfig().loadImgVersion >= 2) {
+            loadImages_5_new();
+        }
         Images.heart = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "heart.png");
         Images.war = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "war.png");
         Images.warBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "warBig.png");

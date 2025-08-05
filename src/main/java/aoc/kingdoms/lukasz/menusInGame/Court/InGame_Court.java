@@ -101,7 +101,7 @@ public class InGame_Court extends Menu {
     public static boolean UPDATE_INCOME_MANPOWER_FROM_VASSAL = false;
 
     public InGame_Court() {
-        List<MenuElement> menuElements = new ArrayList();
+        List<MenuElement> menuElements = new ArrayList<>();
         int paddingLeft = Images.boxTitleBORDERWIDTH + CFG.PADDING * 2;
         int paddingLeft2 = Images.boxTitleBORDERWIDTH + CFG.PADDING;
         int menuWidth = ImageManager.getImage(Images.insideTop500).getWidth();
@@ -117,7 +117,7 @@ public class InGame_Court extends Menu {
 
         RulersManager.loadRulerIMG(iActiveCivID);
         menuElements.add(new Text_Title_v2Center(Game.ideologiesManager.getIdeology(Game.getCiv(iActiveCivID).getIdeologyID()).RulerTitle, -1, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 6));
-        buttonY += ((MenuElement)menuElements.get(0)).getHeight() + CFG.PADDING * 2;
+        buttonY += menuElements.get(0).getHeight() + CFG.PADDING * 2;
         int rulerBGY = buttonY - CFG.PADDING;
         menuElements.add(new ButtonRuler2(iActiveCivID, paddingLeft, buttonY) {
             public void actionElement() {
@@ -129,7 +129,7 @@ public class InGame_Court extends Menu {
 
             }
         });
-        int buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+        int buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
         int statsH = 0;
         menuElements.add(new Text_StaticBG_RulerTitle(Game.getCiv(iActiveCivID).ruler.Name, buttonX, buttonY, menuWidth - buttonX - paddingLeft, CFG.TEXT_HEIGHT + CFG.PADDING * 6) {
             public void buildElementHover() {
@@ -160,26 +160,35 @@ public class InGame_Court extends Menu {
 
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
-        statsH += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
-        menuElements.add(new Text_StaticBG_Ruler("" + Game.getCiv(iActiveCivID).ruler.BornDay + " " + Game_Calendar.getMonthName(Game.getCiv(iActiveCivID).ruler.BornMonth) + " " + Game.getCiv(iActiveCivID).ruler.BornYear, Game.lang.get("XYearsOld", Math.min(99, Game_Calendar.currentYear - Game.getCiv(iActiveCivID).ruler.BornYear)), buttonX, buttonY, menuWidth - buttonX - paddingLeft, CFG.TEXT_HEIGHT + CFG.PADDING * 3) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+        statsH += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+        menuElements.add(new Text_StaticBG_Ruler(Game.getCiv(iActiveCivID).ruler.BornDay + " " + Game_Calendar.getMonthName(Game.getCiv(iActiveCivID).ruler.BornMonth) + " " + Game.getCiv(iActiveCivID).ruler.BornYear, Game.lang.get("XYearsOld", Math.min(99, Game_Calendar.currentYear - Game.getCiv(iActiveCivID).ruler.BornYear)), buttonX, buttonY, menuWidth - buttonX - paddingLeft, CFG.TEXT_HEIGHT + CFG.PADDING * 3) {
             public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                 nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(Game.getCiv(InGame_Court.iActiveCivID).ruler.Name, CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
-                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Born") + ": ", "" + Game.getCiv(InGame_Court.iActiveCivID).ruler.BornDay + " " + Game_Calendar.getMonthName(Game.getCiv(InGame_Court.iActiveCivID).ruler.BornMonth) + " " + Game.getCiv(InGame_Court.iActiveCivID).ruler.BornYear, Images.time, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Born") + ": ", Game.getCiv(InGame_Court.iActiveCivID).ruler.BornDay + " " + Game_Calendar.getMonthName(Game.getCiv(InGame_Court.iActiveCivID).ruler.BornMonth) + " " + Game.getCiv(InGame_Court.iActiveCivID).ruler.BornYear, Images.time, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
                 nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("XYearsOld", Math.min(99, Game_Calendar.currentYear - Game.getCiv(InGame_Court.iActiveCivID).ruler.BornYear)), "", Images.time, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_RIGHT));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
+                if(Game.getCiv(iActiveCivID).ruler.Desc != null && !Game.getCiv(iActiveCivID).ruler.Desc.isEmpty()) {
+                    nData.add(new MenuElement_HoverElement_Type_Line());
+                    nElements.add(new MenuElement_HoverElement(nData));
+                    nData.clear();
+                    //Desc
+                    nData.add(new MenuElement_HoverElement_Type_Text_Desc(Game.getCiv(iActiveCivID).ruler.Desc));
+                    nElements.add(new MenuElement_HoverElement(nData));
+                    nData.clear();
+                }
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
-        statsH += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+        statsH += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         int tWidth = (menuWidth - buttonX - paddingLeft - CFG.PADDING * 2) / 3;
         statsH = ButtonRuler2.getButtonHeight() - statsH;
         if (Game.getCiv(iActiveCivID).ruler.rulerBonuses.UnitsAttack != 0 || Game.getCiv(iActiveCivID).ruler.rulerBonuses.UnitsDefense != 0 || Game.getCiv(iActiveCivID).ruler.rulerBonuses.GeneralAttack != 0 || Game.getCiv(iActiveCivID).ruler.rulerBonuses.GeneralDefense != 0) {
@@ -202,7 +211,7 @@ public class InGame_Court extends Menu {
             }
         });
         //1
-        buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+        buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
         menuElements.add(new ButtonIdeology2(Game.getCiv(iActiveCivID).getIdeologyID(), buttonX, buttonY, tWidth, statsH) {
             public void actionElement() {
                 InGame_Court_Government.modeID = 0;
@@ -214,7 +223,7 @@ public class InGame_Court extends Menu {
                 InGame_Court.lTime = 0L;
             }
         });
-        buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+        buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
         menuElements.add(new ButtonNS(Game.getCiv(iActiveCivID).getIdeologyID(), buttonX, buttonY, tWidth, statsH) {
             public void actionElement() {
                 InGame_CivBonuses.iCivID = iActiveCivID;
@@ -223,7 +232,7 @@ public class InGame_Court extends Menu {
         });
 
         menuElements.add(new Text_StaticBG_ID_FlagCiv_SpecialEmpty(CFG.PADDING + Images.boxTitleBORDERWIDTH, rulerBGY, menuWidth - (CFG.PADDING + Images.boxTitleBORDERWIDTH) * 2, ButtonRuler2.getButtonHeight() + CFG.PADDING * 2));
-        buttonY = ((MenuElement)menuElements.get(1)).getPosY() + ((MenuElement)menuElements.get(1)).getHeight() + CFG.PADDING * 2;
+        buttonY = menuElements.get(1).getPosY() + menuElements.get(1).getHeight() + CFG.PADDING * 2;
         menuElements.add(new Text_Title_Diplomacy(Game.lang.get(GameValues.court.COUNCIL_NAME), Images.boxTitleBORDERWIDTH, buttonY, (menuWidth - Images.boxTitleBORDERWIDTH * 2) / 3, CFG.BUTTON_HEIGHT4, modeID == 0) {
             public void actionElement() {
                 InGame_Court.modeID = 0;
@@ -235,8 +244,8 @@ public class InGame_Court extends Menu {
             }
 
             public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                 nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(this.getText(), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.council, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -259,8 +268,8 @@ public class InGame_Court extends Menu {
             }
 
             public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                 nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(this.getText(), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.vassal, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -283,8 +292,8 @@ public class InGame_Court extends Menu {
             }
 
             public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                 nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(this.getText(), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.world, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -296,7 +305,7 @@ public class InGame_Court extends Menu {
                 return Game.soundsManager.getTab();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         buttonX = paddingLeft;
         if (modeID == 0) {
             if (iActiveCivID == Game.player.iCivID) {
@@ -313,8 +322,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Events"), Colors.HOVER_GOLD));
                         nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.missions, CFG.PADDING, 0));
                         nElements.add(new MenuElement_HoverElement(nData));
@@ -326,7 +335,7 @@ public class InGame_Court extends Menu {
                         return SoundsManager.getClickSound_CivOptions();
                     }
                 });
-                int menuHeight = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                int menuHeight = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new ButtonIcon("", Images.encyclopedia, menuHeight, buttonY, typeW, typeH) {
                     public void actionElement() {
                         if (Game.menuManager.getVisibleInGame_PopUp() && MenuManager.IN_GAME_POP_UP_MENU_ID == 15) {
@@ -339,8 +348,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Encyclopedia"), Colors.HOVER_GOLD));
                         nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.encyclopedia, CFG.PADDING, 0));
                         nElements.add(new MenuElement_HoverElement(nData));
@@ -352,7 +361,7 @@ public class InGame_Court extends Menu {
                         return SoundsManager.getClickSound_CivOptions();
                     }
                 });
-                menuHeight += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                menuHeight += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new ButtonIcon("", Images.development, menuHeight, buttonY, typeW, typeH) {
                     public void actionElement() {
                         InGame_Court.inCourt = false;
@@ -363,8 +372,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Statistics"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.development, CFG.PADDING, 0));
                         nElements.add(new MenuElement_HoverElement(nData));
@@ -380,15 +389,15 @@ public class InGame_Court extends Menu {
                         return SoundsManager.getClickSound_CivOptions();
                     }
                 });
-                menuHeight += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                menuHeight += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new ButtonIcon("", Images.provinces, menuHeight, buttonY, typeW, typeH) {
                     public void actionElement() {
                         InGame_CourtOptions2.actionProvinces(InGame_CourtOptions2.idProvinces);
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Provinces"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.provinces, CFG.PADDING, 0));
                         nElements.add(new MenuElement_HoverElement(nData));
@@ -404,7 +413,7 @@ public class InGame_Court extends Menu {
                         return SoundsManager.getClickSound_CivOptions();
                     }
                 });
-                menuHeight += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                menuHeight += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new ButtonIcon("", Images.settings, menuHeight, buttonY, typeW, typeH) {
                     public void actionElement() {
                         if (Game.menuManager.getVisibleInGame_Escape()) {
@@ -417,8 +426,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Options"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.settings, CFG.PADDING, 0));
                         nElements.add(new MenuElement_HoverElement(nData));
@@ -430,20 +439,20 @@ public class InGame_Court extends Menu {
                         return SoundsManager.getClickSound_CivOptions();
                     }
                 });
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             }
 
             if (iActiveCivID == Game.player.iCivID) {
                 Game.player.playerData.espionage.removeExpiredEspionageMissions();
                 if (Game.player.playerData.espionage.iEspionageMissionsSize > 0) {
                     menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("EspionageMission"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-                    buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                     int buttonH_Spy = Math.max(CFG.BUTTON_HEIGHT3, Math.max(Math.max(ImageManager.getImage(Images.flag_rect).getHeight(), ImageManager.getImage(Images.spy).getHeight()), CFG.TEXT_HEIGHT) + CFG.PADDING * 2);
 
                     try {
                         for(int i = 0; i < Game.player.playerData.espionage.iEspionageMissionsSize; ++i) {
-                            if (((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iReportTurnID <= Game_Calendar.TURN_ID) {
-                                menuElements.add(new Button_OutlinerEspionageMissionReport(Game.lang.get("Completed"), "", paddingLeft, buttonY, menuWidth - paddingLeft * 2, buttonH_Spy, Images.spy, ((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iCivID, ((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iReportTurnID - DiplomacyManager.sendSpyTime(Game.player.iCivID, ((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iCivID), ((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iReportExpiresTurnID - Game_Calendar.TURN_ID, false) {
+                            if (Game.player.playerData.espionage.espionageMissions.get(i).iReportTurnID <= Game_Calendar.TURN_ID) {
+                                menuElements.add(new Button_OutlinerEspionageMissionReport(Game.lang.get("Completed"), "", paddingLeft, buttonY, menuWidth - paddingLeft * 2, buttonH_Spy, Images.spy, Game.player.playerData.espionage.espionageMissions.get(i).iCivID, Game.player.playerData.espionage.espionageMissions.get(i).iReportTurnID - DiplomacyManager.sendSpyTime(Game.player.iCivID, Game.player.playerData.espionage.espionageMissions.get(i).iCivID), Game.player.playerData.espionage.espionageMissions.get(i).iReportExpiresTurnID - Game_Calendar.TURN_ID, false) {
                                     public void actionElement() {
                                         InGame_CourtOptions2.disableAllViews();
                                         Game.menuManager.rebuildInGame_EspionageReportCourt(this.getCurrent(), Game.player.playerData.espionage.espionageMission_ReportEndTurn(this.getCurrent()));
@@ -451,17 +460,17 @@ public class InGame_Court extends Menu {
                                         InGame_Court.lTime = 0L;
                                     }
                                 });
-                                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                             }
                         }
 
                         for(int i = 0; i < Game.player.playerData.espionage.iEspionageMissionsSize; ++i) {
-                            if (((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iReportTurnID > Game_Calendar.TURN_ID) {
-                                menuElements.add(new Button_OutlinerEspionageMission(Game.lang.get("Progress"), "%", paddingLeft, buttonY, menuWidth - paddingLeft * 2, buttonH_Spy, Images.spy, ((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iCivID, ((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iReportTurnID - DiplomacyManager.sendSpyTime(Game.player.iCivID, ((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iCivID), ((DiplomacyEspionageMission)Game.player.playerData.espionage.espionageMissions.get(i)).iReportTurnID, false) {
+                            if (Game.player.playerData.espionage.espionageMissions.get(i).iReportTurnID > Game_Calendar.TURN_ID) {
+                                menuElements.add(new Button_OutlinerEspionageMission(Game.lang.get("Progress"), "%", paddingLeft, buttonY, menuWidth - paddingLeft * 2, buttonH_Spy, Images.spy, Game.player.playerData.espionage.espionageMissions.get(i).iCivID, Game.player.playerData.espionage.espionageMissions.get(i).iReportTurnID - DiplomacyManager.sendSpyTime(Game.player.iCivID, Game.player.playerData.espionage.espionageMissions.get(i).iCivID), Game.player.playerData.espionage.espionageMissions.get(i).iReportTurnID, false) {
                                     public void actionElement() {
                                     }
                                 });
-                                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                             }
                         }
                     } catch (Exception var29) {
@@ -486,7 +495,7 @@ public class InGame_Court extends Menu {
 
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new Text_StaticBG(Game.lang.get("NoAdvisor"), CFG.FONT_REGULAR_SMALL, -1, buttonX, buttonY, tWidth, ButtonAdvisor.getButtonHeight()) {
                     public void actionElement() {
                         if (InGame_Court.iActiveCivID == Game.player.iCivID) {
@@ -501,8 +510,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         if (InGame_Court.iActiveCivID == Game.player.iCivID) {
                             nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("NoAdvisor"), CFG.FONT_BOLD));
                             nData.add(new MenuElement_HoverElement_Type_FlagTitle(InGame_Court.iActiveCivID, CFG.PADDING, 0));
@@ -547,7 +556,7 @@ public class InGame_Court extends Menu {
 
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 int statsY = 0;
                 int statW = menuWidth - buttonX - paddingLeft;
                 int statH = (ButtonAdvisor.getButtonHeight() - CFG.PADDING * 2) / 3;
@@ -574,12 +583,12 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.sName, CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", "" + Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         if (InGame_Court.iActiveCivID == Game.player.iCivID && Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.iLevel < AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID)) {
@@ -595,12 +604,12 @@ public class InGame_Court extends Menu {
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Cost") + ": ", CFG.FONT_REGULAR_SMALL));
-                            nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2((float)AdvisorManager.getAdvisorPromoteCost(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                            nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float) AdvisorManager.getAdvisorPromoteCost(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                             nData.add(new MenuElement_HoverElement_Type_Image(Images.gold, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("LegacyPoints") + ": ", CFG.FONT_REGULAR_SMALL));
-                            nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2((float)AdvisorManager.getAdvisorPromoteCostLegacy(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                            nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float) AdvisorManager.getAdvisorPromoteCostLegacy(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                             nData.add(new MenuElement_HoverElement_Type_Image(Images.legacy, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
@@ -609,8 +618,8 @@ public class InGame_Court extends Menu {
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                ((MenuElement)menuElements.get(menuElements.size() - 1)).setPosX(menuWidth - paddingLeft - ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth());
-                menuElements.add(new Text_StaticBG_Advisor(Game.getCiv(iActiveCivID).advisorAdministration.sName, buttonX, buttonY, ((MenuElement)menuElements.get(menuElements.size() - 1)).getPosX() - buttonX - CFG.PADDING, statH) {
+                menuElements.get(menuElements.size() - 1).setPosX(menuWidth - paddingLeft - menuElements.get(menuElements.size() - 1).getWidth());
+                menuElements.add(new Text_StaticBG_Advisor(Game.getCiv(iActiveCivID).advisorAdministration.sName, buttonX, buttonY, menuElements.get(menuElements.size() - 1).getPosX() - buttonX - CFG.PADDING, statH) {
                     public String getTextToDraw() {
                         try {
                             if (Keyboard.keyboardActionType == KeyboardActionType.INGAME_ADVISOR_ADMINISTRATIVE_NAME) {
@@ -636,183 +645,183 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.sName, CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", "" + Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 if (Game.getCiv(iActiveCivID).advisorAdministration.TaxEfficiency != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("TaxEfficiency") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.TaxEfficiency, 100) + "%", Images.tax, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("TaxEfficiency"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.TaxEfficiency, 100) + "%", Images.tax, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.ProvinceMaintenance != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProvinceMaintenance") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ProvinceMaintenance, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProvinceMaintenance"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ProvinceMaintenance, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.GrowthRate != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GrowthRate") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.GrowthRate, 100) + "%", Images.populationGrowth, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GrowthRate"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.GrowthRate, 100) + "%", Images.populationGrowth, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.ConstructionCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ConstructionCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ConstructionCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.AdministrationBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("AdministrationBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("AdministrationBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.EconomyBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("EconomyBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("EconomyBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.MilitaryBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MilitaryBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MilitaryBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.InvestInEconomyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("InvestInEconomyCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("InvestInEconomyCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.IncreaseTaxEfficiencyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseTaxEfficiencyCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseTaxEfficiencyCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.IncreaseGrowthRateCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseGrowthRateCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.IncreaseGrowthRateCost * 100.0F, 100) + "%", Images.populationUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseGrowthRateCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.IncreaseGrowthRateCost * 100.0F, 100) + "%", Images.populationUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.DevelopInfrastructureCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("DevelopInfrastructureCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("DevelopInfrastructureCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.ProductionEfficiency != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProductionEfficiency") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ProductionEfficiency, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProductionEfficiency"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ProductionEfficiency, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.Research != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ResearchPerMonth") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.Research, 100), Game_Calendar.IMG_TECHNOLOGY, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ResearchPerMonth"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.Research, 100), Game_Calendar.IMG_TECHNOLOGY, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.MonthlyLegacy != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MonthlyLegacy") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.MonthlyLegacy, 100), Images.legacy, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MonthlyLegacy"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.MonthlyLegacy, 100), Images.legacy, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.GeneralAttack != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsAttack") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.GeneralAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsAttack"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.GeneralAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.GeneralDefense != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsDefense") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.GeneralDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsDefense"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.GeneralDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.ArmyMaintenance != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMaintenance") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ArmyMaintenance, 100) + "%", Images.armyMaintenance, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMaintenance"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ArmyMaintenance, 100) + "%", Images.armyMaintenance, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.RecruitArmyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyRecruitmentCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.RecruitArmyCost, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyRecruitmentCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.RecruitArmyCost, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.ConstructionTime != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionTime") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ConstructionTime * 100.0F, 100) + "%", Images.buildTime, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionTime"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ConstructionTime * 100.0F, 100) + "%", Images.buildTime, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.IncreaseManpowerCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseManpowerCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseManpowerCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.RecruitmentTime != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RecruitmentTime") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RecruitmentTime"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.LoanInterest != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("LoanInterest") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.LoanInterest, 100) + "%", Images.loan, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("LoanInterest"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.LoanInterest, 100) + "%", Images.loan, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.CoreCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("CoreConstruction") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.CoreCost, 100) + "%", Images.core, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("CoreConstruction"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.CoreCost, 100) + "%", Images.core, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.ReligionCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ReligionConversionCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ReligionCost, 100) + "%", Images.religion, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ReligionConversionCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ReligionCost, 100) + "%", Images.religion, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.IncomeProduction != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncomeProduction") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.IncomeProduction, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncomeProduction"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.IncomeProduction, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.MaxManpower != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MaximumManpower") + "", "+" + (int)Game.getCiv(iActiveCivID).advisorAdministration.MaxManpower, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MaximumManpower"), "+" + (int)Game.getCiv(iActiveCivID).advisorAdministration.MaxManpower, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.UnitsAttack != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsAttack") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.UnitsAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsAttack"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.UnitsAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.UnitsDefense != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsDefense") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.UnitsDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsDefense"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.UnitsDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.RegimentsLimit != 0) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RegimentsLimit") + "", "+" + CFG.getPrecision2((float)Game.getCiv(iActiveCivID).advisorAdministration.RegimentsLimit, 1), Images.regimentsLimit, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RegimentsLimit"), "+" + CFG.getPrecision2((float)Game.getCiv(iActiveCivID).advisorAdministration.RegimentsLimit, 1), Images.regimentsLimit, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.ImproveRelationsModifier != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ImproveRelationsModifier") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ImproveRelationsModifier, 100) + "%", Images.relations, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ImproveRelationsModifier"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ImproveRelationsModifier, 100) + "%", Images.relations, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.ArmyMovementSpeed != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMovementSpeed") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ArmyMovementSpeed, 100) + "%", Images.movementSpeed, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMovementSpeed"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.ArmyMovementSpeed, 100) + "%", Images.movementSpeed, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorAdministration.SiegeEffectiveness != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("SiegeEffectiveness") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.SiegeEffectiveness * 100.0F, 100) + "%", Images.siege, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    int var154 = statsY + ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("SiegeEffectiveness"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorAdministration.SiegeEffectiveness * 100.0F, 100) + "%", Images.siege, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    int var154 = statsY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
             }
 
             menuElements.add(new Text_StaticBG_ID_FlagCiv_SpecialEmpty(CFG.PADDING + Images.boxTitleBORDERWIDTH, buttonY - CFG.PADDING, menuWidth - (CFG.PADDING + Images.boxTitleBORDERWIDTH) * 2, ButtonAdvisor.getButtonHeight() + CFG.PADDING * 2));
             buttonY += ButtonAdvisor.getButtonHeight() + CFG.PADDING * 2;
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get(GameValues.court.ADVISOR_NAME_ECONOMIC), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, Game.getCiv(iActiveCivID).advisorEconomy.sName != null ? Game.lang.get("XYearsOld", Math.min(99, Game_Calendar.currentYear - Game.getCiv(iActiveCivID).advisorEconomy.iYearOfBirth)) : ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
             if (Game.getCiv(iActiveCivID).advisorEconomy.sName == null) {
                 menuElements.add(new ButtonAdvisor_No(paddingLeft, buttonY) {
                     public void actionElement() {
@@ -827,7 +836,7 @@ public class InGame_Court extends Menu {
 
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new Text_StaticBG(Game.lang.get("NoAdvisor"), CFG.FONT_REGULAR_SMALL, -1, buttonX, buttonY, tWidth, ButtonAdvisor.getButtonHeight()) {
                     public void actionElement() {
                         if (InGame_Court.iActiveCivID == Game.player.iCivID) {
@@ -842,8 +851,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         if (InGame_Court.iActiveCivID == Game.player.iCivID) {
                             nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("NoAdvisor"), CFG.FONT_BOLD));
                             nData.add(new MenuElement_HoverElement_Type_FlagTitle(InGame_Court.iActiveCivID, CFG.PADDING, 0));
@@ -888,7 +897,7 @@ public class InGame_Court extends Menu {
 
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 int statsY = 0;
                 int statW = menuWidth - buttonX - paddingLeft;
                 int statH = (ButtonAdvisor.getButtonHeight() - CFG.PADDING * 2) / 3;
@@ -915,12 +924,12 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.sName, CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", "" + Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         if (InGame_Court.iActiveCivID == Game.player.iCivID && Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.iLevel < AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID)) {
@@ -936,12 +945,12 @@ public class InGame_Court extends Menu {
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Cost") + ": ", CFG.FONT_REGULAR_SMALL));
-                            nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2((float)AdvisorManager.getAdvisorPromoteCost(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                            nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float) AdvisorManager.getAdvisorPromoteCost(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                             nData.add(new MenuElement_HoverElement_Type_Image(Images.gold, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("LegacyPoints") + ": ", CFG.FONT_REGULAR_SMALL));
-                            nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2((float)AdvisorManager.getAdvisorPromoteCostLegacy(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                            nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float) AdvisorManager.getAdvisorPromoteCostLegacy(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                             nData.add(new MenuElement_HoverElement_Type_Image(Images.legacy, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
@@ -950,8 +959,8 @@ public class InGame_Court extends Menu {
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                ((MenuElement)menuElements.get(menuElements.size() - 1)).setPosX(menuWidth - paddingLeft - ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth());
-                menuElements.add(new Text_StaticBG_Advisor(Game.getCiv(iActiveCivID).advisorEconomy.sName, buttonX, buttonY, ((MenuElement)menuElements.get(menuElements.size() - 1)).getPosX() - buttonX - CFG.PADDING, statH) {
+                menuElements.get(menuElements.size() - 1).setPosX(menuWidth - paddingLeft - menuElements.get(menuElements.size() - 1).getWidth());
+                menuElements.add(new Text_StaticBG_Advisor(Game.getCiv(iActiveCivID).advisorEconomy.sName, buttonX, buttonY, menuElements.get(menuElements.size() - 1).getPosX() - buttonX - CFG.PADDING, statH) {
                     public String getTextToDraw() {
                         try {
                             if (Keyboard.keyboardActionType == KeyboardActionType.INGAME_ADVISOR_ECONOMIC_NAME) {
@@ -977,183 +986,183 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.sName, CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", "" + Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 if (Game.getCiv(iActiveCivID).advisorEconomy.TaxEfficiency != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("TaxEfficiency") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.TaxEfficiency, 100) + "%", Images.tax, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("TaxEfficiency"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.TaxEfficiency, 100) + "%", Images.tax, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.ProvinceMaintenance != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProvinceMaintenance") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ProvinceMaintenance, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProvinceMaintenance"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ProvinceMaintenance, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.GrowthRate != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GrowthRate") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.GrowthRate, 100) + "%", Images.populationGrowth, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GrowthRate"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.GrowthRate, 100) + "%", Images.populationGrowth, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.ConstructionCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ConstructionCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ConstructionCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.AdministrationBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("AdministrationBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("AdministrationBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.EconomyBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("EconomyBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("EconomyBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.MilitaryBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MilitaryBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MilitaryBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.InvestInEconomyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("InvestInEconomyCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("InvestInEconomyCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.IncreaseTaxEfficiencyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseTaxEfficiencyCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseTaxEfficiencyCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.IncreaseGrowthRateCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseGrowthRateCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.IncreaseGrowthRateCost * 100.0F, 100) + "%", Images.populationUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseGrowthRateCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.IncreaseGrowthRateCost * 100.0F, 100) + "%", Images.populationUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.DevelopInfrastructureCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("DevelopInfrastructureCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("DevelopInfrastructureCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.ProductionEfficiency != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProductionEfficiency") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ProductionEfficiency, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProductionEfficiency"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ProductionEfficiency, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.Research != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ResearchPerMonth") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.Research, 100), Game_Calendar.IMG_TECHNOLOGY, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ResearchPerMonth"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.Research, 100), Game_Calendar.IMG_TECHNOLOGY, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.MonthlyLegacy != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MonthlyLegacy") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.MonthlyLegacy, 100), Images.legacy, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MonthlyLegacy"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.MonthlyLegacy, 100), Images.legacy, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.GeneralAttack != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsAttack") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.GeneralAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsAttack"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.GeneralAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.GeneralDefense != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsDefense") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.GeneralDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsDefense"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.GeneralDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.ArmyMaintenance != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMaintenance") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ArmyMaintenance, 100) + "%", Images.armyMaintenance, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMaintenance"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ArmyMaintenance, 100) + "%", Images.armyMaintenance, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.RecruitArmyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyRecruitmentCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.RecruitArmyCost, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyRecruitmentCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.RecruitArmyCost, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.ConstructionTime != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionTime") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ConstructionTime * 100.0F, 100) + "%", Images.buildTime, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionTime"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ConstructionTime * 100.0F, 100) + "%", Images.buildTime, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.IncreaseManpowerCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseManpowerCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseManpowerCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.RecruitmentTime != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RecruitmentTime") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.RecruitmentTime, 100) + "%", Images.time, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RecruitmentTime"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.RecruitmentTime, 100) + "%", Images.time, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.LoanInterest != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("LoanInterest") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.LoanInterest, 100) + "%", Images.loan, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("LoanInterest"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.LoanInterest, 100) + "%", Images.loan, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.CoreCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("CoreConstruction") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.CoreCost, 100) + "%", Images.core, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("CoreConstruction"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.CoreCost, 100) + "%", Images.core, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.ReligionCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ReligionConversionCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ReligionCost, 100) + "%", Images.religion, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ReligionConversionCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ReligionCost, 100) + "%", Images.religion, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.IncomeProduction != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncomeProduction") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.IncomeProduction, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncomeProduction"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.IncomeProduction, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.MaxManpower != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MaximumManpower") + "", "+" + (int)Game.getCiv(iActiveCivID).advisorEconomy.MaxManpower, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MaximumManpower"), "+" + (int)Game.getCiv(iActiveCivID).advisorEconomy.MaxManpower, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.UnitsAttack != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsAttack") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.UnitsAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsAttack"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.UnitsAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.UnitsDefense != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsDefense") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.UnitsDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsDefense"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.UnitsDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.RegimentsLimit != 0) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RegimentsLimit") + "", "+" + CFG.getPrecision2((float)Game.getCiv(iActiveCivID).advisorEconomy.RegimentsLimit, 1), Images.regimentsLimit, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RegimentsLimit"), "+" + CFG.getPrecision2((float)Game.getCiv(iActiveCivID).advisorEconomy.RegimentsLimit, 1), Images.regimentsLimit, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.ImproveRelationsModifier != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ImproveRelationsModifier") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ImproveRelationsModifier, 100) + "%", Images.relations, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ImproveRelationsModifier"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ImproveRelationsModifier, 100) + "%", Images.relations, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.ArmyMovementSpeed != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMovementSpeed") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ArmyMovementSpeed, 100) + "%", Images.movementSpeed, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMovementSpeed"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.ArmyMovementSpeed, 100) + "%", Images.movementSpeed, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorEconomy.SiegeEffectiveness != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("SiegeEffectiveness") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.SiegeEffectiveness * 100.0F, 100) + "%", Images.siege, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    int var155 = statsY + ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("SiegeEffectiveness"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorEconomy.SiegeEffectiveness * 100.0F, 100) + "%", Images.siege, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    int var155 = statsY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
             }
 
             menuElements.add(new Text_StaticBG_ID_FlagCiv_SpecialEmpty(CFG.PADDING + Images.boxTitleBORDERWIDTH, buttonY - CFG.PADDING, menuWidth - (CFG.PADDING + Images.boxTitleBORDERWIDTH) * 2, ButtonAdvisor.getButtonHeight() + CFG.PADDING * 2));
             buttonY += ButtonAdvisor.getButtonHeight() + CFG.PADDING * 2;
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get(GameValues.court.ADVISOR_NAME_INNOVATION), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, Game.getCiv(iActiveCivID).advisorTechnology.sName != null ? Game.lang.get("XYearsOld", Math.min(99, Game_Calendar.currentYear - Game.getCiv(iActiveCivID).advisorTechnology.iYearOfBirth)) : ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
             if (Game.getCiv(iActiveCivID).advisorTechnology.sName == null) {
                 menuElements.add(new ButtonAdvisor_No(paddingLeft, buttonY) {
                     public void actionElement() {
@@ -1168,7 +1177,7 @@ public class InGame_Court extends Menu {
 
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new Text_StaticBG(Game.lang.get("NoAdvisor"), CFG.FONT_REGULAR_SMALL, -1, buttonX, buttonY, tWidth, ButtonAdvisor.getButtonHeight()) {
                     public void actionElement() {
                         if (InGame_Court.iActiveCivID == Game.player.iCivID) {
@@ -1183,8 +1192,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         if (InGame_Court.iActiveCivID == Game.player.iCivID) {
                             nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("NoAdvisor"), CFG.FONT_BOLD));
                             nData.add(new MenuElement_HoverElement_Type_FlagTitle(InGame_Court.iActiveCivID, CFG.PADDING, 0));
@@ -1229,7 +1238,7 @@ public class InGame_Court extends Menu {
 
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 int statsY = 0;
                 int statW = menuWidth - buttonX - paddingLeft;
                 int statH = (ButtonAdvisor.getButtonHeight() - CFG.PADDING * 2) / 3;
@@ -1256,12 +1265,12 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.sName, CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", "" + Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         if (InGame_Court.iActiveCivID == Game.player.iCivID && Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.iLevel < AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID)) {
@@ -1277,12 +1286,12 @@ public class InGame_Court extends Menu {
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Cost") + ": ", CFG.FONT_REGULAR_SMALL));
-                            nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2((float)AdvisorManager.getAdvisorPromoteCost(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                            nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float) AdvisorManager.getAdvisorPromoteCost(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                             nData.add(new MenuElement_HoverElement_Type_Image(Images.gold, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("LegacyPoints") + ": ", CFG.FONT_REGULAR_SMALL));
-                            nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2((float)AdvisorManager.getAdvisorPromoteCostLegacy(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                            nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float) AdvisorManager.getAdvisorPromoteCostLegacy(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                             nData.add(new MenuElement_HoverElement_Type_Image(Images.legacy, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
@@ -1291,8 +1300,8 @@ public class InGame_Court extends Menu {
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                ((MenuElement)menuElements.get(menuElements.size() - 1)).setPosX(menuWidth - paddingLeft - ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth());
-                menuElements.add(new Text_StaticBG_Advisor(Game.getCiv(iActiveCivID).advisorTechnology.sName, buttonX, buttonY, ((MenuElement)menuElements.get(menuElements.size() - 1)).getPosX() - buttonX - CFG.PADDING, statH) {
+                menuElements.get(menuElements.size() - 1).setPosX(menuWidth - paddingLeft - menuElements.get(menuElements.size() - 1).getWidth());
+                menuElements.add(new Text_StaticBG_Advisor(Game.getCiv(iActiveCivID).advisorTechnology.sName, buttonX, buttonY, menuElements.get(menuElements.size() - 1).getPosX() - buttonX - CFG.PADDING, statH) {
                     public String getTextToDraw() {
                         try {
                             if (Keyboard.keyboardActionType == KeyboardActionType.INGAME_ADVISOR_INNOVATION_NAME) {
@@ -1318,183 +1327,183 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.sName, CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", "" + Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 if (Game.getCiv(iActiveCivID).advisorTechnology.TaxEfficiency != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("TaxEfficiency") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.TaxEfficiency, 100) + "%", Images.tax, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("TaxEfficiency"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.TaxEfficiency, 100) + "%", Images.tax, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.ProvinceMaintenance != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProvinceMaintenance") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ProvinceMaintenance, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProvinceMaintenance"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ProvinceMaintenance, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.GrowthRate != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GrowthRate") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.GrowthRate, 100) + "%", Images.populationGrowth, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GrowthRate"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.GrowthRate, 100) + "%", Images.populationGrowth, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.ConstructionCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ConstructionCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ConstructionCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.AdministrationBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("AdministrationBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("AdministrationBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.EconomyBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("EconomyBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("EconomyBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.MilitaryBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MilitaryBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MilitaryBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.InvestInEconomyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("InvestInEconomyCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("InvestInEconomyCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.IncreaseTaxEfficiencyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseTaxEfficiencyCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseTaxEfficiencyCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.IncreaseGrowthRateCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseGrowthRateCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.IncreaseGrowthRateCost * 100.0F, 100) + "%", Images.populationUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseGrowthRateCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.IncreaseGrowthRateCost * 100.0F, 100) + "%", Images.populationUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.DevelopInfrastructureCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("DevelopInfrastructureCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("DevelopInfrastructureCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.ProductionEfficiency != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProductionEfficiency") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ProductionEfficiency, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProductionEfficiency"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ProductionEfficiency, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.Research != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ResearchPerMonth") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.Research, 100), Game_Calendar.IMG_TECHNOLOGY, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ResearchPerMonth"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.Research, 100), Game_Calendar.IMG_TECHNOLOGY, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.MonthlyLegacy != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MonthlyLegacy") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.MonthlyLegacy, 100), Images.legacy, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MonthlyLegacy"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.MonthlyLegacy, 100), Images.legacy, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.GeneralAttack != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsAttack") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.GeneralAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsAttack"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.GeneralAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.GeneralDefense != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsDefense") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.GeneralDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsDefense"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.GeneralDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.ArmyMaintenance != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMaintenance") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ArmyMaintenance, 100) + "%", Images.armyMaintenance, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMaintenance"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ArmyMaintenance, 100) + "%", Images.armyMaintenance, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.RecruitArmyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyRecruitmentCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.RecruitArmyCost, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyRecruitmentCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.RecruitArmyCost, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.ConstructionTime != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionTime") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ConstructionTime * 100.0F, 100) + "%", Images.buildTime, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionTime"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ConstructionTime * 100.0F, 100) + "%", Images.buildTime, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.IncreaseManpowerCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseManpowerCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseManpowerCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.RecruitmentTime != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RecruitmentTime") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RecruitmentTime"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.LoanInterest != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("LoanInterest") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.LoanInterest, 100) + "%", Images.loan, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("LoanInterest"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.LoanInterest, 100) + "%", Images.loan, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.CoreCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("CoreConstruction") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.CoreCost, 100) + "%", Images.core, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("CoreConstruction"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.CoreCost, 100) + "%", Images.core, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.ReligionCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ReligionConversionCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ReligionCost, 100) + "%", Images.religion, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ReligionConversionCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ReligionCost, 100) + "%", Images.religion, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.IncomeProduction != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncomeProduction") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.IncomeProduction, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncomeProduction"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.IncomeProduction, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.MaxManpower != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MaximumManpower") + "", "+" + (int)Game.getCiv(iActiveCivID).advisorTechnology.MaxManpower, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MaximumManpower"), "+" + (int)Game.getCiv(iActiveCivID).advisorTechnology.MaxManpower, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.UnitsAttack != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsAttack") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.UnitsAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsAttack"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.UnitsAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.UnitsDefense != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsDefense") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.UnitsDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsDefense"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.UnitsDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.RegimentsLimit != 0) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RegimentsLimit") + "", "+" + CFG.getPrecision2((float)Game.getCiv(iActiveCivID).advisorTechnology.RegimentsLimit, 1), Images.regimentsLimit, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RegimentsLimit"), "+" + CFG.getPrecision2((float)Game.getCiv(iActiveCivID).advisorTechnology.RegimentsLimit, 1), Images.regimentsLimit, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.ImproveRelationsModifier != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ImproveRelationsModifier") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ImproveRelationsModifier, 100) + "%", Images.relations, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ImproveRelationsModifier"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ImproveRelationsModifier, 100) + "%", Images.relations, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.ArmyMovementSpeed != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMovementSpeed") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ArmyMovementSpeed, 100) + "%", Images.movementSpeed, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMovementSpeed"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.ArmyMovementSpeed, 100) + "%", Images.movementSpeed, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorTechnology.SiegeEffectiveness != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("SiegeEffectiveness") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.SiegeEffectiveness * 100.0F, 100) + "%", Images.siege, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    int var156 = statsY + ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("SiegeEffectiveness"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorTechnology.SiegeEffectiveness * 100.0F, 100) + "%", Images.siege, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    int var156 = statsY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
             }
 
             menuElements.add(new Text_StaticBG_ID_FlagCiv_SpecialEmpty(CFG.PADDING + Images.boxTitleBORDERWIDTH, buttonY - CFG.PADDING, menuWidth - (CFG.PADDING + Images.boxTitleBORDERWIDTH) * 2, ButtonAdvisor.getButtonHeight() + CFG.PADDING * 2));
             buttonY += ButtonAdvisor.getButtonHeight() + CFG.PADDING * 2;
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get(GameValues.court.ADVISOR_NAME_MILITARY), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, Game.getCiv(iActiveCivID).advisorMilitary.sName != null ? Game.lang.get("XYearsOld", Math.min(99, Game_Calendar.currentYear - Game.getCiv(iActiveCivID).advisorMilitary.iYearOfBirth)) : ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
             if (Game.getCiv(iActiveCivID).advisorMilitary.sName == null) {
                 menuElements.add(new ButtonAdvisor_No(paddingLeft, buttonY) {
                     public void actionElement() {
@@ -1509,7 +1518,7 @@ public class InGame_Court extends Menu {
 
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new Text_StaticBG(Game.lang.get("NoAdvisor"), CFG.FONT_REGULAR_SMALL, -1, buttonX, buttonY, tWidth, ButtonAdvisor.getButtonHeight()) {
                     public void actionElement() {
                         if (InGame_Court.iActiveCivID == Game.player.iCivID) {
@@ -1524,8 +1533,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         if (InGame_Court.iActiveCivID == Game.player.iCivID) {
                             nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("NoAdvisor"), CFG.FONT_BOLD));
                             nData.add(new MenuElement_HoverElement_Type_FlagTitle(InGame_Court.iActiveCivID, CFG.PADDING, 0));
@@ -1570,7 +1579,7 @@ public class InGame_Court extends Menu {
 
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 int statsY = 0;
                 int statW = menuWidth - buttonX - paddingLeft;
                 int statH = (ButtonAdvisor.getButtonHeight() - CFG.PADDING * 2) / 3;
@@ -1597,12 +1606,12 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.sName, CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", "" + Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         if (InGame_Court.iActiveCivID == Game.player.iCivID && Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.iLevel < AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID)) {
@@ -1618,12 +1627,12 @@ public class InGame_Court extends Menu {
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Cost") + ": ", CFG.FONT_REGULAR_SMALL));
-                            nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2((float)AdvisorManager.getAdvisorPromoteCost(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                            nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float) AdvisorManager.getAdvisorPromoteCost(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                             nData.add(new MenuElement_HoverElement_Type_Image(Images.gold, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("LegacyPoints") + ": ", CFG.FONT_REGULAR_SMALL));
-                            nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2((float)AdvisorManager.getAdvisorPromoteCostLegacy(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                            nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float) AdvisorManager.getAdvisorPromoteCostLegacy(InGame_Court.iActiveCivID, Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.iLevel), 100), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                             nData.add(new MenuElement_HoverElement_Type_Image(Images.legacy, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
@@ -1632,8 +1641,8 @@ public class InGame_Court extends Menu {
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                ((MenuElement)menuElements.get(menuElements.size() - 1)).setPosX(menuWidth - paddingLeft - ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth());
-                menuElements.add(new Text_StaticBG_Advisor(Game.getCiv(iActiveCivID).advisorMilitary.sName, buttonX, buttonY, ((MenuElement)menuElements.get(menuElements.size() - 1)).getPosX() - buttonX - CFG.PADDING, statH) {
+                menuElements.get(menuElements.size() - 1).setPosX(menuWidth - paddingLeft - menuElements.get(menuElements.size() - 1).getWidth());
+                menuElements.add(new Text_StaticBG_Advisor(Game.getCiv(iActiveCivID).advisorMilitary.sName, buttonX, buttonY, menuElements.get(menuElements.size() - 1).getPosX() - buttonX - CFG.PADDING, statH) {
                     public String getTextToDraw() {
                         try {
                             if (Keyboard.keyboardActionType == KeyboardActionType.INGAME_ADVISOR_MILITARY_NAME) {
@@ -1659,176 +1668,176 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Center(Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.sName, CFG.FONT_BOLD, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", "" + Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("AdvisorSkillLevel") + ": ", Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.iLevel + " / " + AdvisorManager.getAdvisorMaxLevel(InGame_Court.iActiveCivID), Images.skill, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 if (Game.getCiv(iActiveCivID).advisorMilitary.TaxEfficiency != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("TaxEfficiency") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.TaxEfficiency, 100) + "%", Images.tax, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("TaxEfficiency"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.TaxEfficiency, 100) + "%", Images.tax, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.ProvinceMaintenance != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProvinceMaintenance") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ProvinceMaintenance, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProvinceMaintenance"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ProvinceMaintenance, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.GrowthRate != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GrowthRate") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.GrowthRate, 100) + "%", Images.populationGrowth, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GrowthRate"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.GrowthRate, 100) + "%", Images.populationGrowth, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.ConstructionCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ConstructionCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ConstructionCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.AdministrationBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("AdministrationBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("AdministrationBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.EconomyBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("EconomyBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("EconomyBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.MilitaryBuildingsCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MilitaryBuildingsCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MilitaryBuildingsCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.InvestInEconomyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("InvestInEconomyCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("InvestInEconomyCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.IncreaseTaxEfficiencyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseTaxEfficiencyCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseTaxEfficiencyCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.IncreaseGrowthRateCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseGrowthRateCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.IncreaseGrowthRateCost * 100.0F, 100) + "%", Images.populationUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseGrowthRateCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.IncreaseGrowthRateCost * 100.0F, 100) + "%", Images.populationUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.DevelopInfrastructureCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("DevelopInfrastructureCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("DevelopInfrastructureCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.ProductionEfficiency != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProductionEfficiency") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ProductionEfficiency, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ProductionEfficiency"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ProductionEfficiency, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.Research != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ResearchPerMonth") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.Research, 100), Game_Calendar.IMG_TECHNOLOGY, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ResearchPerMonth"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.Research, 100), Game_Calendar.IMG_TECHNOLOGY, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.MonthlyLegacy != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MonthlyLegacy") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.MonthlyLegacy, 100), Images.legacy, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MonthlyLegacy"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.MonthlyLegacy, 100), Images.legacy, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.GeneralAttack != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsAttack") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.GeneralAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsAttack"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.GeneralAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.GeneralDefense != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsDefense") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.GeneralDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("GeneralsDefense"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.GeneralDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.ArmyMaintenance != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMaintenance") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ArmyMaintenance, 100) + "%", Images.armyMaintenance, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMaintenance"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ArmyMaintenance, 100) + "%", Images.armyMaintenance, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.RecruitArmyCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyRecruitmentCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.RecruitArmyCost, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyRecruitmentCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.RecruitArmyCost, 100) + "%", Images.gold, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.ConstructionTime != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionTime") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ConstructionTime * 100.0F, 100) + "%", Images.buildTime, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ConstructionTime"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ConstructionTime * 100.0F, 100) + "%", Images.buildTime, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.IncreaseManpowerCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseManpowerCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncreaseManpowerCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.RecruitmentTime != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RecruitmentTime") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RecruitmentTime"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.LoanInterest != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("LoanInterest") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.LoanInterest, 100) + "%", Images.loan, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("LoanInterest"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.LoanInterest, 100) + "%", Images.loan, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.CoreCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("CoreConstruction") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.CoreCost, 100) + "%", Images.core, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("CoreConstruction"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.CoreCost, 100) + "%", Images.core, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.ReligionCost != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ReligionConversionCost") + "", "" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ReligionCost, 100) + "%", Images.religion, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ReligionConversionCost"), CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ReligionCost, 100) + "%", Images.religion, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.IncomeProduction != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncomeProduction") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.IncomeProduction, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("IncomeProduction"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.IncomeProduction, 100) + "%", Images.goods, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.MaxManpower != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MaximumManpower") + "", "+" + (int)Game.getCiv(iActiveCivID).advisorMilitary.MaxManpower, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("MaximumManpower"), "+" + (int)Game.getCiv(iActiveCivID).advisorMilitary.MaxManpower, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.UnitsAttack != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsAttack") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.UnitsAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsAttack"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.UnitsAttack, 100), Images.attack, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.UnitsDefense != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsDefense") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.UnitsDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("UnitsDefense"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.UnitsDefense, 100), Images.defense, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.RegimentsLimit != 0) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RegimentsLimit") + "", "+" + CFG.getPrecision2((float)Game.getCiv(iActiveCivID).advisorMilitary.RegimentsLimit, 1), Images.regimentsLimit, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("RegimentsLimit"), "+" + CFG.getPrecision2((float)Game.getCiv(iActiveCivID).advisorMilitary.RegimentsLimit, 1), Images.regimentsLimit, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.ImproveRelationsModifier != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ImproveRelationsModifier") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ImproveRelationsModifier, 100) + "%", Images.relations, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ImproveRelationsModifier"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ImproveRelationsModifier, 100) + "%", Images.relations, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.ArmyMovementSpeed != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMovementSpeed") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ArmyMovementSpeed, 100) + "%", Images.movementSpeed, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    statsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("ArmyMovementSpeed"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.ArmyMovementSpeed, 100) + "%", Images.movementSpeed, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    statsY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
 
                 if (Game.getCiv(iActiveCivID).advisorMilitary.SiegeEffectiveness != 0.0F) {
-                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("SiegeEffectiveness") + "", "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.SiegeEffectiveness * 100.0F, 100) + "%", Images.siege, buttonX, buttonY + statsY, statW, statH, maxIconW));
-                    int var157 = statsY + ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    menuElements.add(new ButtonStatsRectIMG_Bonuses_Right(Game.lang.get("SiegeEffectiveness"), "+" + CFG.getPrecision2(Game.getCiv(iActiveCivID).advisorMilitary.SiegeEffectiveness * 100.0F, 100) + "%", Images.siege, buttonX, buttonY + statsY, statW, statH, maxIconW));
+                    int var157 = statsY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
             }
 
@@ -1838,15 +1847,15 @@ public class InGame_Court extends Menu {
             if (iActiveCivID == Game.player.iCivID || Game.SPECTATOR_MODE) {
                 menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("BattleTactics"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, "") {
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_Text_Desc(Game.lang.get("BattleTacticsDesc"), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 menuElements.add(new ButtonCurrentSituation(Game.lang.get(GameValues.battleTactics.BATTLE_TACTICS[Game.getCiv(iActiveCivID).getBattleTacticsID()]), Images.battle, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - CFG.BUTTON_HEIGHT2 * 2 - CFG.PADDING * 2, CFG.BUTTON_HEIGHT2, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                     public void actionElement() {
                         if (Game.menuManager.getVisibleInGame_PopUp() && MenuManager.IN_GAME_POP_UP_MENU_ID == 26) {
@@ -1858,8 +1867,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("BattleTactics"), Colors.HOVER_GOLD));
                         nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.battle, CFG.PADDING, 0));
                         nElements.add(new MenuElement_HoverElement(nData));
@@ -1879,11 +1888,11 @@ public class InGame_Court extends Menu {
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new TextIcon2_Value((GameValues.battleTactics.BATTLE_TACTICS_ATTACK[Game.getCiv(iActiveCivID).getBattleTacticsID()] > 0 ? "+" : "") + GameValues.battleTactics.BATTLE_TACTICS_ATTACK[Game.getCiv(iActiveCivID).getBattleTacticsID()], Images.attack, buttonX, buttonY, CFG.BUTTON_HEIGHT2, CFG.BUTTON_HEIGHT2, Game.getCiv(iActiveCivID).getBattleTacticsID()) {
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("UnitsAttack") + ": ", (GameValues.battleTactics.BATTLE_TACTICS_ATTACK[Game.getCiv(InGame_Court.iActiveCivID).getBattleTacticsID()] > 0 ? "+" : "") + GameValues.battleTactics.BATTLE_TACTICS_ATTACK[Game.getCiv(InGame_Court.iActiveCivID).getBattleTacticsID()], Images.attack, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, GameValues.battleTactics.BATTLE_TACTICS_ATTACK[Game.getCiv(InGame_Court.iActiveCivID).getBattleTacticsID()] == 0 ? Colors.HOVER_NEUTRAL : (GameValues.battleTactics.BATTLE_TACTICS_ATTACK[Game.getCiv(InGame_Court.iActiveCivID).getBattleTacticsID()] > 0 ? Colors.COLOR_TEXT_MODIFIER_POSITIVE : Colors.COLOR_TEXT_MODIFIER_NEGATIVE)));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
@@ -1898,11 +1907,11 @@ public class InGame_Court extends Menu {
                         }
                     }
                 });
-                buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new TextIcon2_Value((GameValues.battleTactics.BATTLE_TACTICS_DEFENSE[Game.getCiv(iActiveCivID).getBattleTacticsID()] > 0 ? "+" : "") + GameValues.battleTactics.BATTLE_TACTICS_DEFENSE[Game.getCiv(iActiveCivID).getBattleTacticsID()], Images.defense, buttonX, buttonY, CFG.BUTTON_HEIGHT2, CFG.BUTTON_HEIGHT2, Game.getCiv(iActiveCivID).getBattleTacticsID()) {
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("UnitsDefense") + ": ", (GameValues.battleTactics.BATTLE_TACTICS_DEFENSE[Game.getCiv(InGame_Court.iActiveCivID).getBattleTacticsID()] > 0 ? "+" : "") + GameValues.battleTactics.BATTLE_TACTICS_DEFENSE[Game.getCiv(InGame_Court.iActiveCivID).getBattleTacticsID()], Images.defense, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, GameValues.battleTactics.BATTLE_TACTICS_DEFENSE[Game.getCiv(InGame_Court.iActiveCivID).getBattleTacticsID()] == 0 ? Colors.HOVER_NEUTRAL : (GameValues.battleTactics.BATTLE_TACTICS_DEFENSE[Game.getCiv(InGame_Court.iActiveCivID).getBattleTacticsID()] > 0 ? Colors.COLOR_TEXT_MODIFIER_POSITIVE : Colors.COLOR_TEXT_MODIFIER_NEGATIVE)));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
@@ -1917,12 +1926,12 @@ public class InGame_Court extends Menu {
                         }
                     }
                 });
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             }
 
             if (iActiveCivID == Game.player.iCivID) {
                 menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Military"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 menuElements.add(new ButtonCurrentSituation(Game.lang.get("ArmyControlledByAI") + ": " + (Game.player.allowAIMove ? Game.lang.get("On") : Game.lang.get("Off")), Images.ai, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT2, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                     public void actionElement() {
                         Game.player.allowAIMove = !Game.player.allowAIMove;
@@ -1935,8 +1944,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("ArmyControlledByAI"), Colors.HOVER_GOLD));
                         nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.ai, CFG.PADDING, 0));
                         nElements.add(new MenuElement_HoverElement(nData));
@@ -1948,7 +1957,7 @@ public class InGame_Court extends Menu {
                         return Game.player.allowAIMove ? Colors.getColorPositive(isActive, this.getIsHovered()) : super.getColor(isActive);
                     }
                 });
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 menuElements.add(new ButtonCurrentSituation(Game.lang.get("Armies") + ": " + Game.lang.get("Colors"), Images.brush, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT2, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                     public void actionElement() {
                         Game.menuManager.hideCourtCiv();
@@ -1956,8 +1965,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Armies") + ": " + Game.lang.get("Colors"), Colors.HOVER_GOLD));
                         nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.brush, CFG.PADDING, 0));
                         nElements.add(new MenuElement_HoverElement(nData));
@@ -1965,10 +1974,10 @@ public class InGame_Court extends Menu {
                         this.menuElementHover = new MenuElement_Hover(nElements, true);
                     }
                 });
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 if (GameValues.colonization.ALLOW_COLONIZATION_BY_SPENDING_GOLD || GameValues.colonization.ALLOW_COLONIZATION_BY_SPENDING_GOLD_PLAYER_TRIBAL && Game.ideologiesManager.getIdeology(Game.getCiv(Game.player.iCivID).getIdeologyID()).TRIBAL) {
                     menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Colonization"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-                    buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                     menuElements.add(new ButtonCurrentSituation(Game.lang.get("Colonize") + ": " + Game.lang.get("ChooseAProvince"), Images.populationGrowth, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT2, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                         public void actionElement() {
                             if (Game.getCiv(Game.player.iCivID).fGold < GameValues.colonization.ALLOW_COLONIZATION_BY_SPENDING_GOLD_COST) {
@@ -1991,19 +2000,19 @@ public class InGame_Court extends Menu {
                         }
 
                         public void buildElementHover() {
-                            List<MenuElement_HoverElement> nElements = new ArrayList();
-                            List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                            List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                            List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                             nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Colonize") + ": " + Game.lang.get("ChooseAProvince"), Colors.HOVER_GOLD));
                             nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.populationGrowth, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
-                            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Cost") + ": ", "" + CFG.getPrecision2(GameValues.colonization.ALLOW_COLONIZATION_BY_SPENDING_GOLD_COST, 100), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Cost") + ": ", CFG.getPrecision2(GameValues.colonization.ALLOW_COLONIZATION_BY_SPENDING_GOLD_COST, 100), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             this.menuElementHover = new MenuElement_Hover(nElements);
                         }
                     });
-                    buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 }
             }
         } else if (modeID == 11) {
@@ -2022,8 +2031,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(Game_Ages.getVassals()), Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.council, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -2031,9 +2040,9 @@ public class InGame_Court extends Menu {
                     this.menuElementHover = new MenuElement_Hover(nElements, true);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get(Game_Ages.getReleaseAVassal()), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("SelectCivilization"), Images.vassal, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public int getSFX() {
                     return SoundsManager.SOUND_CLICK_TOP;
@@ -2045,8 +2054,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("SelectCivilization"), Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.vassal, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -2054,7 +2063,7 @@ public class InGame_Court extends Menu {
                     this.menuElementHover = new MenuElement_Hover(nElements, true);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             int tempElementsBefore = menuElements.size();
             List<Game.VassalsToRelease> listRelease = Game.getVassalsToRelease(iActiveCivID);
             if (listRelease.size() > 0) {
@@ -2066,12 +2075,12 @@ public class InGame_Court extends Menu {
                     int bestID = 0;
 
                     for(int i = listRelease.size() - 1; i > 0; --i) {
-                        if (CFG.compareAlphabetic_TwoString(Game.getCiv(((Game.VassalsToRelease)listRelease.get(bestID)).iCivID).getCivName(), Game.getCiv(((Game.VassalsToRelease)listRelease.get(i)).iCivID).getCivName())) {
+                        if (CFG.compareAlphabetic_TwoString(Game.getCiv(listRelease.get(bestID).iCivID).getCivName(), Game.getCiv(listRelease.get(i).iCivID).getCivName())) {
                             bestID = i;
                         }
                     }
 
-                    menuElements.add(new Text_StaticBG_ID_FlagCiv("" + Game.getCiv(((Game.VassalsToRelease)listRelease.get(bestID)).iCivID).getCivName(), CFG.FONT_REGULAR_SMALL, CFG.PADDING * 2, buttonX, buttonY, r0W, buttonH, ((Game.VassalsToRelease)listRelease.get(bestID)).iCivID) {
+                    menuElements.add(new Text_StaticBG_ID_FlagCiv(Game.getCiv(listRelease.get(bestID).iCivID).getCivName(), CFG.FONT_REGULAR_SMALL, CFG.PADDING * 2, buttonX, buttonY, r0W, buttonH, listRelease.get(bestID).iCivID) {
                         public void actionElement() {
                             InGame_ReleaseAVassal.buildData(Game.player.iCivID, this.getCurrent());
                             InGame_ReleaseAVassal.buildData_MapMode(Game.player.iCivID, this.getCurrent());
@@ -2080,8 +2089,8 @@ public class InGame_Court extends Menu {
                         }
 
                         public void buildElementHover() {
-                            List<MenuElement_HoverElement> nElements = new ArrayList();
-                            List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                            List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                            List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                             nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(Game_Ages.getReleaseAVassal()), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                             nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.vassal, CFG.PADDING, 0));
                             nElements.add(new MenuElement_HoverElement(nData));
@@ -2099,12 +2108,12 @@ public class InGame_Court extends Menu {
                                 int bestID = 0;
 
                                 for(int j = tProvinces.size() - 1; j > 0; --j) {
-                                    if (Game.getProvince((Integer)tProvinces.get(bestID)).getPopulationTotal() < Game.getProvince((Integer)tProvinces.get(j)).getPopulationTotal()) {
+                                    if (Game.getProvince(tProvinces.get(bestID)).getPopulationTotal() < Game.getProvince(tProvinces.get(j)).getPopulationTotal()) {
                                         bestID = j;
                                     }
                                 }
 
-                                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.getProvince((Integer)tProvinces.get(bestID)).getProvinceName() + "  ", CFG.getNumberWithSpaces("" + Game.getProvince((Integer)tProvinces.get(bestID)).getPopulationTotal()), Images.population, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.COLOR_POPULATION));
+                                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.getProvince(tProvinces.get(bestID)).getProvinceName() + "  ", CFG.getNumberWithSpaces("" + Game.getProvince(tProvinces.get(bestID)).getPopulationTotal()), Images.population, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.COLOR_POPULATION));
                                 nElements.add(new MenuElement_HoverElement(nData));
                                 nData.clear();
                                 tProvinces.remove(bestID);
@@ -2113,11 +2122,11 @@ public class InGame_Court extends Menu {
                             this.menuElementHover = new MenuElement_Hover(nElements);
                         }
                     });
-                    buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
-                    menuElements.add(new Text_StaticBG_ID_Special("" + ((Game.VassalsToRelease)listRelease.get(bestID)).iNumOfProvinces, CFG.FONT_REGULAR_SMALL, -1, buttonX, buttonY, r0W0, buttonH, ((Game.VassalsToRelease)listRelease.get(bestID)).iCivID) {
+                    buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
+                    menuElements.add(new Text_StaticBG_ID_Special("" + listRelease.get(bestID).iNumOfProvinces, CFG.FONT_REGULAR_SMALL, -1, buttonX, buttonY, r0W0, buttonH, listRelease.get(bestID).iCivID) {
                         public void buildElementHover() {
-                            List<MenuElement_HoverElement> nElements = new ArrayList();
-                            List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                            List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                            List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                             nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Provinces") + ": ", this.getText(), Images.provinces, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
@@ -2125,14 +2134,14 @@ public class InGame_Court extends Menu {
                         }
                     });
                     buttonX = paddingLeft;
-                    buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                    buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                     listRelease.remove(bestID);
                 }
             }
 
             if (tempElementsBefore == menuElements.size()) {
                 menuElements.add(new Text_StaticBG(Game.lang.get("None"), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT2));
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             }
         } else if (modeID == 1) {
             menuElements.add(new ButtonCurrentSituation(Game.lang.get(Game_Ages.getReleaseAVassal()), Images.vassal, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
@@ -2151,8 +2160,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(Game_Ages.getReleaseAVassal()), Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.vassal, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -2160,10 +2169,10 @@ public class InGame_Court extends Menu {
                     this.menuElementHover = new MenuElement_Hover(nElements, true);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             if (Game.getCiv(Game.player.iCivID).getPuppetOfCivID() != Game.player.iCivID) {
                 menuElements.add(new Text_Title_v2_TextLR(Game.lang.get(Game_Ages.getLord()), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 int buttonH2 = CFG.isDesktop() ? CFG.BUTTON_HEIGHT3 : CFG.BUTTON_HEIGHT2;
                 int statsRightW = (menuWidth - paddingLeft * 2 - CFG.PADDING * 6) / 7;
                 int statsRightH = CFG.BUTTON_HEIGHT;
@@ -2186,8 +2195,8 @@ public class InGame_Court extends Menu {
                     }
 
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
@@ -2201,11 +2210,11 @@ public class InGame_Court extends Menu {
                         return Colors.getColorPopulation(isActive, this.getIsHovered());
                     }
                 });
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight();
                 menuElements.add(new TextIcon2_Value(Game.lang.get("Tribute"), CFG.FONT_REGULAR_SMALL, Images.tax, paddingLeft, buttonY, statsRightW * 2 + CFG.PADDING, statsRightH, nCivID) {
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
@@ -2215,28 +2224,28 @@ public class InGame_Court extends Menu {
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
-                menuElements.add(new TextIcon2_Value("" + CFG.getPrecision2(Game.getIncomeFromVassal(nCivID, Game.player.iCivID, Game.getCiv(nCivID).diplomacy.getVassal_TributeLevel(Game.player.iCivID)), 100), CFG.FONT_REGULAR_SMALL, Images.gold, buttonX, buttonY, statsRightW * 2 + CFG.PADDING, statsRightH, nCivID) {
+                buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
+                menuElements.add(new TextIcon2_Value(CFG.getPrecision2(Game.getIncomeFromVassal(nCivID, Game.player.iCivID, Game.getCiv(nCivID).diplomacy.getVassal_TributeLevel(Game.player.iCivID)), 100), CFG.FONT_REGULAR_SMALL, Images.gold, buttonX, buttonY, statsRightW * 2 + CFG.PADDING, statsRightH, nCivID) {
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Tribute") + ": ", CFG.getPrecision2(GameValues.vassal.VASSAL_INCOME_TO_LORD[Game.getCiv(this.id).diplomacy.getVassal_TributeLevel(Game.player.iCivID)] * 100.0F, 10) + "%", Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", "" + CFG.getPrecision2(Game.getIncomeFromVassal(this.id, Game.player.iCivID, Game.getCiv(this.id).diplomacy.getVassal_TributeLevel(Game.player.iCivID)), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", CFG.getPrecision2(Game.getIncomeFromVassal(this.id, Game.player.iCivID, Game.getCiv(this.id).diplomacy.getVassal_TributeLevel(Game.player.iCivID)), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 menuElements.add(new TextIcon2_Value(Game.lang.get("Manpower"), CFG.FONT_REGULAR_SMALL, Game_Calendar.IMG_MANPOWER, buttonX, buttonY, statsRightW * 2 + CFG.PADDING, statsRightH, nCivID) {
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
@@ -2246,12 +2255,12 @@ public class InGame_Court extends Menu {
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 double tVal = Game.getManpowerFromVassal_INFO(nCivID, Game.player.iCivID, Game.getCiv(nCivID).diplomacy.getVassal_ManpowerLevel(Game.player.iCivID));
-                menuElements.add(new TextIcon2_Value("" + CFG.getPrecision2(tVal, 1), CFG.FONT_REGULAR_SMALL, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY, statsRightW, statsRightH, nCivID) {
+                menuElements.add(new TextIcon2_Value(CFG.getPrecision2(tVal, 1), CFG.FONT_REGULAR_SMALL, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY, statsRightW, statsRightH, nCivID) {
                     public void buildElementHover() {
-                        List<MenuElement_HoverElement> nElements = new ArrayList();
-                        List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
@@ -2266,15 +2275,15 @@ public class InGame_Court extends Menu {
                         this.menuElementHover = new MenuElement_Hover(nElements);
                     }
                 });
-                int var158 = buttonX + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                int var158 = buttonX + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                 buttonX = paddingLeft;
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                 menuElements.add(new Text_StaticBG_ID_FlagCiv_SpecialEmpty(paddingLeft2, buttonY - emptyBGH, menuWidth - paddingLeft2 * 2, emptyBGH));
                 buttonY += CFG.PADDING;
             }
 
-            menuElements.add(new Text_Title_v2_TextLR(Game.lang.get(Game_Ages.getManageVassals()), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, "" + CFG.getNumberWithSpaces("" + Game.getCiv(Game.player.iCivID).diplomacy.iVassalsSize)));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            menuElements.add(new Text_Title_v2_TextLR(Game.lang.get(Game_Ages.getManageVassals()), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, CFG.getNumberWithSpaces("" + Game.getCiv(Game.player.iCivID).diplomacy.iVassalsSize)));
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             int tempElementsBefore = menuElements.size();
 
             try {
@@ -2282,7 +2291,7 @@ public class InGame_Court extends Menu {
                     Graph_Vertical.graphCivs.clear();
 
                     for(int a = 0; a < Game.getCiv(Game.player.iCivID).diplomacy.iVassalsSize; ++a) {
-                        Graph_Vertical.graphCivs.add(((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(a)).c);
+                        Graph_Vertical.graphCivs.add(Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(a).c);
                     }
 
                     if (Graph_Vertical.graphCivs.size() == 1 || GameValues.court.COUNCIL_VIEW_VASSAL_GRAPH_INCLUDE_PLAYER) {
@@ -2290,17 +2299,11 @@ public class InGame_Court extends Menu {
                     }
 
                     if (!Graph_Vertical.graphCivs.isEmpty()) {
-                        if (Game.oR.nextInt(100) < 50) {
-                            Graph_Vertical graphVertical = new Graph_Vertical(Graph_Vertical_Data_Type.CIVS_LIST_PROVINCES, Game.lang.get("Civilizations"), Game.lang.get("Civilizations"), paddingLeft, buttonY, menuWidth - paddingLeft * 2, (int)((float)menuWidth * 0.35F), true) {
-                            };
-                            menuElements.add(graphVertical);
-                        } else {
-                            Graph_Vertical graphVertical = new Graph_Vertical(Graph_Vertical_Data_Type.CIVS_LIST_POPULATION, Game.lang.get("Civilizations"), Game.lang.get("Civilizations"), paddingLeft, buttonY, menuWidth - paddingLeft * 2, (int)((float)menuWidth * 0.35F), true) {
-                            };
-                            menuElements.add(graphVertical);
-                        }
+                        Graph_Vertical graphVertical = new Graph_Vertical(Graph_Vertical_Data_Type.CIVS_LIST_PROVINCES, Game.lang.get("Civilizations"), Game.lang.get("Civilizations"), paddingLeft, buttonY, menuWidth - paddingLeft * 2, (int)((float)menuWidth * 0.35F), true) {
+                        };
+                        menuElements.add(graphVertical);
 
-                        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+                        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
                     }
 
                     int buttonH2 = CFG.isDesktop() ? CFG.BUTTON_HEIGHT3 : CFG.BUTTON_HEIGHT2;
@@ -2311,8 +2314,8 @@ public class InGame_Court extends Menu {
                     float manpowerFromVassals = 0.0F;
 
                     for(int i = 0; i < Game.getCiv(Game.player.iCivID).diplomacy.iVassalsSize; ++i) {
-                        goldFromVassals += Game.getIncomeFromVassal(Game.player.iCivID, ((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i)).c, ((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i)).tL);
-                        manpowerFromVassals = (float)((double)manpowerFromVassals + Game.getManpowerFromVassal_INFO(Game.player.iCivID, ((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i)).c, ((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i)).mL));
+                        goldFromVassals += Game.getIncomeFromVassal(Game.player.iCivID, Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i).c, Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i).tL);
+                        manpowerFromVassals = (float)((double)manpowerFromVassals + Game.getManpowerFromVassal_INFO(Game.player.iCivID, Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i).c, Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i).mL));
                     }
 
                     int maxIconW = ImageManager.getImage(Images.gold).getWidth();
@@ -2320,12 +2323,12 @@ public class InGame_Court extends Menu {
                     int statH = CFG.TEXT_HEIGHT + CFG.PADDING * 4;
                     menuElements.add(new ButtonStatsRectIMG_Bonuses("", (goldFromVassals > 0.0F ? "+" : "") + CFG.getPrecision2(goldFromVassals, 100), Images.gold, buttonX, buttonY, statW, statH, maxIconW) {
                         public void buildElementHover() {
-                            List<MenuElement_HoverElement> nElements = new ArrayList();
-                            List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                            List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                            List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                             nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(Game.player.iCivID, Game.lang.get("Lord")));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
-                            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("MonthlyIncome") + ": ", "" + this.sText2, Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_POSITIVE));
+                            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("MonthlyIncome") + ": ", this.sText2, Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_POSITIVE));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             this.menuElementHover = new MenuElement_Hover(nElements);
@@ -2336,7 +2339,7 @@ public class InGame_Court extends Menu {
                                 float goldFromVassals = 0.0F;
 
                                 for(int i = 0; i < Game.getCiv(Game.player.iCivID).diplomacy.iVassalsSize; ++i) {
-                                    goldFromVassals += Game.getIncomeFromVassal(Game.player.iCivID, ((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i)).c, ((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i)).tL);
+                                    goldFromVassals += Game.getIncomeFromVassal(Game.player.iCivID, Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i).c, Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i).tL);
                                 }
 
                                 this.setText2((goldFromVassals > 0.0F ? "+" : "") + CFG.getPrecision2(goldFromVassals, 100));
@@ -2348,12 +2351,12 @@ public class InGame_Court extends Menu {
                     });
                     menuElements.add(new ButtonStatsRectIMG_Bonuses("", (manpowerFromVassals > 0.0F ? "+" : "") + CFG.getPrecision2(manpowerFromVassals, 1), Game_Calendar.IMG_MANPOWER, buttonX + statW + CFG.PADDING, buttonY, statW, statH, maxIconW) {
                         public void buildElementHover() {
-                            List<MenuElement_HoverElement> nElements = new ArrayList();
-                            List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                            List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                            List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                             nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(Game.player.iCivID, Game.lang.get("Lord")));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
-                            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("MaximumManpower") + ": ", "" + this.sText2, Game_Calendar.IMG_MANPOWER, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_POSITIVE));
+                            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("MaximumManpower") + ": ", this.sText2, Game_Calendar.IMG_MANPOWER, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_POSITIVE));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             this.menuElementHover = new MenuElement_Hover(nElements);
@@ -2364,7 +2367,7 @@ public class InGame_Court extends Menu {
                                 float manpowerFromVassals = 0.0F;
 
                                 for(int i = 0; i < Game.getCiv(Game.player.iCivID).diplomacy.iVassalsSize; ++i) {
-                                    manpowerFromVassals = (float)((double)manpowerFromVassals + Game.getManpowerFromVassal_INFO(Game.player.iCivID, ((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i)).c, ((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i)).mL));
+                                    manpowerFromVassals = (float)((double)manpowerFromVassals + Game.getManpowerFromVassal_INFO(Game.player.iCivID, Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i).c, Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i).mL));
                                 }
 
                                 this.setText2((manpowerFromVassals > 0.0F ? "+" : "") + CFG.getPrecision2(manpowerFromVassals, 1));
@@ -2373,11 +2376,11 @@ public class InGame_Court extends Menu {
                             return super.getTextToDraw();
                         }
                     });
-                    buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
-                    List<Integer> tVassals = new ArrayList();
+                    buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+                    List<Integer> tVassals = new ArrayList<>();
 
                     for(int i = 0; i < Game.getCiv(Game.player.iCivID).diplomacy.iVassalsSize; ++i) {
-                        if (Game.getCiv(((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i)).c).getNumOfProvinces() > 0) {
+                        if (Game.getCiv(Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(i).c).getNumOfProvinces() > 0) {
                             tVassals.add(i);
                         }
                     }
@@ -2387,13 +2390,13 @@ public class InGame_Court extends Menu {
                         bestID = 0;
 
                         for(int i = tVassals.size() - 1; i > 0; --i) {
-                            if (Game.getCiv(((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get((Integer)tVassals.get(i))).c).getNumOfProvinces() > Game.getCiv(((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get((Integer)tVassals.get(bestID))).c).getNumOfProvinces()) {
+                            if (Game.getCiv(Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(tVassals.get(i)).c).getNumOfProvinces() > Game.getCiv(Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(tVassals.get(bestID)).c).getNumOfProvinces()) {
                                 bestID = i;
                             }
                         }
 
-                        if (Game.getCiv(((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get((Integer)tVassals.get(bestID))).c).getNumOfProvinces() > 0) {
-                            int nCivID = ((Vassal)Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get((Integer)tVassals.get(bestID))).c;
+                        if (Game.getCiv(Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(tVassals.get(bestID)).c).getNumOfProvinces() > 0) {
+                            int nCivID = Game.getCiv(Game.player.iCivID).diplomacy.lVassals.get(tVassals.get(bestID)).c;
                             menuElements.add(new Text_StaticBG_ID_FlagCiv_SpecialCiv(Game.getCiv(nCivID).getCivName(), CFG.FONT_REGULAR, CFG.PADDING * 2, paddingLeft, buttonY, menuWidth - paddingLeft * 2, buttonH2, nCivID, Images.population, CFG.getNumberWithSpaces("" + Game.getCiv(nCivID).getPopulationTotal())) {
                                 public void actionElement() {
                                     if (Game.getCiv(this.getCurrent()).getCapitalProvinceID() >= 0 && Game.getProvince(Game.getCiv(this.getCurrent()).getCapitalProvinceID()).getCivID() == this.getCurrent()) {
@@ -2411,8 +2414,8 @@ public class InGame_Court extends Menu {
                                 }
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2449,11 +2452,11 @@ public class InGame_Court extends Menu {
                                     return Colors.getColorPopulation(isActive, this.getIsHovered());
                                 }
                             });
-                            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+                            buttonY += menuElements.get(menuElements.size() - 1).getHeight();
                             menuElements.add(new TextIcon2_Value(Game.lang.get("Tribute"), CFG.FONT_REGULAR_SMALL, Images.tax, paddingLeft, buttonY, statsRightW * 2 + CFG.PADDING, statsRightH, nCivID) {
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2463,7 +2466,7 @@ public class InGame_Court extends Menu {
                                     this.menuElementHover = new MenuElement_Hover(nElements);
                                 }
                             });
-                            buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                            buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                             menuElements.add(new TextIcon2_Value_Levels(Game.lang.get("Low"), CFG.FONT_REGULAR_SMALL, Images.gold, buttonX, buttonY, statsRightW, statsRightH, nCivID, 0) {
                                 public void actionElement() {
                                     Game.getCiv(Game.player.iCivID).diplomacy.setVassal_TributeLevel(this.id, this.iLevel);
@@ -2481,8 +2484,8 @@ public class InGame_Court extends Menu {
                                 }
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2492,7 +2495,7 @@ public class InGame_Court extends Menu {
                                     nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Tribute") + ": ", CFG.getPrecision2(GameValues.vassal.VASSAL_INCOME_TO_LORD[this.iLevel] * 100.0F, 10) + "%", Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
-                                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", "" + CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, this.iLevel), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, this.iLevel), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
                                     this.menuElementHover = new MenuElement_Hover(nElements);
@@ -2506,7 +2509,7 @@ public class InGame_Court extends Menu {
                                     return Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(this.id) == this.iLevel;
                                 }
                             });
-                            buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                            buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                             menuElements.add(new TextIcon2_Value_Levels(Game.lang.get("Medium"), CFG.FONT_REGULAR_SMALL, Images.gold, buttonX, buttonY, statsRightW, statsRightH, nCivID, 1) {
                                 public void actionElement() {
                                     Game.getCiv(Game.player.iCivID).diplomacy.setVassal_TributeLevel(this.id, this.iLevel);
@@ -2524,8 +2527,8 @@ public class InGame_Court extends Menu {
                                 }
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2535,7 +2538,7 @@ public class InGame_Court extends Menu {
                                     nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Tribute") + ": ", CFG.getPrecision2(GameValues.vassal.VASSAL_INCOME_TO_LORD[this.iLevel] * 100.0F, 10) + "%", Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
-                                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", "" + CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, this.iLevel), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, this.iLevel), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
                                     this.menuElementHover = new MenuElement_Hover(nElements);
@@ -2549,7 +2552,7 @@ public class InGame_Court extends Menu {
                                     return Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(this.id) == this.iLevel;
                                 }
                             });
-                            buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                            buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                             menuElements.add(new TextIcon2_Value_Levels(Game.lang.get("High"), CFG.FONT_REGULAR_SMALL, Images.gold, buttonX, buttonY, statsRightW, statsRightH, nCivID, 2) {
                                 public void actionElement() {
                                     Game.getCiv(Game.player.iCivID).diplomacy.setVassal_TributeLevel(this.id, this.iLevel);
@@ -2567,8 +2570,8 @@ public class InGame_Court extends Menu {
                                 }
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2582,7 +2585,7 @@ public class InGame_Court extends Menu {
                                     nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Tribute") + ": ", CFG.getPrecision2(GameValues.vassal.VASSAL_INCOME_TO_LORD[this.iLevel] * 100.0F, 10) + "%", Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
-                                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", "" + CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, this.iLevel), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, this.iLevel), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
                                     this.menuElementHover = new MenuElement_Hover(nElements);
@@ -2596,20 +2599,20 @@ public class InGame_Court extends Menu {
                                     return Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(this.id) == this.iLevel;
                                 }
                             });
-                            buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
-                            menuElements.add(new TextIcon2_Value("" + CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, nCivID, Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(nCivID)), 100), CFG.FONT_REGULAR_SMALL, Images.gold, buttonX, buttonY, statsRightW * 2 + CFG.PADDING, statsRightH, nCivID) {
+                            buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
+                            menuElements.add(new TextIcon2_Value(CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, nCivID, Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(nCivID)), 100), CFG.FONT_REGULAR_SMALL, Images.gold, buttonX, buttonY, statsRightW * 2 + CFG.PADDING, statsRightH, nCivID) {
                                 int lastLevel = 0;
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
                                     nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Tribute") + ": ", CFG.getPrecision2(GameValues.vassal.VASSAL_INCOME_TO_LORD[Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(this.id)] * 100.0F, 10) + "%", Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
-                                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", "" + CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(this.id)), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                                    nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("Gold") + ": ", Game.lang.get("XPerMonth", CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(this.id)), 100)), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
                                     this.menuElementHover = new MenuElement_Hover(nElements);
@@ -2622,18 +2625,18 @@ public class InGame_Court extends Menu {
                                 public String getTextToDraw() {
                                     if (this.lastLevel != Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(this.id)) {
                                         this.lastLevel = Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(this.id);
-                                        this.setText("" + CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, this.lastLevel), 100));
+                                        this.setText(CFG.getPrecision2(Game.getIncomeFromVassal(Game.player.iCivID, this.id, this.lastLevel), 100));
                                     }
 
                                     return super.getTextToDraw();
                                 }
                             });
-                            ((MenuElement)menuElements.get(menuElements.size() - 1)).setCurrent(Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(nCivID));
+                            menuElements.get(menuElements.size() - 1).setCurrent(Game.getCiv(Game.player.iCivID).diplomacy.getVassal_TributeLevel(nCivID));
                             buttonY += statsRightH + CFG.PADDING;
                             menuElements.add(new TextIcon2_Value(Game.lang.get("Manpower"), CFG.FONT_REGULAR_SMALL, Game_Calendar.IMG_MANPOWER, paddingLeft, buttonY, statsRightW * 2 + CFG.PADDING, statsRightH, nCivID) {
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2643,7 +2646,7 @@ public class InGame_Court extends Menu {
                                     this.menuElementHover = new MenuElement_Hover(nElements);
                                 }
                             });
-                            buttonX = paddingLeft + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                            buttonX = paddingLeft + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                             menuElements.add(new TextIcon2_Value_Levels(Game.lang.get("Low"), CFG.FONT_REGULAR_SMALL, Game_Calendar.IMG_MANPOWER, buttonX, buttonY, statsRightW, statsRightH, nCivID, 0) {
                                 public void actionElement() {
                                     Game.getCiv(Game.player.iCivID).diplomacy.setVassal_ManpowerLevel(this.id, this.iLevel);
@@ -2661,8 +2664,8 @@ public class InGame_Court extends Menu {
                                 }
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2683,7 +2686,7 @@ public class InGame_Court extends Menu {
                                     return Game.getCiv(Game.player.iCivID).diplomacy.getVassal_ManpowerLevel(this.id) == this.iLevel;
                                 }
                             });
-                            buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                            buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                             menuElements.add(new TextIcon2_Value_Levels(Game.lang.get("Medium"), CFG.FONT_REGULAR_SMALL, Game_Calendar.IMG_MANPOWER, buttonX, buttonY, statsRightW, statsRightH, nCivID, 1) {
                                 public void actionElement() {
                                     Game.getCiv(Game.player.iCivID).diplomacy.setVassal_ManpowerLevel(this.id, this.iLevel);
@@ -2701,8 +2704,8 @@ public class InGame_Court extends Menu {
                                 }
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2723,7 +2726,7 @@ public class InGame_Court extends Menu {
                                     return Game.getCiv(Game.player.iCivID).diplomacy.getVassal_ManpowerLevel(this.id) == this.iLevel;
                                 }
                             });
-                            buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                            buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                             menuElements.add(new TextIcon2_Value_Levels(Game.lang.get("High"), CFG.FONT_REGULAR_SMALL, Game_Calendar.IMG_MANPOWER, buttonX, buttonY, statsRightW, statsRightH, nCivID, 2) {
                                 public void actionElement() {
                                     Game.getCiv(Game.player.iCivID).diplomacy.setVassal_ManpowerLevel(this.id, this.iLevel);
@@ -2741,8 +2744,8 @@ public class InGame_Court extends Menu {
                                 }
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2763,14 +2766,14 @@ public class InGame_Court extends Menu {
                                     return Game.getCiv(Game.player.iCivID).diplomacy.getVassal_ManpowerLevel(this.id) == this.iLevel;
                                 }
                             });
-                            buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                            buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                             double tVal = Game.getManpowerFromVassal_INFO(Game.player.iCivID, nCivID, Game.getCiv(Game.player.iCivID).diplomacy.getVassal_ManpowerLevel(nCivID));
-                            menuElements.add(new TextIcon2_Value("" + CFG.getPrecision2(tVal, 1), CFG.FONT_REGULAR_SMALL, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY, statsRightW, statsRightH, nCivID) {
+                            menuElements.add(new TextIcon2_Value(CFG.getPrecision2(tVal, 1), CFG.FONT_REGULAR_SMALL, Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY, statsRightW, statsRightH, nCivID) {
                                 int lastLevel = 0;
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2792,14 +2795,14 @@ public class InGame_Court extends Menu {
                                 public String getTextToDraw() {
                                     if (this.lastLevel != Game.getCiv(Game.player.iCivID).diplomacy.getVassal_ManpowerLevel(this.id)) {
                                         this.lastLevel = Game.getCiv(Game.player.iCivID).diplomacy.getVassal_ManpowerLevel(this.id);
-                                        this.setText("" + CFG.getPrecision2(Game.getManpowerFromVassal_INFO(Game.player.iCivID, this.id, this.lastLevel), 1));
+                                        this.setText(CFG.getPrecision2(Game.getManpowerFromVassal_INFO(Game.player.iCivID, this.id, this.lastLevel), 1));
                                     }
 
                                     return super.getTextToDraw();
                                 }
                             });
-                            ((MenuElement)menuElements.get(menuElements.size() - 1)).setCurrent(Game.getCiv(Game.player.iCivID).diplomacy.getVassal_ManpowerLevel(nCivID));
-                            buttonX += ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
+                            menuElements.get(menuElements.size() - 1).setCurrent(Game.getCiv(Game.player.iCivID).diplomacy.getVassal_ManpowerLevel(nCivID));
+                            buttonX += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
                             menuElements.add(new TextIcon2_Value_Levels(Game.lang.get("Wars"), CFG.FONT_REGULAR_SMALL, Images.war, buttonX, buttonY, statsRightW, statsRightH, nCivID, Game.getCiv(Game.player.iCivID).diplomacy.getVassal_CanDeclareWar(nCivID) ? 1 : 0) {
                                 public void actionElement() {
                                     Game.getCiv(Game.player.iCivID).diplomacy.setVassal_CanDeclareWar(this.id, !Game.getCiv(Game.player.iCivID).diplomacy.getVassal_CanDeclareWar(this.id));
@@ -2813,8 +2816,8 @@ public class InGame_Court extends Menu {
                                 }
 
                                 public void buildElementHover() {
-                                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                                     nData.add(new MenuElement_HoverElement_Type_FlagCiv_Title(this.id, Game.getProvince(Game.getCiv(this.id).getCapitalProvinceID()).getProvinceName()));
                                     nElements.add(new MenuElement_HoverElement(nData));
                                     nData.clear();
@@ -2839,8 +2842,8 @@ public class InGame_Court extends Menu {
                                     return Math.min(1.0F, this.getImageScale(this.imageID));
                                 }
                             });
-                            int var159 = buttonX + ((MenuElement)menuElements.get(menuElements.size() - 1)).getWidth() + CFG.PADDING;
-                            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                            int var159 = buttonX + menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
+                            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                             menuElements.add(new Text_StaticBG_ID_FlagCiv_SpecialEmpty(paddingLeft2, buttonY - emptyBGH, menuWidth - paddingLeft2 * 2, emptyBGH));
                             buttonY += CFG.PADDING;
                         }
@@ -2852,11 +2855,11 @@ public class InGame_Court extends Menu {
 
             if (tempElementsBefore == menuElements.size()) {
                 menuElements.add(new Text_StaticBG(Game.lang.get("None"), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT2));
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             }
         } else if (modeID == 2) {
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Tutorial"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Encyclopedia"), Images.encyclopedia, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     if (Game.menuManager.getVisibleInGame_PopUp() && MenuManager.IN_GAME_POP_UP_MENU_ID == 15) {
@@ -2869,8 +2872,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Encyclopedia"), Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.encyclopedia, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -2882,18 +2885,18 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Goods"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, "") {
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_Text_Desc(Game.lang.get("Production2"), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                     nElements.add(new MenuElement_HoverElement(nData));
                     nData.clear();
                     this.menuElementHover = new MenuElement_Hover(nElements);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("LargestGoodsProducers"), Images.goods, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     Game.menuManager.rebuildInGame_Goods();
@@ -2902,8 +2905,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("LargestGoodsProducers"), Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.goods, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -2918,9 +2921,9 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Search"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Search") + ": " + Game.lang.get("Civilizations"), Images.world, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_Court.inCourt = false;
@@ -2933,8 +2936,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Search") + ": " + Game.lang.get("Civilizations"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.world, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -2946,15 +2949,15 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Search") + ": " + Game.lang.get("Provinces"), Images.world, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_Court.actionSearchProvinces();
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Search") + ": " + Game.lang.get("Provinces"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.world, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -2974,9 +2977,9 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Statistics"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Missions") + ": " + Game.lang.get("GoldenAge"), Images.goldenGold, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_CourtOptions.disableAllViews();
@@ -2986,8 +2989,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Missions") + ": " + Game.lang.get("GoldenAge"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.goldenGold, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -2999,7 +3002,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Statistics"), Images.stats, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_Court.inCourt = false;
@@ -3011,8 +3014,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Statistics"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.stats, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3024,7 +3027,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Graph"), Images.stats, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_GraphPopulation.activeModeID = 0;
@@ -3032,8 +3035,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Graph"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.stats, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3045,7 +3048,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("CivilizationBonuses"), CivilizationRanking.getCivilizationRank_IMG(Game.player.iCivID), paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_CivBonuses.iCivID = Game.player.iCivID;
@@ -3054,8 +3057,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("CivilizationBonuses"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(CivilizationRanking.getCivilizationRank_IMG(Game.player.iCivID), CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3067,9 +3070,9 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("More"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Console"), Images.console, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     if (Game.menuManager.getVisibleInGame_Console()) {
@@ -3083,8 +3086,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Console"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.console, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3096,7 +3099,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Hide") + ": UI", Images.x, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_HideUI.addDate = false;
@@ -3106,8 +3109,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Hide") + ": UI", CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.x, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3119,7 +3122,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Hide") + ": UI - " + Game.lang.get("Date"), Images.x, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_HideUI.addDate = true;
@@ -3129,8 +3132,8 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Hide") + ": UI - " + Game.lang.get("Date"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.x, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3142,9 +3145,9 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Diplomacy"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("CurrentWars"), Images.war, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_Court.inCourt = false;
@@ -3156,9 +3159,9 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(((Map_Data)Game.map.lMaps.get(Game.map.getActiveMapID())).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
+                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(Game.map.lMaps.get(Game.map.getActiveMapID()).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Clear(Game.lang.get("CurrentWars"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.war, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3170,7 +3173,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Alliances"), Images.alliance, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_Court.inCourt = false;
@@ -3182,9 +3185,9 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(((Map_Data)Game.map.lMaps.get(Game.map.getActiveMapID())).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
+                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(Game.map.lMaps.get(Game.map.getActiveMapID()).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Clear(Game.lang.get("Alliances"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.alliance, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3196,7 +3199,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get(Game_Ages.getVassals()), Images.vassal, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_Court.inCourt = false;
@@ -3208,9 +3211,9 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(((Map_Data)Game.map.lMaps.get(Game.map.getActiveMapID())).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
+                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(Game.map.lMaps.get(Game.map.getActiveMapID()).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Clear(Game.lang.get(Game_Ages.getVassals()), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.vassal, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3222,7 +3225,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("DefensivePacts"), Images.defensivePact, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_Court.inCourt = false;
@@ -3234,9 +3237,9 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(((Map_Data)Game.map.lMaps.get(Game.map.getActiveMapID())).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
+                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(Game.map.lMaps.get(Game.map.getActiveMapID()).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Clear(Game.lang.get("DefensivePacts"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.defensivePact, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3248,7 +3251,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("NonAggressionPacts"), Images.nonAggression, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_Court.inCourt = false;
@@ -3260,9 +3263,9 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(((Map_Data)Game.map.lMaps.get(Game.map.getActiveMapID())).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
+                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(Game.map.lMaps.get(Game.map.getActiveMapID()).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Clear(Game.lang.get("NonAggressionPacts"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.nonAggression, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3274,7 +3277,7 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonCurrentSituation(Game.lang.get("Truces"), Images.truce, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
                     InGame_Court.inCourt = false;
@@ -3286,9 +3289,9 @@ public class InGame_Court extends Menu {
                 }
 
                 public void buildElementHover() {
-                    List<MenuElement_HoverElement> nElements = new ArrayList();
-                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(((Map_Data)Game.map.lMaps.get(Game.map.getActiveMapID())).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                    List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
+                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(Game.map.lMaps.get(Game.map.getActiveMapID()).mapData.Name) + ": ", CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Clear(Game.lang.get("Truces"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                     nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.truce, CFG.PADDING, 0));
                     nElements.add(new MenuElement_HoverElement(nData));
@@ -3300,13 +3303,13 @@ public class InGame_Court extends Menu {
                     return SoundsManager.getClickSound_CivOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         }
 
         menuY += InGame_CourtOptions.menuH;
         int menuHeight = Math.min(buttonY, CFG.GAME_HEIGHT - menuY - CFG.PADDING * 3);
         menuElements.add(new Empty(0, 0, menuWidth, Math.max(buttonY, menuHeight)));
-        this.initMenu((MenuTitle)null, menuX, menuY, menuWidth, menuHeight, menuElements, false, false);
+        this.initMenu(null, menuX, menuY, menuWidth, menuHeight, menuElements, false, false);
         this.drawScrollPositionAlways = false;
         Game.menuManager.setInGame_CivOptions_Title(Game.lang.get(GameValues.court.COUNCIL_NAME));
     }

@@ -105,9 +105,9 @@ public class ButtonNS_Info extends Button {
         List<MenuElement_HoverElement> nElements = new ArrayList();
         List<MenuElement_HoverElement_Type> nData = new ArrayList();
         if(NationalSpiritManager.nsEntryImg > 0) {
-            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("NationalSpirit"), "", NationalSpiritManager.nsEntryImg, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(nationalSpirit.name, "", NationalSpiritManager.nsEntryImg, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
         }else {
-            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("NationalSpirit"), "", Images.advantages, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(nationalSpirit.name, "", Images.advantages, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
         }
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();

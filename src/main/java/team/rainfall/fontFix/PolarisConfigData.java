@@ -17,4 +17,6 @@ public class PolarisConfigData {
     public boolean fastEncodeCheck = true;
     public boolean useFluctlight = true;
     public boolean fastLoadFlag = true;
+    public boolean applyNSv2 = true;
+    public int loadImgVersion = 2;
 }
