@@ -16,11 +16,12 @@ import static aoc.kingdoms.lukasz.jakowski.SoundsManager.musicVolume;
 
 public class FontFix {
     //是否尝试过加载compactScale
+    public static int musicIconID = -1;
     public static boolean tried = false;
     public static CompactScale compactScale = null;
     public static boolean titleSet = false;
-    public static final String CORE_VERSION = "3.3.0";
-    public static final String POLARIS_VERSION = "2.4 Patch 1";
+    public static final String CORE_VERSION = "3.4.0";
+    public static final String POLARIS_VERSION = "2.6";
     public static int isSplash = 0;
     public static boolean isSplash(){
         if(isSplash == 0 && FileManager.loadFile("splashScreen").exists()){
@@ -60,15 +61,22 @@ public class FontFix {
             Gdx.app.getClipboard().setContents(Keyboard.keyboardMessage);
         }
     }
-
+    public static String formatSecondsToMinutes(int totalSeconds) {
+        if (totalSeconds < 0) {
+            throw new IllegalArgumentException("Second can not be negative!!!!!!");
+        }
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
     public static void playStartMusic() {
         try {
             setTitle();
             Game.soundsManager.disposeCurrentMusic();
             if (FileManager.loadFile("startMusic").exists()) {
-                Game.soundsManager.currentMusic = Gdx.audio.newMusic(FileManager.loadFile("audio/music/" + FileManager.loadFile("startMusic").readString()));
+                Game.soundsManager.setCurrentMusic(FileManager.loadFile("audio/music/" + FileManager.loadFile("startMusic").readString()));
             } else {
-                Game.soundsManager.currentMusic = Gdx.audio.newMusic(FileManager.loadFile("audio/music/" + Game.soundsManager.lTitles.get(0) + Game.soundsManager.getFileType()));
+                Game.soundsManager.setCurrentMusic(FileManager.loadFile("audio/music/" + Game.soundsManager.lTitles.get(0) + Game.soundsManager.getFileType()));
             }
             Game.soundsManager.currentMusic.setLooping(false);
             Game.soundsManager.currentMusic.play();

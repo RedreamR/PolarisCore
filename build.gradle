@@ -12,17 +12,20 @@ repositories {
     maven {
         url "https://plugins.gradle.org/m2/"
     }
+    maven { url "https://jitpack.io" }
     mavenCentral()
 }
 
 dependencies {
     // https://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet
     shadow fileTree(dir:'libs',includes: ['*.jar'])
+    implementation 'com.github.Adonai:jaudiotagger:2.3.14'
     implementation("com.github.albfernandez:juniversalchardet:2.5.0")
 }
 
 shadowJar{
     dependencies {
+        include(dependency("com.github.Adonai:jaudiotagger:2.3.14"))
         include(dependency('com.github.albfernandez:juniversalchardet:2.5.0'))
     }
 }

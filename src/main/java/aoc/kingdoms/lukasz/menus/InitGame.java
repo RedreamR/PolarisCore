@@ -1218,6 +1218,7 @@ public class InitGame extends Menu {
         Images.peace = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "peace.png");
         Images.disease = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "disease.png");
         Images.vassal = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "vassal.png");
+        FontFix.musicIconID = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "music.png");
         Images.vassalBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "vassalBig.png");
         Images.resourceNone = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "resourceNone.png");
         Images.skill = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "skill.png");

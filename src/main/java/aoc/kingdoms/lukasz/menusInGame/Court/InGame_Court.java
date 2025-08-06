@@ -18,17 +18,13 @@ import aoc.kingdoms.lukasz.jakowski.Steam.SteamAchievementsManager;
 import aoc.kingdoms.lukasz.map.RulersManager;
 import aoc.kingdoms.lukasz.map.advisors.AdvisorManager;
 import aoc.kingdoms.lukasz.map.civilization.CivilizationRanking;
-import aoc.kingdoms.lukasz.map.diplomacy.DiplomacyEspionageMission;
 import aoc.kingdoms.lukasz.map.diplomacy.DiplomacyManager;
-import aoc.kingdoms.lukasz.map.diplomacy.Vassal;
-import aoc.kingdoms.lukasz.map.map.Map_Data;
 import aoc.kingdoms.lukasz.map.province.ProvinceBorderManager;
 import aoc.kingdoms.lukasz.menu.ClickAnimation;
 import aoc.kingdoms.lukasz.menu.Colors;
 import aoc.kingdoms.lukasz.menu.Menu;
 import aoc.kingdoms.lukasz.menu.MenuManager;
 import aoc.kingdoms.lukasz.menu.View;
-import aoc.kingdoms.lukasz.menu.menuTitle.MenuTitle;
 import aoc.kingdoms.lukasz.menu_element.Empty;
 import aoc.kingdoms.lukasz.menu_element.MenuElement;
 import aoc.kingdoms.lukasz.menu_element.Status;
@@ -86,6 +82,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import team.rainfall.fontFix.FontFix;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,7 +142,7 @@ public class InGame_Court extends Menu {
 
                         return Game.getCiv(InGame_Court.iActiveCivID).ruler.Name + (Keyboard.keyboardActionType == KeyboardActionType.INGAME_RULER_NAME ? Keyboard.getKeyboardVerticalLine() : "");
                     }
-                } catch (Exception var2) {
+                } catch (Exception ignored) {
                 }
 
                 return super.getTextToDraw();
@@ -191,10 +188,6 @@ public class InGame_Court extends Menu {
         statsH += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         int tWidth = (menuWidth - buttonX - paddingLeft - CFG.PADDING * 2) / 3;
         statsH = ButtonRuler2.getButtonHeight() - statsH;
-        if (Game.getCiv(iActiveCivID).ruler.rulerBonuses.UnitsAttack != 0 || Game.getCiv(iActiveCivID).ruler.rulerBonuses.UnitsDefense != 0 || Game.getCiv(iActiveCivID).ruler.rulerBonuses.GeneralAttack != 0 || Game.getCiv(iActiveCivID).ruler.rulerBonuses.GeneralDefense != 0) {
-            tWidth = (menuWidth - buttonX - paddingLeft - CFG.PADDING * 3) / 4;
-        }
-
         menuElements.add(new ButtonReligion2(Game.getCiv(iActiveCivID).getReligionID(), buttonX, buttonY, tWidth, statsH) {
             public void buildElementHover() {
                 this.menuElementHover = Game.religionManager.getHoverReligion(this.religionID, InGame_Court.iActiveCivID);
@@ -309,7 +302,7 @@ public class InGame_Court extends Menu {
         buttonX = paddingLeft;
         if (modeID == 0) {
             if (iActiveCivID == Game.player.iCivID) {
-                int typeW = (menuWidth - paddingLeft * 2 - CFG.PADDING * 4) / 5;
+                int typeW = (menuWidth - paddingLeft * 2 - CFG.PADDING * 4) / 6;
                 int typeH = CFG.BUTTON_HEIGHT4;
                 menuElements.add(new ButtonIcon("", Images.missions, paddingLeft, buttonY, typeW, typeH) {
                     public void actionElement() {
@@ -352,6 +345,26 @@ public class InGame_Court extends Menu {
                         List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
                         nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Encyclopedia"), Colors.HOVER_GOLD));
                         nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.encyclopedia, CFG.PADDING, 0));
+                        nElements.add(new MenuElement_HoverElement(nData));
+                        nData.clear();
+                        this.menuElementHover = new MenuElement_Hover(nElements, true);
+                    }
+
+                    public int getSFX() {
+                        return SoundsManager.getClickSound_CivOptions();
+                    }
+                });
+                menuHeight += menuElements.get(menuElements.size() - 1).getWidth() + CFG.PADDING;
+                menuElements.add(new ButtonIcon("", FontFix.musicIconID, menuHeight, buttonY, typeW, typeH) {
+                    public void actionElement() {
+                        Game.menuManager.rebuildInGame_Audio();
+                    }
+
+                    public void buildElementHover() {
+                        List<MenuElement_HoverElement> nElements = new ArrayList<>();
+                        List<MenuElement_HoverElement_Type> nData = new ArrayList<>();
+                        nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Audio"), Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(FontFix.musicIconID, CFG.PADDING, 0));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         this.menuElementHover = new MenuElement_Hover(nElements, true);
@@ -473,7 +486,7 @@ public class InGame_Court extends Menu {
                                 buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
                             }
                         }
-                    } catch (Exception var29) {
+                    } catch (Exception ignored) {
                     }
                 }
             }
@@ -629,7 +642,7 @@ public class InGame_Court extends Menu {
 
                                 return Game.getCiv(InGame_Court.iActiveCivID).advisorAdministration.sName + (Keyboard.keyboardActionType == KeyboardActionType.INGAME_ADVISOR_ADMINISTRATIVE_NAME ? Keyboard.getKeyboardVerticalLine() : "");
                             }
-                        } catch (Exception var2) {
+                        } catch (Exception ignored) {
                         }
 
                         return super.getTextToDraw();
@@ -970,7 +983,7 @@ public class InGame_Court extends Menu {
 
                                 return Game.getCiv(InGame_Court.iActiveCivID).advisorEconomy.sName + (Keyboard.keyboardActionType == KeyboardActionType.INGAME_ADVISOR_ECONOMIC_NAME ? Keyboard.getKeyboardVerticalLine() : "");
                             }
-                        } catch (Exception var2) {
+                        } catch (Exception ignored) {
                         }
 
                         return super.getTextToDraw();
@@ -1311,7 +1324,7 @@ public class InGame_Court extends Menu {
 
                                 return Game.getCiv(InGame_Court.iActiveCivID).advisorTechnology.sName + (Keyboard.keyboardActionType == KeyboardActionType.INGAME_ADVISOR_INNOVATION_NAME ? Keyboard.getKeyboardVerticalLine() : "");
                             }
-                        } catch (Exception var2) {
+                        } catch (Exception ignored) {
                         }
 
                         return super.getTextToDraw();
@@ -1652,7 +1665,7 @@ public class InGame_Court extends Menu {
 
                                 return Game.getCiv(InGame_Court.iActiveCivID).advisorMilitary.sName + (Keyboard.keyboardActionType == KeyboardActionType.INGAME_ADVISOR_MILITARY_NAME ? Keyboard.getKeyboardVerticalLine() : "");
                             }
-                        } catch (Exception var2) {
+                        } catch (Exception ignored) {
                         }
 
                         return super.getTextToDraw();
