@@ -16,6 +16,7 @@ import org.jaudiotagger.audio.ogg.OggFileReader;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
+import team.rainfall.fontFix.utils.OggDurationParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -624,14 +625,13 @@ public class SoundsManager {
     }
     public final void setCurrentMusic(FileHandle fileHandle){
         currentMusic =  Gdx.audio.newMusic(fileHandle);
-        OggFileReader oggFileReader = new OggFileReader();
         try {
-            AudioFile audioFile = oggFileReader.read(fileHandle.file());
-            currentMusicDuration = audioFile.getAudioHeader().getTrackLength();
+            currentMusicDuration = (int) OggDurationParser.getOggDuration(fileHandle);
             currentMusicDuraStr = FontFix.formatSecondsToMinutes(currentMusicDuration);
-            FinalityLogger.debug("PolarisCore.dura "+currentMusicDuration);
+            CFG.LOG("[PolarisCore-Radio]","tag loaded,dura "+currentMusicDuration);
         } catch (Exception e) {
-            Gdx.app.error("[PolarisCore-Radio]","Failed to load tag",e);
+            CFG.LOG("[PolarisCore-Radio]","Failed to load tag");
+            CFG.LOG(e);
         }
         if(Config.getConfig().toastWhenPlayMusic) {
             Game.menuManager.addToast(getCurrentMusicTittle());

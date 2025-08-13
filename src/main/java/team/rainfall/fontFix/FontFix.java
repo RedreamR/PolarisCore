@@ -6,10 +6,14 @@ import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.Keyboard;
 import aoc.kingdoms.lukasz.menusInGame.InGame_CivBonuses;
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import org.lwjgl.system.CallbackI;
 import team.rainfall.finality.FinalityLogger;
+
+import java.io.File;
 
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.musicVolume;
@@ -23,8 +27,24 @@ public class FontFix {
     public static final String CORE_VERSION = "3.4.0";
     public static final String POLARIS_VERSION = "2.6";
     public static int isSplash = 0;
-    public static boolean isSplash(){
-        if(isSplash == 0 && FileManager.loadFile("splashScreen").exists()){
+
+    public static File getReadableFile(FileHandle src) {
+        if (CFG.isDesktop()) {
+            return src.file();
+        }
+        if (src.type() == Files.FileType.Internal) {
+            FileHandle dst = Gdx.files.local(src.path());
+            if (!dst.exists()) {
+                src.copyTo(dst);
+            }
+            return dst.file();
+        }
+        return src.file();
+    }
+
+
+    public static boolean isSplash() {
+        if (isSplash == 0 && FileManager.loadFile("splashScreen").exists()) {
             isSplash = 1;
             return true;
         } else if (isSplash == 0 && !FileManager.loadFile("splashScreen").exists()) {
@@ -32,9 +52,11 @@ public class FontFix {
             return false;
         } else return isSplash == 1;
     }
-    public static String langGet(String key,String fallback){
+
+    public static String langGet(String key, String fallback) {
         return Game.lang.get(key).equals(key) ? fallback : Game.lang.get(key);
     }
+
     public static void setTitle() {
         if (!titleSet) {
             try {
@@ -61,6 +83,7 @@ public class FontFix {
             Gdx.app.getClipboard().setContents(Keyboard.keyboardMessage);
         }
     }
+
     public static String formatSecondsToMinutes(int totalSeconds) {
         if (totalSeconds < 0) {
             throw new IllegalArgumentException("Second can not be negative!!!!!!");
@@ -69,6 +92,7 @@ public class FontFix {
         int seconds = totalSeconds % 60;
         return String.format("%02d:%02d", minutes, seconds);
     }
+
     public static void playStartMusic() {
         try {
             setTitle();
@@ -90,7 +114,7 @@ public class FontFix {
     }
 
     public static Color readFontColor(String key) {
-        if(CFG.isAndroid() && Sternstunden.bridge == null){
+        if (CFG.isAndroid() && Sternstunden.bridge == null) {
             Sternstunden.init();
         }
         String str = Game.lang.get(key);
@@ -119,14 +143,16 @@ public class FontFix {
             case "white":
                 return Color.WHITE;
         }
-        if(key.startsWith("#")) {
+        if (key.startsWith("#")) {
             try {
                 return Color.valueOf(key.replaceAll("#", ""));
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
         return Color.WHITE;
 
     }
+
     public static void actionNationSpirit() {
         if (Game.menuManager.getVisibleInGame_CivBonuses()) {
             InGame_CivBonuses.nationSpirit = false;
