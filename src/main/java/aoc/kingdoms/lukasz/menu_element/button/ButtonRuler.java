@@ -18,6 +18,8 @@ import aoc.kingdoms.lukasz.textures.ImageManager;
 import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import team.rainfall.fontFix.Config;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +116,21 @@ public class ButtonRuler extends Button {
         nData.add(new MenuElement_HoverElement_Type_Line());
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
+        if(Config.getConfig().hideBonus){
+            if (Game.menuManager.getInGame()) {
+                nData.add(new MenuElement_HoverElement_Type_Empty());
+                nElements.add(new MenuElement_HoverElement(nData));
+                nData.clear();
+                nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get(GameValues.court.COUNCIL_NAME), CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.council, CFG.PADDING, 0));
+                nElements.add(new MenuElement_HoverElement(nData));
+                nData.clear();
+                this.menuElementHover = new MenuElement_Hover(nElements, true);
+            } else {
+                this.menuElementHover = new MenuElement_Hover(nElements);
+            }
+            return;
+        }
         if (Game.getCiv(this.iCivID).ruler.rulerBonuses.MonthlyIncome != 0.0F) {
             nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("MonthlyIncome") + ": ", (Game.getCiv(this.iCivID).ruler.rulerBonuses.MonthlyIncome > 0.0F ? "+" : "") + CFG.getPrecision2(Game.getCiv(this.iCivID).ruler.rulerBonuses.MonthlyIncome, 100), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
             nElements.add(new MenuElement_HoverElement(nData));

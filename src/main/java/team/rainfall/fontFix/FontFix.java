@@ -25,7 +25,7 @@ public class FontFix {
     public static CompactScale compactScale = null;
     public static boolean titleSet = false;
     public static final String CORE_VERSION = "3.4.0";
-    public static final String POLARIS_VERSION = "2.6";
+    public static final String POLARIS_VERSION = "2.7";
     public static int isSplash = 0;
 
     public static File getReadableFile(FileHandle src) {

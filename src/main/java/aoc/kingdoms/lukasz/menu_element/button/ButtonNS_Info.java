@@ -19,6 +19,7 @@ import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.NationalSpirit;
 import team.rainfall.fontFix.NationalSpiritManager;
 
@@ -114,6 +115,10 @@ public class ButtonNS_Info extends Button {
         nData.add(new MenuElement_HoverElement_Type_Text_Desc(nationalSpirit.desc, CFG.FONT_BOLD));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
+        if(Config.getConfig().hideBonus){
+            this.menuElementHover = new MenuElement_Hover(nElements);
+            return;
+        }
         //Bonuses
         if (nationalSpirit.Bonuses.MonthlyIncome != 0.0F) {
             nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("MonthlyIncome") + ": ", (nationalSpirit.Bonuses.MonthlyIncome > 0.0F ? "+" : "") + CFG.getPrecision2(nationalSpirit.Bonuses.MonthlyIncome, 100), Images.gold, CFG.FONT_REGULAR_SMALL, CFG.FONT_BOLD_SMALL, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
