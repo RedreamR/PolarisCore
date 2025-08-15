@@ -20,4 +20,8 @@ public class PolarisConfigData {
     public boolean applyNSv2 = true;
     public int loadImgVersion = 2;
     public boolean toastWhenPlayMusic = true;
+    public int defaultPlayMode = 0;
+    public boolean hideBonus = false;
+    public boolean seqLoadBG = false;
+    public boolean uniqueBGforMainMenu = false;
 }

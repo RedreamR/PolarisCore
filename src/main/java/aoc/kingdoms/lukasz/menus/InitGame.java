@@ -6,10 +6,7 @@
 package aoc.kingdoms.lukasz.menus;
 
 import aoc.kingdoms.lukasz.events.EventsManager;
-import aoc.kingdoms.lukasz.jakowski.CFG;
-import aoc.kingdoms.lukasz.jakowski.FileManager;
-import aoc.kingdoms.lukasz.jakowski.Game;
-import aoc.kingdoms.lukasz.jakowski.GameValues;
+import aoc.kingdoms.lukasz.jakowski.*;
 import aoc.kingdoms.lukasz.jakowski.AI.Build.AI_Build;
 import aoc.kingdoms.lukasz.jakowski.Missions.MissionTree;
 import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
@@ -163,21 +160,49 @@ public class InitGame extends Menu {
         }
 
     }
-
+    public static final void loadBackground2() {
+        if (background != null) {
+            background.dispose();
+            background = null;
+        }
+        if(Config.getConfig().seqLoadBG){
+            backgroundID++;
+            if(backgroundID > backgroundSize - 1){
+                backgroundID = 0;
+            }
+        }else {
+            for (int i = 0; i < 5; ++i) {
+                int newID = Game.oR.nextInt(backgroundSize);
+                if (newID != backgroundID) {
+                    backgroundID = newID;
+                    break;
+                }
+            }
+        }
+        background = new Image(ImageManager.loadTexture_RGB888("ui/loading_m/" + backgroundID + ".png"), TextureFilter.Linear, TextureWrap.ClampToEdge);
+        float fScale = Math.max((float)CFG.GAME_WIDTH / (float)background.getWidth(), (float)CFG.GAME_HEIGHT / (float)background.getHeight());
+        backgroundWidth = (int)((float)background.getWidth() * fScale);
+        backgroundHeight = (int)((float)background.getHeight() * fScale);
+    }
     public static final void loadBackground() {
         if (background != null) {
             background.dispose();
             background = null;
         }
-
-        for(int i = 0; i < 5; ++i) {
-            int newID = Game.oR.nextInt(backgroundSize);
-            if (newID != backgroundID) {
-                backgroundID = newID;
-                break;
+        if(Config.getConfig().seqLoadBG){
+            backgroundID++;
+            if(backgroundID > backgroundSize - 1){
+                backgroundID = 0;
+            }
+        }else {
+            for (int i = 0; i < 5; ++i) {
+                int newID = Game.oR.nextInt(backgroundSize);
+                if (newID != backgroundID) {
+                    backgroundID = newID;
+                    break;
+                }
             }
         }
-
         background = new Image(ImageManager.loadTexture_RGB888("ui/loading/" + backgroundID + ".png"), TextureFilter.Linear, TextureWrap.ClampToEdge);
         float fScale = Math.max((float)CFG.GAME_WIDTH / (float)background.getWidth(), (float)CFG.GAME_HEIGHT / (float)background.getHeight());
         backgroundWidth = (int)((float)background.getWidth() * fScale);
@@ -798,6 +823,7 @@ public class InitGame extends Menu {
                 } else {
                     if (iStepID != 153) {
                         if (iStepID >= 154 && iStepID < 154 + Game.getProvincesSize()) {
+                            SoundsManager.playMode = (short) Config.getConfig().defaultPlayMode;
                             for(int i = 0; i < numOfProvincesBGToLoad && iStepID < 154 + Game.getProvincesSize(); ++i) {
                                 Game.loadProvinceBG(iStepID++ - 154);
                             }

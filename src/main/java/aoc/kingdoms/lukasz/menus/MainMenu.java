@@ -340,7 +340,11 @@ public class MainMenu extends Menu {
                 });
                 Game.addSimpleTask(new Game.SimpleTask("loadBackground") {
                     public void update() {
-                        InitGame.loadBackground();
+                        if(Config.getConfig().uniqueBGforMainMenu) {
+                            InitGame.loadBackground2();
+                        }else {
+                            InitGame.loadBackground();
+                        }
                         MainMenu.bgTIME = System.currentTimeMillis();
                         MainMenu.bgTIME_CHANGE = System.currentTimeMillis();
                         MainMenu.bgAlpha = 0.0F;
