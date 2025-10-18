@@ -78,9 +78,9 @@ public class  Settings_Menu extends Menu {
                 Game.menuManager.setViewID(Settings_Menu.goBackToMenu);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding * 2;
+        buttonY += menuElements.get(0).getHeight() + buttonYPadding * 2;
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Graphics"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         if (CFG.isDesktop()) {
             menuElements.add(new ButtonGame2(Game.lang.get("Fullscreen"), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT, true) {
                 public boolean getCheckboxState() {
@@ -93,7 +93,7 @@ public class  Settings_Menu extends Menu {
                     Game.menuManager.addToastGold(Game.lang.get("GameNeedsToBeRestartedToApplyTheChanges"), Images.settings);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonGame2(Game.lang.get("Resolution") + ": " + (SettingsDesktop.iWidth > 0 && SettingsDesktop.iHeight > 0 ? SettingsDesktop.iWidth + " x " + SettingsDesktop.iHeight : CFG.GAME_WIDTH + "x" + CFG.GAME_HEIGHT), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT) {
                 public void updateLanguage() {
                     this.setText(Game.lang.get("Resolution") + ": " + (SettingsDesktop.iWidth > 0 && SettingsDesktop.iHeight > 0 ? SettingsDesktop.iWidth + " x " + SettingsDesktop.iHeight : CFG.GAME_WIDTH + "x" + CFG.GAME_HEIGHT));
@@ -103,7 +103,7 @@ public class  Settings_Menu extends Menu {
                     Game.menuManager.setViewID(View.SETTINGS_RESOLUTION);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         }
 
         menuElements.add(new ButtonGame2(Game.lang.get("UIScale"), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT) {
@@ -111,16 +111,16 @@ public class  Settings_Menu extends Menu {
                 Game.menuManager.setViewID(View.SETTINGS_UI);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Game"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(Game.lang.get("SelectLanguage"), 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT) {
             public void actionElement() {
                 Init_SelectLanguage.goBackToMenu = View.SETTINGS;
                 Game.menuManager.setViewIDWithoutAnimation(View.INIT_GAME_MENU_LANGUAGE);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(SettingsProvince.getSettingsText_Double(), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH + CFG.PADDING), true, CFG.BUTTON_HEIGHT, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("Sidebar") + ": " + (Game.settingsManager.enableHideSideMenu ? Game.lang.get("Off") : Game.lang.get("On")));
@@ -136,7 +136,7 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2("<<", CFG.FONT_BOLD, -1, paddingLeft, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
             public void actionElement() {
                 boolean changed = false;
@@ -180,7 +180,7 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         if (!CFG.isDesktop()) {
             menuElements.add(new ButtonGame2("<<", CFG.FONT_BOLD, -1, paddingLeft, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
                 public void actionElement() {
@@ -201,11 +201,11 @@ public class  Settings_Menu extends Menu {
                     Game.menuManager.rebuildInGame_CourtOptions();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         }
 
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Audio"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(Game.lang.get("Audio"), 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT) {
             public void actionElement() {
                 if (Game.menuManager.getVisibleSettingsAudio()) {
@@ -216,7 +216,7 @@ public class  Settings_Menu extends Menu {
 
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Provinces"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 6, "") {
             public void buildElementHover() {
                 List<MenuElement_HoverElement> nElements = new ArrayList();
@@ -257,7 +257,7 @@ public class  Settings_Menu extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2("<<", CFG.FONT_BOLD, -1, paddingLeft, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
             public void actionElement() {
                 SettingsProvince.updateSettingsProvinceBorder(-1);
@@ -275,7 +275,7 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(SettingsProvince.getSettingsText_Double(), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH + CFG.PADDING), true, CFG.BUTTON_HEIGHT) {
             public void updateLanguage() {
                 this.setText(SettingsProvince.getSettingsText_Double());
@@ -287,7 +287,7 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2("<<", CFG.FONT_BOLD, -1, paddingLeft, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
             public void actionElement() {
                 SettingsProvince.updateSettingsProvinceNames(-1);
@@ -307,7 +307,7 @@ public class  Settings_Menu extends Menu {
                 FBOProvinceNames.redrawnProvinceNames();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2("<<", CFG.FONT_BOLD, -1, paddingLeft, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
             public void actionElement() {
                 SettingsProvince.updateSettingsProvinceNames_Scale(-1);
@@ -327,7 +327,7 @@ public class  Settings_Menu extends Menu {
                 FBOProvinceNames.redrawnProvinceNames();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2("<<", CFG.FONT_BOLD, -1, paddingLeft, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
             public void actionElement() {
                 SettingsProvince.updateSettingsCivNames(-1);
@@ -345,7 +345,7 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2("<<", CFG.FONT_BOLD, -1, paddingLeft, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
             public void actionElement() {
                 SettingsProvince.updateSettings_ProvinceFlags(-1);
@@ -363,7 +363,7 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(SettingsProvince.getSettingsText_Cities(), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH + CFG.PADDING), true, CFG.BUTTON_HEIGHT) {
             public void updateLanguage() {
                 this.setText(SettingsProvince.getSettingsText_Cities());
@@ -375,7 +375,7 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Slider(Game.lang.get("Ships") + ": ", paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, 0, 100, Game.settingsManager.SHIPS_ON_MAP) {
             public void actionElement() {
                 Game.settingsManager.SHIPS_ON_MAP = this.getCurrent();
@@ -390,7 +390,7 @@ public class  Settings_Menu extends Menu {
                 return false;
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         if (Game.cloudsAnimation.loadClouds()) {
             menuElements.add(new ButtonGame2(SettingsProvince.getSettingsText_Clouds(), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH + CFG.PADDING), true, CFG.BUTTON_HEIGHT) {
                 public void updateLanguage() {
@@ -403,7 +403,7 @@ public class  Settings_Menu extends Menu {
                     Settings_Menu.this.updateLanguage();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         }
 
         menuElements.add(new ButtonGame2("<<", CFG.FONT_BOLD, -1, paddingLeft, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
@@ -423,7 +423,7 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         if (CFG.isDesktop() || !GameValues.value.MOBILE_DISABLE_FBO) {
             menuElements.add(new ButtonGame2(SettingsProvince.getSettingsText_FBO(), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH + CFG.PADDING), true, CFG.BUTTON_HEIGHT) {
                 public void updateLanguage() {
@@ -436,7 +436,7 @@ public class  Settings_Menu extends Menu {
                     Settings_Menu.this.updateLanguage();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
             menuElements.add(new ButtonGame2(SettingsProvince.getSettingsText_FBO_Provinces(), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH + CFG.PADDING), true, CFG.BUTTON_HEIGHT) {
                 public void updateLanguage() {
                     this.setText(SettingsProvince.getSettingsText_FBO_Provinces());
@@ -448,11 +448,11 @@ public class  Settings_Menu extends Menu {
                     Settings_Menu.this.updateLanguage();
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         }
 
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("ProvinceBorder") + ": " + Game.lang.get("Extra"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2("<<", CFG.FONT_BOLD, -1, paddingLeft, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
             public void actionElement() {
                 Game.settingsManager.BORDER_EXTRA_WIDTH = Math.max(0.0F, Game.settingsManager.BORDER_EXTRA_WIDTH - 0.25F);
@@ -470,9 +470,9 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Provinces") + ": " + Game.lang.get("Alpha"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Slider(Game.lang.get("ProvinceAlpha") + ": ", paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, 10, 255, (int)(Game.settingsManager.PROVINCE_ALPHA * 255.0F)) {
             public void actionElement() {
                 Game.settingsManager.PROVINCE_ALPHA = (float)this.getCurrent() / 255.0F;
@@ -490,13 +490,13 @@ public class  Settings_Menu extends Menu {
                 List<MenuElement_HoverElement> nElements = new ArrayList();
                 List<MenuElement_HoverElement_Type> nData = new ArrayList();
                 nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Default") + ": ", CFG.FONT_REGULAR_SMALL, Colors.HOVER_LEFT));
-                nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2(31.372551F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2(31.372551F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Slider(Game.lang.get("Alpha") + ", " + Game.lang.get("OccupiedProvinces") + ": ", paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, 10, 100, (int)(Game.settingsManager.PROVINCE_OCCUPIED_ALPHA_EXTRA * 100.0F)) {
             public void actionElement() {
                 Game.settingsManager.PROVINCE_OCCUPIED_ALPHA_EXTRA = (float)this.getCurrent() / 100.0F;
@@ -514,13 +514,13 @@ public class  Settings_Menu extends Menu {
                 List<MenuElement_HoverElement> nElements = new ArrayList();
                 List<MenuElement_HoverElement_Type> nData = new ArrayList();
                 nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Default") + ": ", CFG.FONT_REGULAR_SMALL, Colors.HOVER_LEFT));
-                nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2(25.0F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2(25.0F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Slider(Game.lang.get("Alpha") + ", " + Game.lang.get("Wasteland") + ": ", paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, 10, 255, (int)(Game.settingsManager.PROVINCE_ALPHA_WASTELAND * 255.0F)) {
             public void actionElement() {
                 Game.settingsManager.PROVINCE_ALPHA_WASTELAND = (float)this.getCurrent() / 255.0F;
@@ -538,13 +538,13 @@ public class  Settings_Menu extends Menu {
                 List<MenuElement_HoverElement> nElements = new ArrayList();
                 List<MenuElement_HoverElement_Type> nData = new ArrayList();
                 nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Default") + ": ", CFG.FONT_REGULAR_SMALL, Colors.HOVER_LEFT));
-                nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2(30.000002F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2(30.000002F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Slider(Game.lang.get("Alpha") + ", " + Game.lang.get("ProvinceNames") + ": ", paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, 10, 255, (int)(Game.settingsManager.PROVINCE_NAMES_ALPHA * 255.0F)) {
             public void actionElement() {
                 Game.settingsManager.PROVINCE_NAMES_ALPHA = (float)this.getCurrent() / 255.0F;
@@ -562,13 +562,13 @@ public class  Settings_Menu extends Menu {
                 List<MenuElement_HoverElement> nElements = new ArrayList();
                 List<MenuElement_HoverElement_Type> nData = new ArrayList();
                 nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Default") + ": ", CFG.FONT_REGULAR_SMALL, Colors.HOVER_LEFT));
-                nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2(45.0F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2(45.0F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Slider(Game.lang.get("Alpha") + ", " + Game.lang.get("CivilizationsNames") + ": ", paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, 10, 255, (int)(Game.settingsManager.CIV_NAMES_TEXT_ALPHA * 255.0F)) {
             public void actionElement() {
                 Game.settingsManager.CIV_NAMES_TEXT_ALPHA = (float)this.getCurrent() / 255.0F;
@@ -586,15 +586,15 @@ public class  Settings_Menu extends Menu {
                 List<MenuElement_HoverElement> nElements = new ArrayList();
                 List<MenuElement_HoverElement_Type> nData = new ArrayList();
                 nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Default") + ": ", CFG.FONT_REGULAR_SMALL, Colors.HOVER_LEFT));
-                nData.add(new MenuElement_HoverElement_Type_Text("" + CFG.getPrecision2(50.0F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2(50.0F, 1) + "%", CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("TexturesQuality"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(SettingsProvince.getSettingsText_Double(), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH + CFG.PADDING), true, CFG.BUTTON_HEIGHT, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("TexturesQuality") + ": " + (Game.highTextureSettings ? Game.lang.get("High") : Game.lang.get("Low")));
@@ -630,9 +630,9 @@ public class  Settings_Menu extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("More"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(Game.lang.get("Council") + ": " + Game.lang.get("Tip"), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT, true) {
             public boolean getCheckboxState() {
                 return Game.settingsManager.COUNCIL_TIPS;
@@ -642,7 +642,7 @@ public class  Settings_Menu extends Menu {
                 Game.settingsManager.COUNCIL_TIPS = !Game.settingsManager.COUNCIL_TIPS;
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(Game.lang.get("EdgeScrolling"), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT, true) {
             public boolean getCheckboxState() {
                 return Game.settingsManager.ENABLE_EDGE_SCROLL;
@@ -652,7 +652,7 @@ public class  Settings_Menu extends Menu {
                 Game.settingsManager.ENABLE_EDGE_SCROLL = !Game.settingsManager.ENABLE_EDGE_SCROLL;
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         if (CFG.isDesktop()) {
             menuElements.add(new ButtonGame2(Game.lang.get("VSync"), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT, true) {
                 public boolean getCheckboxState() {
@@ -665,7 +665,7 @@ public class  Settings_Menu extends Menu {
                     Game.menuManager.addToastGold(Game.lang.get("GameNeedsToBeRestartedToApplyTheChanges"), Images.settings);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         }
 
         menuElements.add(new ButtonGame2(Game.lang.get("Reset"), 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT) {
@@ -676,13 +676,13 @@ public class  Settings_Menu extends Menu {
                 Settings_Menu.this.updateLanguage();
             }
         });
-        int var10000 = buttonY + ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        int var10000 = buttonY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         buttonY = 0;
         int i = 0;
 
         for(int iSize = menuElements.size(); i < iSize; ++i) {
-            if (buttonY < ((MenuElement)menuElements.get(i)).getPosY() + ((MenuElement)menuElements.get(i)).getHeight() + CFG.PADDING * 2) {
-                buttonY = ((MenuElement)menuElements.get(i)).getPosY() + ((MenuElement)menuElements.get(i)).getHeight() + CFG.PADDING * 2;
+            if (buttonY < menuElements.get(i).getPosY() + menuElements.get(i).getHeight() + CFG.PADDING * 2) {
+                buttonY = menuElements.get(i).getPosY() + menuElements.get(i).getHeight() + CFG.PADDING * 2;
             }
         }
 
@@ -706,55 +706,55 @@ public class  Settings_Menu extends Menu {
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_A2","Nanotime"), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B1","Update Provinces "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)provinceInView_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)provinceInView_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + provinceInView_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B2","Draw Provinces "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawProvinces_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawProvinces_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawProvinces_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B3","Provinces FBO "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawProvincesFBO_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawProvincesFBO_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawProvincesFBO_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B4","Provinces Border "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawProvincesBorder_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawProvincesBorder_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawProvincesBorder_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B5","Provinces Names "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawProvincesNames_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawProvincesNames_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawProvincesNames_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B6","Civs Names "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawCivsNames_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawCivsNames_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawCivsNames_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B7","Cities & Flags "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawCities_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawCities_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawCities_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B8","Clouds "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawClouds_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawClouds_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawClouds_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B9","Ships "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawShips_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawShips_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawShips_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B10","Ships 2 "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawShips2_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawShips2_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawShips2_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B11","Armies "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawArmies_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawArmies_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawArmies_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B12","Move Units "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawMoveUnits_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawMoveUnits_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawMoveUnits_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B13","Map Border "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
-            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "" + CFG.getPrecision2((float)drawMapBorder_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawMapBorder_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawMapBorder_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;

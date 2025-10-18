@@ -36,8 +36,8 @@ public class PixmapReader {
             ByteBuffer pixelBuf = pixmap.getPixels();
 
             // 准备ByteBuffer
-            ((Buffer)pixelBuf).position(0);
-            ((Buffer)pixelBuf).limit(pixelBuf.capacity());
+            pixelBuf.position(0);
+            pixelBuf.limit(pixelBuf.capacity());
 
             // 读取像素数据
             synchronized(readBuffer) {

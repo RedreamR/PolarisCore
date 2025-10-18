@@ -6,10 +6,13 @@ import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.map.advisors.Advisor;
 import aoc.kingdoms.lukasz.map.civilization.CivilizationBonuses;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import team.rainfall.finality.FinalityLogger;
+import team.rainfall.finality.luminosity2.CallbackInfo;
+import team.rainfall.finality.luminosity2.annotations.Inject;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
 import team.rainfall.fontFix.utils.AdvisorHelper;
@@ -35,7 +38,11 @@ public class MixinMapScenarios {
     public final void buildProvincesCores() {
 
     }
-
+    public final void loadScenario_3_B() {
+        for(int i = 1; i < Game.iCivsSize; ++i) {
+            Game.getCiv(i).loadScenario_B();
+        }
+    }
     public final void loadScenarioCharacters(boolean nEditor) {
         if (!nEditor) {
             try {
@@ -126,4 +133,15 @@ public class MixinMapScenarios {
         }
         return null;
     }
+    public final void buildStartingArmy() {
+        try {
+            for(int i = 1; i < Game.getCivsSize() / 2.0F; ++i) {
+                this.buildStartingArmy(i);
+            }
+        } catch (Exception ex) {
+            CFG.exceptionStack(ex);
+        }
+    }
+    @Shadow
+    public final void buildStartingArmy(int i) {}
 }

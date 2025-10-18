@@ -52,7 +52,7 @@ public class Json {
     private boolean usePrototypes = true;
     private OutputType outputType;
     private boolean quoteLongValues;
-    private boolean ignoreUnknownFields;
+    private boolean ignoreUnknownFields = true;
     private boolean ignoreDeprecated;
     private boolean readDeprecated;
     private boolean enumNames = true;

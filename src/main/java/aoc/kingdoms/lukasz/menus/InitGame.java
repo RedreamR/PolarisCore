@@ -55,44 +55,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import team.rainfall.finality.FinalityLogger;
-import team.rainfall.fluctlight.Fluctlight;
-import team.rainfall.fluctlight.Task;
+
 import team.rainfall.fontFix.*;
+import team.rainfall.fontFix.utils.Timer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InitGame extends Menu {
 
-    Task<Integer> task = new Task<Integer>() {
-        @Override
-        public Integer run() {
-            Game.mapScenarios.loadScenario_40(false);
-            Game.mapScenarios.loadScenario_41(false);
-            return 0;
-        }
-    };
-    Task<Integer> task2 = new Task<Integer>() {
-        @Override
-        public Integer run() {
-            Game.mapScenarios.loadScenario_50(false);
-            return 0;
-        }
-    };
-    Task<Integer> task2_b = new Task<Integer>() {
-        @Override
-        public Integer run() {
-            Game.mapScenarios.loadScenario_49(false);
-            return 0;
-        }
-    };
-    Task<Integer> task3 = new Task<Integer>() {
-        @Override
-        public Integer run() {
-            Game.mapScenarios.loadScenario_11();
-            return 0;
-        }
-    };
     public static boolean finished64 = false;
     public static long timer2 = System.currentTimeMillis();
     static long timer = System.currentTimeMillis();
@@ -113,23 +84,23 @@ public class InitGame extends Menu {
         finished64 = false;
         timer2 = System.currentTimeMillis();
         List<MenuElement> menuElements = new ArrayList();
-        this.initMenu((MenuTitle)null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements, true);
+        this.initMenu(null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements, true);
         numOfProvincesBGToLoad = CFG.isDesktop() ? GameValues.value.LOADING_NUM_OF_PROVINCES_PC : GameValues.value.LOADING_NUM_OF_PROVINCES_MOBILE;
     }
 
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
-        if(System.currentTimeMillis() - timer2 < Config.getConfig().SplashScreen_FadeIn && FontFix.isSplash()){
+        if (System.currentTimeMillis() - timer2 < Config.getConfig().SplashScreen_FadeIn && FontFix.isSplash()) {
             oSB.setColor(Color.BLACK);
             Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
-            oSB.setColor(255,255,255, (float) (System.currentTimeMillis() - timer2) / Config.getConfig().SplashScreen_FadeIn);
+            oSB.setColor(255, 255, 255, (float) (System.currentTimeMillis() - timer2) / Config.getConfig().SplashScreen_FadeIn);
             ImageManager.getImage(Images.logo).draw(oSB, iTranslateX + (CFG.GAME_WIDTH - ImageManager.getImage(Images.logo).getWidth()) / 2, iTranslateY + (CFG.GAME_HEIGHT - ImageManager.getImage(Images.logo).getHeight()) / 2);
             return;
         }
-        if(System.currentTimeMillis() - timer2 < Config.getConfig().SplashScreen_FadeOut + Config.getConfig().SplashScreen_FadeIn && FontFix.isSplash()){
+        if (System.currentTimeMillis() - timer2 < Config.getConfig().SplashScreen_FadeOut + Config.getConfig().SplashScreen_FadeIn && FontFix.isSplash()) {
             oSB.setColor(Color.BLACK);
             Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
             //设置颜色为随时间变化逐渐透明
-            oSB.setColor(255,255,255,1 - (float) (System.currentTimeMillis() - timer2 - Config.getConfig().SplashScreen_FadeIn) / Config.getConfig().SplashScreen_FadeOut);
+            oSB.setColor(255, 255, 255, 1 - (float) (System.currentTimeMillis() - timer2 - Config.getConfig().SplashScreen_FadeIn) / Config.getConfig().SplashScreen_FadeOut);
             ImageManager.getImage(Images.logo).draw(oSB, iTranslateX + (CFG.GAME_WIDTH - ImageManager.getImage(Images.logo).getWidth()) / 2, iTranslateY + (CFG.GAME_HEIGHT - ImageManager.getImage(Images.logo).getHeight()) / 2);
             return;
         }
@@ -137,40 +108,55 @@ public class InitGame extends Menu {
         if (background != null) {
             oSB.setColor(new Color(0.047058824F, 0.047058824F, 0.047058824F, 1.0F));
             Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
-            oSB.setColor(new Color(1.0F, 1.0F, 1.0F, (float)iStepID / (float)(iNumOfSteps + Game.map.getActiveMap_MapData().mapData.NumOfProvinces) * 0.25F));
+            if(Config.getGradientConfig().initGame < 2) {
+                oSB.setColor(new Color(1.0F, 1.0F, 1.0F, (float) iStepID / (float) (iNumOfSteps + Game.map.getActiveMap_MapData().mapData.NumOfProvinces) * 0.25F));
+            }else {
+                oSB.setColor(new Color(1.0F, 1.0F, 1.0F, 1));
+            }
             background.draw(oSB, iTranslateX + (CFG.GAME_WIDTH - backgroundWidth) / 2, iTranslateY + (CFG.GAME_HEIGHT - backgroundHeight) / 2, backgroundWidth, backgroundHeight);
-            oSB.setColor(new Color(1.0F, 1.0F, 1.0F, 0.95F + (float)iStepID / (float)(iNumOfSteps + Game.map.getActiveMap_MapData().mapData.NumOfProvinces) * 0.05F));
-            oSB.setShader(Renderer.shaderAlpha);
-            background.getTexture().bind(1);
-            Gdx.gl.glActiveTexture(33984);
-            Images.gradientXY.draw(oSB, this.getPosX() + (CFG.GAME_WIDTH - backgroundWidth) / 2 + iTranslateX, this.getPosY() + (CFG.GAME_HEIGHT - backgroundHeight) / 2 + iTranslateY, backgroundWidth, backgroundHeight);
-            oSB.flush();
-            oSB.setShader(Renderer.shaderDefault);
+            if(Config.getGradientConfig().initGame < 2) {
+                oSB.setColor(new Color(1.0F, 1.0F, 1.0F, 0.95F + (float) iStepID / (float) (iNumOfSteps + Game.map.getActiveMap_MapData().mapData.NumOfProvinces) * 0.05F));
+                oSB.setShader(Renderer.shaderAlpha);
+                background.getTexture().bind(1);
+                Gdx.gl.glActiveTexture(33984);
+                Images.gradientXY.draw(oSB, this.getPosX() + (CFG.GAME_WIDTH - backgroundWidth) / 2 + iTranslateX, this.getPosY() + (CFG.GAME_HEIGHT - backgroundHeight) / 2 + iTranslateY, backgroundWidth, backgroundHeight);
+                oSB.flush();
+                oSB.setShader(Renderer.shaderDefault);
+            }
             oSB.setColor(Color.WHITE);
         }
-
-        oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.6F));
-        ImageManager.getImage(Images.gradientVertical).draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.PADDING * 3);
-        ImageManager.getImage(Images.gradientVertical).draw(oSB, iTranslateX, CFG.GAME_HEIGHT - CFG.PADDING * 3 + iTranslateY, CFG.GAME_WIDTH, CFG.PADDING * 3, false, true);
+        if(Config.getGradientConfig().initGame < 3) {
+            if(Config.getGradientConfig().initGame < 2) {
+                oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.6F));
+            } else {
+                oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.8F));
+            }
+            ImageManager.getImage(Images.gradientVertical).draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.PADDING * 3);
+            ImageManager.getImage(Images.gradientVertical).draw(oSB, iTranslateX, CFG.GAME_HEIGHT - CFG.PADDING * 3 + iTranslateY, CFG.GAME_WIDTH, CFG.PADDING * 3, false, true);
+        }
         oSB.setColor(Color.WHITE);
         super.draw(oSB, iTranslateX, iTranslateY, menuIsActive, titleStatus);
         if (iStepID > 8) {
-            Renderer.drawLoading(oSB, iTranslateX, iTranslateY, 0.12F + 0.88F * (float)iStepID / (float)(iNumOfSteps + Game.map.getActiveMap_MapData().mapData.NumOfProvinces));
+            float p1 = (float) iStepID / iNumOfSteps;
+            float p2 = (float) (iStepID - iNumOfSteps) /  Game.map.getActiveMap_MapData().mapData.NumOfProvinces;
+            float progress = Math.min(p1,1f) * 0.7f + p2 * 0.3f;
+            Renderer.drawLoading(oSB, iTranslateX, iTranslateY, progress);
             Renderer.drawTextWithShadow(oSB, CFG.FONT_REGULAR_SMALL, this.loadingName, iTranslateX + CFG.PADDING * 4, iTranslateY + CFG.PADDING * 4, new Color(1.0F, 1.0F, 1.0F, 0.15F));
         }
 
     }
+
     public static final void loadBackground2() {
         if (background != null) {
             background.dispose();
             background = null;
         }
-        if(Config.getConfig().seqLoadBG){
+        if (Config.getConfig().seqLoadBG) {
             backgroundID++;
-            if(backgroundID > backgroundSize - 1){
+            if (backgroundID > backgroundSize - 1) {
                 backgroundID = 0;
             }
-        }else {
+        } else {
             for (int i = 0; i < 5; ++i) {
                 int newID = Game.oR.nextInt(backgroundSize);
                 if (newID != backgroundID) {
@@ -180,21 +166,22 @@ public class InitGame extends Menu {
             }
         }
         background = new Image(ImageManager.loadTexture_RGB888("ui/loading_m/" + backgroundID + ".png"), TextureFilter.Linear, TextureWrap.ClampToEdge);
-        float fScale = Math.max((float)CFG.GAME_WIDTH / (float)background.getWidth(), (float)CFG.GAME_HEIGHT / (float)background.getHeight());
-        backgroundWidth = (int)((float)background.getWidth() * fScale);
-        backgroundHeight = (int)((float)background.getHeight() * fScale);
+        float fScale = Math.max((float) CFG.GAME_WIDTH / (float) background.getWidth(), (float) CFG.GAME_HEIGHT / (float) background.getHeight());
+        backgroundWidth = (int) ((float) background.getWidth() * fScale);
+        backgroundHeight = (int) ((float) background.getHeight() * fScale);
     }
+
     public static final void loadBackground() {
         if (background != null) {
             background.dispose();
             background = null;
         }
-        if(Config.getConfig().seqLoadBG){
+        if (Config.getConfig().seqLoadBG) {
             backgroundID++;
-            if(backgroundID > backgroundSize - 1){
+            if (backgroundID > backgroundSize - 1) {
                 backgroundID = 0;
             }
-        }else {
+        } else {
             for (int i = 0; i < 5; ++i) {
                 int newID = Game.oR.nextInt(backgroundSize);
                 if (newID != backgroundID) {
@@ -204,9 +191,9 @@ public class InitGame extends Menu {
             }
         }
         background = new Image(ImageManager.loadTexture_RGB888("ui/loading/" + backgroundID + ".png"), TextureFilter.Linear, TextureWrap.ClampToEdge);
-        float fScale = Math.max((float)CFG.GAME_WIDTH / (float)background.getWidth(), (float)CFG.GAME_HEIGHT / (float)background.getHeight());
-        backgroundWidth = (int)((float)background.getWidth() * fScale);
-        backgroundHeight = (int)((float)background.getHeight() * fScale);
+        float fScale = Math.max((float) CFG.GAME_WIDTH / (float) background.getWidth(), (float) CFG.GAME_HEIGHT / (float) background.getHeight());
+        backgroundWidth = (int) ((float) background.getWidth() * fScale);
+        backgroundHeight = (int) ((float) background.getHeight() * fScale);
     }
 
     public void setLoadText(String sText) {
@@ -222,13 +209,11 @@ public class InitGame extends Menu {
     }
 
     public void initGame() {
-
         if (this.takeABreak > 0) {
             --this.takeABreak;
         } else {
             try {
                 if (iStepID == 0) {
-                    timer = System.currentTimeMillis();
                     Game.gameThreadUpdate.start();
 
                     try {
@@ -260,20 +245,20 @@ public class InitGame extends Menu {
                         return;
                     }
                 } else if (iStepID == 4) {
+                    timer = System.currentTimeMillis();
                     if (this.reloadBoldFont && !Game.settingsManager.LANGUAGE_TAG.isEmpty()) {
                         Renderer.clearFonts();
                         Renderer.charset = Game.lang.get("charset");
                         Renderer.loadFont(Game.lang.get("font"), Game.lang.get("charset"), Game.settingsManager.FONT_MAIN_SIZE);
                         CFG.FONT_BOLD = Renderer.fontMain.size() - 1;
                     }
-
                     GameValues.init();
                 } else if (iStepID == 5) {
                     Renderer.loadFont(Game.lang.get("font2"), Game.lang.get("charset"), Game.settingsManager.FONT_MAIN_SIZE);
                     CFG.FONT_REGULAR = Renderer.fontMain.size() - 1;
                     this.takeABreak = 2;
                 } else if (iStepID == 6) {
-                    Renderer.loadFont(Game.lang.get("font"), Game.lang.get("charset"), (int)Math.floor((double)((float)Game.settingsManager.FONT_MAIN_SIZE * 0.9F)));
+                    Renderer.loadFont(Game.lang.get("font"), Game.lang.get("charset"), (int) Math.floor((float) Game.settingsManager.FONT_MAIN_SIZE * 0.9F));
                     CFG.FONT_BOLD_SMALL = Renderer.fontMain.size() - 1;
                     this.takeABreak = 2;
                 } else if (iStepID == 7) {
@@ -286,7 +271,7 @@ public class InitGame extends Menu {
                     CFG.FONT_CITIES = Renderer.fontMain.size() - 1;
                     this.takeABreak = 2;
                 } else if (iStepID == 9) {
-                    Renderer.loadFont(Game.lang.get("font2"), Game.lang.get("charset"), (int)Math.floor((double)((float)Game.settingsManager.FONT_MAIN_SIZE * 0.9F)));
+                    Renderer.loadFont(Game.lang.get("font2"), Game.lang.get("charset"), (int) Math.floor((float) Game.settingsManager.FONT_MAIN_SIZE * 0.9F));
                     CFG.FONT_REGULAR_SMALL = Renderer.fontMain.size() - 1;
                     Renderer.loadFont_UpdateTextHeight();
                     Renderer.loadFont_UpdateTextHeightSmall();
@@ -566,7 +551,7 @@ public class InitGame extends Menu {
                     PlagueManager.loadDiseases();
                     this.setLoadText("Build Data");
                 } else if (iStepID == 79) {
-                    EventsManager.loadScenarioEventsTag = (String)Game.mapScenarios.lScenarios_TagsList.get(Game.scenarioID);
+                    EventsManager.loadScenarioEventsTag = Game.mapScenarios.lScenarios_TagsList.get(Game.scenarioID);
                     MissionTree.loadMissions();
                     Game.mapBG.updateMinimapResolution();
                     Game.mapBG.updatePreviewResolution();
@@ -583,15 +568,11 @@ public class InitGame extends Menu {
                     this.setLoadText("Loading Scenario #3A Civilizations Names");
                 } else if (iStepID == 83) {
                     Game.mapScenarios.loadScenario_3_A();
-                    if(Config.getConfig().useFluctlight) {
-                        Fluctlight.getInstance().addTask(task3);
-                        Fluctlight.getInstance().addTask(task);
-                        Fluctlight.getInstance().addTask(task2);
-                        Fluctlight.getInstance().addTask(task2_b);
-                    }
                     this.setLoadText("Loading Scenario #3B Flags");
                 } else if (iStepID == 84) {
+                    Timer.start(false, "loadFlag");
                     Game.mapScenarios.loadScenario_3_B();
+                    Timer.end();
                     this.setLoadText("Loading Scenario #3C Civilization's Provinces");
                 } else if (iStepID == 85) {
                     Game.mapScenarios.loadScenario_3_C();
@@ -618,11 +599,7 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_10();
                     this.setLoadText("Loading Scenario #11");
                 } else if (iStepID == 93) {
-                    if(Config.getConfig().useFluctlight) {
-                        task3.blockOn();
-                    }else {
-                        Game.mapScenarios.loadScenario_11();
-                    }
+                    Game.mapScenarios.loadScenario_11();
                     this.setLoadText("Loading Scenario #12");
                 } else if (iStepID == 94) {
                     Game.mapScenarios.loadScenario_12();
@@ -711,14 +688,10 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_39(false);
                     this.setLoadText("Loading Scenario #40");
                 } else if (iStepID == 123) {
-                    if(Config.getConfig().useFluctlight) {
-                        task.blockOn();
-                    }else {
-                        Game.mapScenarios.loadScenario_40(false);
-                    }
+                    Game.mapScenarios.loadScenario_40(false);
                     this.setLoadText("Loading Scenario #41");
                 } else if (iStepID == 124) {
-                    if(!Config.getConfig().useFluctlight) Game.mapScenarios.loadScenario_41(false);
+                    Game.mapScenarios.loadScenario_41(false);
                     this.setLoadText("Loading Scenario #42");
                 } else if (iStepID == 125) {
                     Game.mapScenarios.loadScenario_42();
@@ -742,19 +715,10 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_48();
                     this.setLoadText("Loading Scenario #49");
                 } else if (iStepID == 132) {
-                    if(Config.getConfig().useFluctlight) {
-                        if(!task2.isFinished() || !task2_b.isFinished()){
-                            MissionTree.loadMissions_Civs();
-                            finished64 = true;
-                        }
-                        task2.blockOn();
-                        task2_b.blockOn();
-                    }else {
-                        Game.mapScenarios.loadScenario_49(false);
-                    }
+                    Game.mapScenarios.loadScenario_49(false);
                     this.setLoadText("Loading Scenario #50");
                 } else if (iStepID == 133) {
-                    if(!Config.getConfig().useFluctlight) {
+                    if (!Config.getConfig().useFluctlight) {
                         Game.mapScenarios.loadScenario_50(false);
                     }
                     this.setLoadText("Loading Scenario #51");
@@ -797,7 +761,7 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_63();
                     this.setLoadText("Loading Scenario #64");
                 } else if (iStepID == 147) {
-                    if(!finished64) {
+                    if (!finished64) {
                         Game.mapScenarios.loadScenario_64();
                     }
                     this.setLoadText("Loading National Spirits");
@@ -815,16 +779,15 @@ public class InitGame extends Menu {
                 } else if (iStepID == 151) {
                     this.setLoadText("Loading Events");
                 } else if (iStepID == 152) {
-                    EventsManager.loadScenarioEventsTag = (String)Game.mapScenarios.lScenarios_TagsList.get(Game.scenarioID);
+                    EventsManager.loadScenarioEventsTag = Game.mapScenarios.lScenarios_TagsList.get(Game.scenarioID);
                     EventsManager.loadEvents();
                     EventsManager.loadEvents_Scenario();
-                    Fluctlight.getInstance().dispose();
                     this.setLoadText("Loading HRE");
                 } else {
                     if (iStepID != 153) {
                         if (iStepID >= 154 && iStepID < 154 + Game.getProvincesSize()) {
                             SoundsManager.playMode = (short) Config.getConfig().defaultPlayMode;
-                            for(int i = 0; i < numOfProvincesBGToLoad && iStepID < 154 + Game.getProvincesSize(); ++i) {
+                            for (int i = 0; i < numOfProvincesBGToLoad && iStepID < 154 + Game.getProvincesSize(); ++i) {
                                 Game.loadProvinceBG(iStepID++ - 154);
                             }
 
@@ -836,14 +799,18 @@ public class InitGame extends Menu {
                             Game.mapScale.setEnableScaling(true);
                             Game.setUpdateProvincesInView(true);
                             CivilizationRegionsManager.updateRegionsInView = true;
-                            FinalityLogger.info("Loaded with "+(System.currentTimeMillis() - timer)+"ms");
-                            Game.menuManager.setViewID(View.MAINMENU);
+                            FinalityLogger.info("Loaded with " + (System.currentTimeMillis() - timer) + "ms");
+                            Game.menuManager.setViewIDWithoutAnimation(View.MAINMENU);
                             this.justOnce = false;
                             Game.gameThread.start();
                             Game.gameThreadTurns.start();
                             Game.gameThreadEvents.start();
                             Game.soundsManager.playStartMusic();
                             NewGame.setRandomCiv();
+                            if (FontFix.compactScale != null) {
+                                FontFix.compactScale.dispose();
+                                FontFix.compactScale = null;
+                            }
                         }
 
                         return;
@@ -860,7 +827,7 @@ public class InitGame extends Menu {
         }
     }
 
-    private final void loadImages_1() {
+    private void loadImages_1() {
         Images.randomCivilizationFlag = ImageManager.addImage("gfx/flagsXH/ran.png");
         Images.map_border = ImageManager.addImage("gfx/map/mapBorder.png", Format.RGBA8888, TextureFilter.Nearest, TextureWrap.Repeat);
         Images.outsideMap = ImageManager.addImage("gfx/map/outsideMap.png", Format.RGB888, TextureFilter.Linear, TextureWrap.Repeat);
@@ -910,13 +877,13 @@ public class InitGame extends Menu {
         Images.insideBot530 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "insideBot530.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
         Images.title630 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "title630.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
         Images.insideTop630 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "insideTop630.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
-        if(FileManager.loadFile("ui/" + CFG.getRescouresPath() + "menus/" + "nsEntry.png").exists()) {
+        if (FileManager.loadFile("ui/" + CFG.getRescouresPath() + "menus/" + "nsEntry.png").exists()) {
             NationalSpiritManager.nsEntryImg = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "nsEntry.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
         }
         Images.insideBot630 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "insideBot630.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
     }
 
-    private final void loadImages_2() {
+    private void loadImages_2() {
         Images.infoBox2 = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "infoBox/" + "infoBox2.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
         Images.infoBox = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "infoBox/" + "infoBox.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
         Images.infoTop = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "infoBox/" + "infoTop.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.ClampToEdge);
@@ -989,7 +956,7 @@ public class InitGame extends Menu {
         return loadArmy_Default() ? "army26/" : "army32/";
     }
 
-    private final void loadImages_3() {
+    private void loadImages_3() {
         Images.graphBG = ImageManager.addImage("ui/graph/graphBG.png", Format.RGBA8888, TextureFilter.Nearest, TextureWrap.Repeat);
         Images.army = ImageManager.addImage("ui/army/" + this.getArmies_Path() + "army.png", Format.RGBA8888, TextureFilter.Nearest, TextureWrap.ClampToEdge);
         Images.armyAlly = ImageManager.addImage("ui/army/" + this.getArmies_Path() + "armyAlly.png", Format.RGBA8888, TextureFilter.Nearest, TextureWrap.ClampToEdge);
@@ -1032,11 +999,11 @@ public class InitGame extends Menu {
         Images.battleIcon5 = ImageManager.addImage("ui/army/" + this.getArmies_Path() + "battleIcon5.png", Format.RGBA8888, TextureFilter.Nearest, TextureWrap.ClampToEdge);
         Images.armyLeft = ImageManager.addImage("ui/army/" + this.getArmies_Path() + "armyLeft.png", Format.RGBA8888, TextureFilter.Nearest, TextureWrap.ClampToEdge);
 
-        for(int i = 0; i < GameValues.inGame.ARMY_LEFT_IMAGES + 1; ++i) {
+        for (int i = 0; i < GameValues.inGame.ARMY_LEFT_IMAGES + 1; ++i) {
             Images.armyLeft3.add(ImageManager.loadImage("ui/army/" + this.getArmies_Path() + i + ".png", Format.RGBA8888, TextureFilter.Nearest, TextureWrap.ClampToEdge));
         }
 
-        Images.armyLeft3_Width = ((Image)Images.armyLeft3.get(0)).getWidth();
+        Images.armyLeft3_Width = Images.armyLeft3.get(0).getWidth();
         Images.terrainFrame = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "menus/" + "terrainFrame.png");
         Images.unitsFrame = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "units/" + "unitsFrame.png");
         Images.unitsFrameSmall = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "units/" + "unitsFrameSmall.png");
@@ -1065,7 +1032,7 @@ public class InitGame extends Menu {
         Images.nuclearReactorBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "buildings/" + "nuclearReactorBig.png");
         Images.atomicBombBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "buildings/" + "atomicBombBig.png");
 
-        for(int i = 0; i < GameValues.capital.CAPITAL_IMAGES; ++i) {
+        for (int i = 0; i < GameValues.capital.CAPITAL_IMAGES; ++i) {
             Images.buildingCapital.add(ImageManager.addImage("ui/" + CFG.getRescouresPath() + "buildings/" + "buildingCapital" + i + ".png"));
             Images.buildingCapitalBig.add(ImageManager.addImage("ui/" + CFG.getRescouresPath() + "buildings/" + "buildingCapitalBig" + i + ".png"));
         }
@@ -1073,7 +1040,7 @@ public class InitGame extends Menu {
         this.loadArmiesFlagData();
     }
 
-    private final void loadArmiesFlagData() {
+    private void loadArmiesFlagData() {
         try {
             FileHandle tempFileT = FileManager.loadFile("ui/army/" + this.getArmies_Path() + "flag.txt");
             String[] tempSplit = tempFileT.readString().split(";");
@@ -1087,7 +1054,7 @@ public class InitGame extends Menu {
 
     }
 
-    private final void loadImages_4() {
+    private void loadImages_4() {
         Images.rulerFrame = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "ruler/" + "rulerFrame.png");
         Images.capitalLeft = ImageManager.addImage("ui/army/capitalLeft.png");
         Images.capitalLeftOver = ImageManager.addImage("ui/army/capitalLeftOver.png");
@@ -1148,7 +1115,10 @@ public class InitGame extends Menu {
         Images.hreBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "hreBig.png");
         Images.invasion = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "invasion.png");
     }
-    private final void loadImages_5_new() {
+
+    private void loadImages_5_new() {
+        Images.summit = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "summit.png");
+        Images.summitBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "summitBig.png");
         Images.heart = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "heart.png");
         Images.war = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "war.png");
         Images.warBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "warBig.png");
@@ -1275,8 +1245,9 @@ public class InitGame extends Menu {
 
         Game.unionManagerFlags.loadImages();
     }
-    private final void loadImages_5() {
-        if(Config.getConfig().loadImgVersion >= 2) {
+
+    private void loadImages_5() {
+        if (Config.getConfig().loadImgVersion >= 2) {
             loadImages_5_new();
         }
         Images.heart = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "heart.png");
@@ -1402,7 +1373,7 @@ public class InitGame extends Menu {
 
     }
 
-    private final void loadImages_6() {
+    private void loadImages_6() {
         Images.information = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "information.png");
         Images.arrowUpDown = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "minimap/" + "arrowUpDown.png");
         Images.mapModesTerrain = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "minimap/" + "mapModesTerrain.png");
@@ -1450,7 +1421,7 @@ public class InitGame extends Menu {
         Images.boxSimple = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "boxes/" + "boxSimple.png");
     }
 
-    private final void loadImagesInit() {
+    private void loadImagesInit() {
         Images.boxTitle = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "boxes/" + "boxTitle.png");
         Images.mainBox = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "mainMenu/" + "mainBox.png");
         Images.boxBGCorner = ImageManager.addImage("ui/other/boxBGCorner.png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.Repeat);
@@ -1465,7 +1436,7 @@ public class InitGame extends Menu {
         Images.statsRectBGBorder = ImageManager.loadImage("ui/" + CFG.getRescouresPath() + "boxes/" + "statsRectBGBorder.png", Format.RGBA8888, TextureFilter.Nearest, TextureWrap.ClampToEdge);
     }
 
-    private final void loadImages_7() {
+    private void loadImages_7() {
         Renderer.boxBGExtraY = ImageManager.getImage(Images.boxBGLine).getWidth();
         Images.sliderEdge = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "boxes/" + "sliderEdge.png");
         Images.flagBGClassic = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "top/" + "flagBG.png");
@@ -1492,16 +1463,16 @@ public class InitGame extends Menu {
         FileHandle tempFileT2 = FileManager.loadFile("gfx/map/nuke/numOfImages.txt");
         int tNukeImages = Integer.parseInt(tempFileT2.readString());
 
-        for(int i = 0; i < tNukeImages; ++i) {
+        for (int i = 0; i < tNukeImages; ++i) {
             Images.nukeImg.add(ImageManager.addImage("gfx/map/nuke/" + i + ".png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.Repeat));
         }
 
         Images.nukeIMGSize = tNukeImages;
         Json json = new Json();
         FileHandle file = FileManager.loadFile("ui/flag/Config.json");
-        Game.flagData = (Game.FlagData)json.fromJson(Game.FlagData.class, file);
+        Game.flagData = json.fromJson(Game.FlagData.class, file);
 
-        for(int i = 0; i < Game.flagData.NumOfFlags; ++i) {
+        for (int i = 0; i < Game.flagData.NumOfFlags; ++i) {
             Images.flagMask.add(ImageManager.addImage("ui/flag/" + CFG.getRescouresPath_Short() + i + "/flagMask.png"));
             Images.flagMaskLord.add(ImageManager.addImage("ui/flag/" + CFG.getRescouresPath_Short() + i + "/flagMaskLord.png"));
             Images.flagOver.add(ImageManager.addImage("ui/flag/" + CFG.getRescouresPath_Short() + i + "/flagOver.png"));
@@ -1537,7 +1508,7 @@ public class InitGame extends Menu {
 
     }
 
-    private final void loadImages_8() {
+    private void loadImages_8() {
         Images.build = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "build.png");
         Images.dice = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "dice.png");
         Images.manpower = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "manpower.png");
@@ -1580,21 +1551,31 @@ public class InitGame extends Menu {
         Images.rebelsFlag = ImageManager.addImage("gfx/rebels/flag.png");
     }
 
-    private final void loadSparks() {
+    private void loadSparks() {
         try {
             FileHandle tempFileT = FileManager.loadFile("gfx/sparks/numberOfImages.txt");
             Images.SPARKS_SIZE = Integer.parseInt(tempFileT.readString());
 
-            for(int i = 0; i < Images.SPARKS_SIZE; ++i) {
+            for (int i = 0; i < Images.SPARKS_SIZE; ++i) {
                 Images.sparks.add(ImageManager.loadImage("gfx/sparks/" + i + ".png", Format.RGBA8888, TextureFilter.Linear, TextureWrap.Repeat));
             }
 
-            Images.sparkWidth = ((Image)Images.sparks.get(0)).getWidth();
-            Images.sparkHeight = ((Image)Images.sparks.get(0)).getHeight();
+            Images.sparkWidth = Images.sparks.get(0).getWidth();
+            Images.sparkHeight = Images.sparks.get(0).getHeight();
         } catch (GdxRuntimeException ex) {
             CFG.exceptionStack(ex);
         }
 
         Images.SPARKS_SIZE = Images.sparks.size();
+    }
+
+    public static void buildStartingArmy2() {
+        try {
+            for (int i = (int) (Game.getCivsSize() / 2.0F); i < Game.getCivsSize(); ++i) {
+                Game.mapScenarios.buildStartingArmy(i);
+            }
+        } catch (Exception ex) {
+            CFG.exceptionStack(ex);
+        }
     }
 }

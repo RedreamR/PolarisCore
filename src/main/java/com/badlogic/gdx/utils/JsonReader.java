@@ -112,7 +112,7 @@ public class JsonReader implements BaseJsonReader {
         String charset = "";
         String str = file.name();
         boolean isSkip = str.contains("ProvincePoint") || str.contains("ProvinceNeighboringProvinces");
-        if (!str.equals("polaris_core.json") && Config.getConfig().fastEncodeCheck) {
+        if (!str.startsWith("polaris_core") && Config.getConfig().fastEncodeCheck) {
             String str1 = file.path();
             if (str1.contains("saves")) {
                 charset = Charset.defaultCharset().toString();

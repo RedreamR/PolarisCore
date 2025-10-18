@@ -11,6 +11,10 @@ import java.util.ArrayList;
 
 public class CompactScale {
     public ArrayList<Scale> scales = new ArrayList<>();
+    public void dispose(){
+        scales.clear();
+        System.gc();
+    }
     public static CompactScale readCompactFile(FileHandle fileHandle) throws IOException {
         FinalityLogger.debug("READ FROM COMPACT FILE");
         ArrayList<Scale> scales = new ArrayList<>();

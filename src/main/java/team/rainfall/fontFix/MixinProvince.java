@@ -4,25 +4,44 @@ import aoc.kingdoms.lukasz.jakowski.CFG;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.GameValues;
+import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
+import aoc.kingdoms.lukasz.map.diplomacy.DiplomacyManager;
 import aoc.kingdoms.lukasz.map.map.Continents;
+import aoc.kingdoms.lukasz.map.province.Province;
 import aoc.kingdoms.lukasz.textures.Image;
+import aoc.kingdoms.lukasz.textures.ImageManager;
+import aoc.kingdoms.lukasz.textures.Images;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
 
 import java.awt.*;
+import java.util.List;
 
 
 @Mixin(mixinClass = "aoc.kingdoms.lukasz.map.province.Province")
 public class MixinProvince {
+    private java.util.List<Short> lPointsX;
+    private List<Short> lPointsY;
     private int iProvinceID;
     private Image provinceBG;
+    private int iTranslateProvincePosX;
     private int iLevelOfPort;
+    private int iMinX;
+    private int iMinY;
+    private int iMaxX;
+    private int iMaxY;
+
     public final void loadFromCompact(){
         if(FontFix.tried || FontFix.compactScale != null) return;
         try {
@@ -61,11 +80,9 @@ public class MixinProvince {
             Continents var10002 = Game.continents;
             if (FileManager.loadFile(var10000.append(this.iLevelOfPort == -4 ? 1 : (int)((float)Game.mapBG.iMapScale / Game.mapBG.iMapExtraScale)).append("/").append(this.iProvinceID).toString()).exists()) {
                 var10000 = (new StringBuilder()).append("map/").append(Game.map.getFile_ActiveMap_Path()).append("data/").append("scales/");
-                var10002 = Game.continents;
                 Pixmap pixmap = PixmapIO.readCIM(FileManager.loadFile(var10000.append(this.iLevelOfPort == -4 ? 1 : (int)((float)Game.mapBG.iMapScale / Game.mapBG.iMapExtraScale)).append("/").append(this.iProvinceID).toString()));
                 this.provinceBG = new Image(new Texture(pixmap), Texture.TextureFilter.Nearest, Texture.TextureWrap.ClampToEdge);
                 pixmap.dispose();
-                Object var3 = null;
             } else {
                 this.buildProvinceBG(false);
                 this.loadProvinceBG();
@@ -85,5 +102,28 @@ public class MixinProvince {
 
     @Shadow
     private void buildProvinceBG(boolean b) {
+    }
+
+    public final void drawProvince_ActiveProvince(SpriteBatch oSB) {
+        if (!this.getSeaProvince()) {
+            if (this.iLevelOfPort == -4) {
+                this.provinceBG.draw(oSB, this.iTranslateProvincePosX + this.iMinX, Game.mapCoords.getPosY() + this.iMinY, (float)Game.mapBG.iMapScale);
+            } else {
+                this.provinceBG.draw(oSB, this.iTranslateProvincePosX + this.iMinX, Game.mapCoords.getPosY() + this.iMinY, Game.mapBG.iMapExtraScale);
+            }
+
+        }
+    }
+
+    public final void drawProvince_ActiveProvince(SpriteBatch oSB, Image imgProvince) {
+        try {
+            if (this.iLevelOfPort == -4) {
+                imgProvince.draw(oSB, this.iTranslateProvincePosX + this.iMinX, Game.mapCoords.getPosY() + this.iMinY, (float)Game.mapBG.iMapScale);
+            } else {
+                imgProvince.draw(oSB, this.iTranslateProvincePosX + this.iMinX, Game.mapCoords.getPosY() + this.iMinY, Game.mapBG.iMapExtraScale);
+            }
+        } catch (Exception ex) {
+            //CFG.exceptionStack(ex);
+        }
     }
 }

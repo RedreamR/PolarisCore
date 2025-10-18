@@ -1,46 +1,30 @@
 package team.rainfall.fontFix;
 
 
-import aoc.kingdoms.lukasz.jakowski.CFG;
-import aoc.kingdoms.lukasz.jakowski.FileManager;
-import aoc.kingdoms.lukasz.jakowski.Game;
-import aoc.kingdoms.lukasz.jakowski.Keyboard;
+import aoc.kingdoms.lukasz.jakowski.*;
+import aoc.kingdoms.lukasz.map.civilization.save.CivData3;
 import aoc.kingdoms.lukasz.menusInGame.InGame_CivBonuses;
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import org.lwjgl.system.CallbackI;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 import team.rainfall.finality.FinalityLogger;
-
-import java.io.File;
 
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.musicVolume;
 
 public class FontFix {
-    //是否尝试过加载compactScale
+    //假装自己是Polaris AoH3，没事别开（因为会带起Sternstunden）
+    public static final boolean fakeAndroid = false;
+    //玄星的定制提示
+    public static final boolean isXuanxing = false;
     public static int musicIconID = -1;
+    //是否尝试过加载compactScale
     public static boolean tried = false;
     public static CompactScale compactScale = null;
     public static boolean titleSet = false;
-    public static final String CORE_VERSION = "3.4.0";
-    public static final String POLARIS_VERSION = "2.7";
+    public static final String CORE_VERSION = "4.0.0";
+    public static final String POLARIS_VERSION = "2.9";
     public static int isSplash = 0;
-
-    public static File getReadableFile(FileHandle src) {
-        if (CFG.isDesktop()) {
-            return src.file();
-        }
-        if (src.type() == Files.FileType.Internal) {
-            FileHandle dst = Gdx.files.local(src.path());
-            if (!dst.exists()) {
-                src.copyTo(dst);
-            }
-            return dst.file();
-        }
-        return src.file();
-    }
 
 
     public static boolean isSplash() {
@@ -63,7 +47,7 @@ public class FontFix {
                 if (FileManager.loadFile("customTitle").exists()) {
                     Gdx.app.getGraphics().setTitle(FileManager.loadFile("customTitle").readString());
                 } else {
-                    Gdx.app.getGraphics().setTitle("Age of History 3 - Polaris Core");
+                    Gdx.app.getGraphics().setTitle("Age of History 3");
                 }
             } catch (Exception ignored) {
                 FinalityLogger.warn("Failed to set custom title");
@@ -95,6 +79,9 @@ public class FontFix {
 
     public static void playStartMusic() {
         try {
+            if(CFG.isAndroid() || fakeAndroid) {
+                Sternstunden.init();
+            }
             setTitle();
             Game.soundsManager.disposeCurrentMusic();
             if (FileManager.loadFile("startMusic").exists()) {
@@ -165,7 +152,28 @@ public class FontFix {
                 Game.menuManager.setVisibleInGame_Armies(false);
             }
         }
+    }
+    public static int getDemilitarization(int iCivID){
+        CivData3 civData3 = Game.getCiv(iCivID).civData3;
+        try {
+            int d = (int) CivData3.class.getDeclaredField("d").get(civData3);
+            return d;
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
 
+        }
+        return 0;
+    }
+    public static boolean isDemilitarization(int iCivID){
+        CivData3 civData3 = Game.getCiv(iCivID).civData3;
+        try {
+            int d = (int) CivData3.class.getDeclaredField("d").get(civData3);
+            if(d > Game_Calendar.TURN_ID){
+                return true;
+            }
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+
+        }
+        return false;
     }
 }
 

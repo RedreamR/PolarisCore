@@ -31,6 +31,8 @@ import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
+import team.rainfall.fontFix.utils.AnimationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -262,7 +264,8 @@ public class InGame_Audio extends Menu {
 
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
         if (lTime + 60L >= CFG.currentTimeMillis) {
-            iTranslateY = iTranslateY - CFG.BUTTON_HEIGHT + (int) ((float) CFG.BUTTON_HEIGHT * ((float) (CFG.currentTimeMillis - lTime) / 60.0F));
+            float progress = (CFG.currentTimeMillis - lTime) / 60.0F;
+            iTranslateY = iTranslateY - CFG.BUTTON_HEIGHT + (int) ((float) CFG.BUTTON_HEIGHT * AnimationUtil.easeOut(progress));
         }
 
         Renderer.drawBoxCorner(oSB, this.getPosX() + iTranslateX, this.getPosY() - this.getTitle().getHeight() + iTranslateY, this.getWidth(), this.getHeight() + this.getTitle().getHeight() + CFG.PADDING);

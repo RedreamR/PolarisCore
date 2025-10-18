@@ -10,6 +10,7 @@ import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.GameValues;
 import aoc.kingdoms.lukasz.jakowski.Game_Calendar;
 import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
+import aoc.kingdoms.lukasz.jakowski.SaveLoad.LoadSavedGameManager;
 import aoc.kingdoms.lukasz.map.civilization.CivilizationRanking;
 import aoc.kingdoms.lukasz.menu.Colors;
 import aoc.kingdoms.lukasz.menu.Menu;
@@ -29,6 +30,7 @@ import aoc.kingdoms.lukasz.textures.ImageManager;
 import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.fontFix.NationalSpirit;
 import team.rainfall.fontFix.NationalSpiritManager;
@@ -39,7 +41,7 @@ import java.util.List;
 public class InGame_CivBonuses extends Menu {
     public static boolean nationSpirit = false;
     public static int iCivID;
-    protected static final int ANIMATION_TIME = 60;
+    protected static final int ANIMATION_TIME = 150;
     public static long lTime = 0L;
 
     public InGame_CivBonuses() {
@@ -57,6 +59,7 @@ public class InGame_CivBonuses extends Menu {
             int buttonH2 = (int)((float)buttonW * 1.1F);
             int buttonY = buttonYPadding + CFG.PADDING;
             int a = 0;
+            LoadSavedGameManager.loadSave_CivsEventsVariables();
             for (String string : Game.getCiv(iCivID).eventsDataVariables.v) {
                 if(string.startsWith("$$NationalSpirit_")){
                     String s2 = string.replace("$$NationalSpirit_","");
@@ -64,7 +67,6 @@ public class InGame_CivBonuses extends Menu {
                     NationalSpirit nationalSpirit = NationalSpiritManager.INSTANCE.getNS(s3[0]);
                     float fl = a / 5f;
                     menuElements.add(new ButtonNS_Info(nationalSpirit, (int) (paddingLeft + menuWidth * fl),buttonY,buttonW,buttonH2,true));
-                    FinalityLogger.debug("NationalSpirit.COM "+(paddingLeft + menuWidth * fl)+" a "+a+" pdLeft"+paddingLeft);
                     a++;
                     if(a > 4){
                         a = 0;
@@ -574,8 +576,10 @@ public class InGame_CivBonuses extends Menu {
     }
 
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
-        if (lTime + 60L >= CFG.currentTimeMillis) {
-            iTranslateX = iTranslateX + CFG.BUTTON_WIDTH - (int) ((float) CFG.BUTTON_WIDTH * ((float) (CFG.currentTimeMillis - lTime) / 60.0F));
+        if (lTime + ANIMATION_TIME >= CFG.currentTimeMillis) {
+            float f = ((float) (CFG.currentTimeMillis - lTime) / ANIMATION_TIME);
+            f = Interpolation.smooth.apply(f);
+            iTranslateX = iTranslateX + CFG.BUTTON_WIDTH - (int) ((float) CFG.BUTTON_WIDTH * f);
         }
 
         Renderer.drawBoxCorner(oSB, this.getPosX() + iTranslateX, this.getPosY() - this.getTitle().getHeight() + iTranslateY, this.getWidth(), this.getHeight() + this.getTitle().getHeight() + CFG.PADDING);

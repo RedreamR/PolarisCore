@@ -27,6 +27,7 @@ import aoc.kingdoms.lukasz.menus.Dialog.DialogType;
 import aoc.kingdoms.lukasz.menusMapEditor.EditorSelectProvinces;
 import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import team.rainfall.fontFix.FontFix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,6 +174,20 @@ public class Editor extends Menu {
                 public void actionElement() {
                         Dialog.GO_TO_LINK = "https://qm.qq.com/q/ALylcUWbUk";
                         Dialog.setDialogType(DialogType.GO_TO_LINK);
+                }
+            });
+            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
+        }
+        if(FontFix.isXuanxing) {
+            menuElements.add(new ButtonMain((String) null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
+                public void updateLanguage() {
+                    this.setText("玄星汉化，Team Rainfall提供技术支持");
+                }
+
+                public void actionElement() {
+                    Dialog.GO_TO_LINK = "";
+                    Dialog.setDialogType(DialogType.GO_TO_LINK);
+                    Game.menuManager.dialogMenu.getTitle().setText("基于玄星v240汉化，免费分享，禁止倒卖，禁止二创\n系统基于Polaris AoH3 2.8制作，作者为Team Rainfall");
                 }
             });
         }

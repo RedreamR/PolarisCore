@@ -13,6 +13,7 @@ public class PolarisConfigData {
     public float MainMenu_PanelX = 0.1f;
     public String MainMenu_Alignment = "left";
     public boolean forceFlagNearest = false;
+    public boolean extendCharset = false;
     //A simple method to detect encode,may cause detection mistake
     public boolean fastEncodeCheck = true;
     public boolean useFluctlight = true;
@@ -24,4 +25,8 @@ public class PolarisConfigData {
     public boolean hideBonus = false;
     public boolean seqLoadBG = false;
     public boolean uniqueBGforMainMenu = false;
+    public boolean noMainMenuAnimation = false;
+    public boolean randNameCache = false;
+    public boolean changeBGinInitGame = false;
+
 }

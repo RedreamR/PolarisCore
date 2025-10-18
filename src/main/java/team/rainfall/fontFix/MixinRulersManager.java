@@ -1,15 +1,19 @@
 package team.rainfall.fontFix;
 
 import aoc.kingdoms.lukasz.jakowski.*;
+import aoc.kingdoms.lukasz.map.IdeologiesManager;
 import aoc.kingdoms.lukasz.map.Ruler;
 import aoc.kingdoms.lukasz.map.RulersManager;
+import aoc.kingdoms.lukasz.map.civilization.Civilization;
 import aoc.kingdoms.lukasz.map.civilization.CivilizationBonuses;
 import aoc.kingdoms.lukasz.textures.Image;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.async.AsyncExecutor;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
+import team.rainfall.fontFix.utils.RandomNameCache;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -39,74 +43,63 @@ public class MixinRulersManager {
 
 
     public static String getRulerRandomName(int iCivID, String sCivTAG) {
-        sCivTAG = Game.getCiv(iCivID).realTag;
-        String civTagWithGov = Game.getCiv(iCivID).getCivTag();
-        String civTagWithGP = Game.getCiv(iCivID).realTag + "_gp" + Game.ideologiesManager.getIdeology(Game.getCiv(iCivID).getIdeologyID()).GOV_GROUP_ID;
-
-        if (Game.ideologiesManager.getIdeology(Game.getCiv(iCivID).getIdeologyID()).RulerRoman) {
-            FileHandle fileList;
-
-            if (FileManager.loadFile("game/rulersRandom/" + civTagWithGov + ".txt").exists()) {
-                fileList = FileManager.loadFile("game/rulersRandom/" + civTagWithGov + ".txt");
-                String[] tSplit = fileList.readString().split(";");
-                if (tSplit.length > 0) {
-                    return tSplit[Game.oR.nextInt(tSplit.length)] + " " + RomanNumber.getRoman(1 + Game.oR.nextInt(Math.max(1, GameValues.court.RULER_ROMAN_NUMBER_MAX_RANDOM)));
-                }
-            } else if (FileManager.loadFile("game/rulersRandom/link/" + civTagWithGov + ".txt").exists()) {
-                fileList = FileManager.loadFile("game/rulersRandom/link/" + civTagWithGov + ".txt");
-                sCivTAG = fileList.readString();
-                if (FileManager.loadFile("game/rulersRandom/" + sCivTAG + ".txt").exists()) {
-                    FileHandle fileList2 = FileManager.loadFile("game/rulersRandom/" + sCivTAG + ".txt");
-                    String[] tSplit = fileList2.readString().split(";");
-                    if (tSplit.length > 0) {
-                        return tSplit[Game.oR.nextInt(tSplit.length)] + " " + RomanNumber.getRoman(1 + Game.oR.nextInt(Math.max(1, GameValues.court.RULER_ROMAN_NUMBER_MAX_RANDOM)));
-                    }
-                }
-            }
-
-            if (FileManager.loadFile("game/rulersRandom/" + civTagWithGP + ".txt").exists()) {
-                fileList = FileManager.loadFile("game/rulersRandom/" + civTagWithGP + ".txt");
-                String[] tSplit = fileList.readString().split(";");
-                if (tSplit.length > 0) {
-                    return tSplit[Game.oR.nextInt(tSplit.length)] + " " + RomanNumber.getRoman(1 + Game.oR.nextInt(Math.max(1, GameValues.court.RULER_ROMAN_NUMBER_MAX_RANDOM)));
-                }
-            } else if (FileManager.loadFile("game/rulersRandom/link/" + civTagWithGP + ".txt").exists()) {
-                fileList = FileManager.loadFile("game/rulersRandom/link/" + civTagWithGP + ".txt");
-                sCivTAG = fileList.readString();
-                if (FileManager.loadFile("game/rulersRandom/" + sCivTAG + ".txt").exists()) {
-                    FileHandle fileList2 = FileManager.loadFile("game/rulersRandom/" + sCivTAG + ".txt");
-                    String[] tSplit = fileList2.readString().split(";");
-                    if (tSplit.length > 0) {
-                        return tSplit[Game.oR.nextInt(tSplit.length)] + " " + RomanNumber.getRoman(1 + Game.oR.nextInt(Math.max(1, GameValues.court.RULER_ROMAN_NUMBER_MAX_RANDOM)));
-                    }
-                }
-            }
-
-            if (FileManager.loadFile("game/rulersRandom/" + sCivTAG + ".txt").exists()) {
-                fileList = FileManager.loadFile("game/rulersRandom/" + sCivTAG + ".txt");
-                String[] tSplit = fileList.readString().split(";");
-                if (tSplit.length > 0) {
-                    return tSplit[Game.oR.nextInt(tSplit.length)] + " " + RomanNumber.getRoman(1 + Game.oR.nextInt(Math.max(1, GameValues.court.RULER_ROMAN_NUMBER_MAX_RANDOM)));
-                }
-            } else if (FileManager.loadFile("game/rulersRandom/link/" + sCivTAG + ".txt").exists()) {
-                fileList = FileManager.loadFile("game/rulersRandom/link/" + sCivTAG + ".txt");
-                sCivTAG = fileList.readString();
-                if (FileManager.loadFile("game/rulersRandom/" + sCivTAG + ".txt").exists()) {
-                    FileHandle fileList2 = FileManager.loadFile("game/rulersRandom/" + sCivTAG + ".txt");
-                    String[] tSplit = fileList2.readString().split(";");
-                    if (tSplit.length > 0) {
-                        return tSplit[Game.oR.nextInt(tSplit.length)] + " " + RomanNumber.getRoman(1 + Game.oR.nextInt(Math.max(1, GameValues.court.RULER_ROMAN_NUMBER_MAX_RANDOM)));
-                    }
-                }
-            }
-
-            return Game.generalManager.getGeneralRandomName(iCivID) + " " + RomanNumber.getRoman(1 + Game.oR.nextInt(9));
-        } else {
-            return Game.generalManager.getGeneralRandomName(iCivID) + " " + Game.generalManager.getGeneralRandomSurname(iCivID);
+        // 获取必要的基础数据
+        if(Config.getConfig().randNameCache){
+            String s = RandomNameCache.getRulerRandomName(iCivID,sCivTAG);
+            if(s != null) return s;
+            return Game.generalManager.getGeneralRandomName(iCivID) + " " +
+                    RomanNumber.getRoman(1 + Game.oR.nextInt(9));
         }
+        Civilization civ = Game.getCiv(iCivID);
+        IdeologiesManager.Ideology ideology = Game.ideologiesManager.getIdeology(civ.getIdeologyID());
+        sCivTAG = civ.realTag;
+        String civTagWithGov = civ.getCivTag();
+        String civTagWithGP = sCivTAG + "_gp" + ideology.GOV_GROUP_ID;
+        if (!ideology.RulerRoman) {
+            return Game.generalManager.getGeneralRandomName(iCivID) + " " +
+                    Game.generalManager.getGeneralRandomSurname(iCivID);
+        }
+        String rulerName = tryGetRulerNameFromFiles(civTagWithGov);
+        if (rulerName != null) return rulerName;
+        if(!Config.getConfig().fastLoadFlag) {
+            rulerName = tryGetRulerNameFromFiles(civTagWithGP);
+            if (rulerName != null) return rulerName;
+        }
+        rulerName = tryGetRulerNameFromFiles(sCivTAG);
+        if (rulerName != null) return rulerName;
+        return Game.generalManager.getGeneralRandomName(iCivID) + " " +
+                RomanNumber.getRoman(1 + Game.oR.nextInt(9));
     }
 
-    public static final void loadRuler(int iCivID, String sCivTAG, boolean random) {
+    private static String tryGetRulerNameFromFiles(String tag) {
+        // 尝试直接读取文件
+        FileHandle file = FileManager.loadFile("game/rulersRandom/" + tag + ".txt");
+        if (file.exists()) {
+            String[] names = file.readString().split(";");
+            if (names.length > 0) {
+                return names[Game.oR.nextInt(names.length)] + " " +
+                        RomanNumber.getRoman(1 + Game.oR.nextInt(Math.max(1, GameValues.court.RULER_ROMAN_NUMBER_MAX_RANDOM)));
+            }
+        }
+
+        // 尝试通过链接文件读取
+        FileHandle linkFile = FileManager.loadFile("game/rulersRandom/link/" + tag + ".txt");
+        if (linkFile.exists()) {
+            String linkedTag = linkFile.readString();
+            FileHandle linkedFile = FileManager.loadFile("game/rulersRandom/" + linkedTag + ".txt");
+            if (linkedFile.exists()) {
+                String[] names = linkedFile.readString().split(";");
+                if (names.length > 0) {
+                    return names[Game.oR.nextInt(names.length)] + " " +
+                            RomanNumber.getRoman(1 + Game.oR.nextInt(Math.max(1, GameValues.court.RULER_ROMAN_NUMBER_MAX_RANDOM)));
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static void loadRuler(int iCivID, String sCivTAG, boolean random) {
         try {
             try {
                 if (!random) {
@@ -114,7 +107,7 @@ public class MixinRulersManager {
                     FileHandle fileList = null;
                     if (FileManager.loadFile("game/rulers/" + sCivTAG + ".json").exists()) {
                         fileList = FileManager.loadFile("game/rulers/" + sCivTAG + ".json");
-                    } else if (FileManager.loadFile("game/rulers/" + civTagWithGP + ".json").exists()) {
+                    } else if (!Config.getConfig().fastLoadFlag && FileManager.loadFile("game/rulers/" + civTagWithGP + ".json").exists()) {
                         fileList = FileManager.loadFile("game/rulers/" + civTagWithGP + ".json");
                     } else if (FileManager.loadFile("game/rulers/" + Game.getCiv(iCivID).realTag + ".json").exists()) {
                         fileList = FileManager.loadFile("game/rulers/" + Game.getCiv(iCivID).realTag + ".json");
@@ -247,7 +240,6 @@ public class MixinRulersManager {
                 CFG.LOG("ERROR, CIV TAG: " + Game.getCiv(iCivID).getCivTag());
                 CFG.exceptionStack(ex);
             }
-
             int nMonth = Game.oR.nextInt(12);
             if ((Game.ideologiesManager.getIdeology(Game.getCiv(iCivID).getIdeologyID()).KingsImages || !Game.gameAges.lAges.get(Game_Calendar.CURRENT_AGEID).ENABLE_NON_KINGS_IMG) && !Game.gameAges.lAges.get(Game_Calendar.CURRENT_AGEID).FORCE_NON_KINGS_IMG) {
                 Game.getCiv(iCivID).ruler = new Ruler(iCivID, getRulerRandomName(iCivID, sCivTAG), "" + nextRulerIMG.get(Game.getCiv(iCivID).iGroupID), Game.oR.nextInt(Game_Calendar.getNumOfDaysInMonth(nMonth)), nMonth, Game_Calendar.currentYear - GameValues.court.RULER_YEARS_OLD_MIN - Game.oR.nextInt(GameValues.court.RULER_YEARS_OLD_RANDOM), Game_Calendar.currentYear, true, true);

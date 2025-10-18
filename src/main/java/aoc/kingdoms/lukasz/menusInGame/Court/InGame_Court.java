@@ -87,7 +87,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InGame_Court extends Menu {
-    public static final int ANIMATION_TIME = 60;
+    public static final int ANIMATION_TIME = 120;
     public static long lTime = 0L;
     public static long lTime2 = 0L;
     public static int iActiveCivID = 0;
@@ -3328,8 +3328,16 @@ public class InGame_Court extends Menu {
     }
 
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
-        if (lTime + 60L >= CFG.currentTimeMillis) {
-            iTranslateX = iTranslateX - CFG.BUTTON_WIDTH + (int)((float)CFG.BUTTON_WIDTH * ((float)(CFG.currentTimeMillis - lTime) / 60.0F));
+        long elapsedTime = CFG.currentTimeMillis - lTime;
+        float progress = Math.min(1.0f, (float)elapsedTime / ANIMATION_TIME);
+
+        // easeOutQuad缓动函数: 1 - (1 - t)^2
+        float easeOutProgress = 1.0f - (1.0f - progress) * (1.0f - progress);
+
+        // 应用缓动动画
+        if (progress < 1.0f) {
+            int slideDistance = CFG.BUTTON_WIDTH;
+            iTranslateX = iTranslateX - slideDistance + (int)(slideDistance * easeOutProgress);
         }
 
         Renderer.drawBoxCorner(oSB, this.getPosX() + iTranslateX, this.getPosY() - InGame_CourtOptions.menuH + iTranslateY, this.getWidth(), this.getHeight() + InGame_CourtOptions.menuH + CFG.PADDING);

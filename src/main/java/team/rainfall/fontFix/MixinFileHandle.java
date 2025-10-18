@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 
 @Mixin(mixinClass = "com.badlogic.gdx.files.FileHandle")
 public abstract class MixinFileHandle {
-
+    public static int readCount = 0;
     public String readString() {
         String charset = null;
         if (EncodeChecker.shouldBeCheck((FileHandle) (Object) this)){
@@ -33,7 +33,9 @@ public abstract class MixinFileHandle {
                         charset = Charset.defaultCharset().name();
                         break;
                 }
-                //FinalityLogger.debug("PC.charset "+this.path()+";"+charset);
+                readCount++;
+                //FinalityLogger.debug("PC.charset "+this.path()+";"+charset+";"+readCount);
+
             }catch (NullPointerException ignored){
             } catch (Throwable throwable) {
                 FinalityLogger.error("Error while detecting charset", throwable);

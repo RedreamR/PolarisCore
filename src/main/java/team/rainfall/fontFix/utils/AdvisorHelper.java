@@ -42,7 +42,7 @@ public class AdvisorHelper {
                             if(bonuses != null){
                                 applyBonuses(advisor,bonuses);
                             }else {
-                                advisor = CivilizationAdvisorsPool.buildAdvisorBonuses(advisor, iAdvisorType);
+                                CivilizationAdvisorsPool.buildAdvisorBonuses(advisor, iAdvisorType);
                             }
                             advisor.iDayOfBirth = tData.BornDay;
                             advisor.iMonthOfBirth = tData.BornMonth;

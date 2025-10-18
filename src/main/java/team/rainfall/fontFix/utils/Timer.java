@@ -15,13 +15,13 @@ public class Timer {
         Timer.isNanotime = isNanotime;
         Timer.tag = tag;
     }
-    public static long end(){
+    public static void end(){
         if(isNanotime){
             FinalityLogger.debug("FontFix."+tag+" spending "+(System.nanoTime() - timer)+"ns");
-            return System.nanoTime() - timer;
+            System.nanoTime();
         }else {
             FinalityLogger.debug("FontFix."+tag+" spending "+(System.currentTimeMillis() - timer)+"ms");
-            return System.currentTimeMillis() - timer;
+            System.currentTimeMillis();
         }
     }
 }

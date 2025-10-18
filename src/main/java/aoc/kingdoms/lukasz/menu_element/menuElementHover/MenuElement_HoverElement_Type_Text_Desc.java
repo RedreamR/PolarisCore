@@ -49,7 +49,7 @@ public class MenuElement_HoverElement_Type_Text_Desc implements MenuElement_Hove
     public final void init(String sText, int nFontID, Color oColor) {
         this.oColor = oColor;
         this.fontID = nFontID;
-        FinalityLogger.debug("HOVER "+sText);
+        //FinalityLogger.debug("HOVER "+sText);
         int maxW = (int)((float) ImageManager.getImage(Images.title1Red).getWidth() * 0.85f);
         this.ffLines = TextProcessor.warp(TextProcessor.tokenize(sText),maxW,nFontID);
         this.iTextHeight = (int) ffLines.get(0).lineHeight;

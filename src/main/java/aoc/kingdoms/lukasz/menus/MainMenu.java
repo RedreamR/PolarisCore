@@ -48,15 +48,16 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.codedisaster.steamworks.SteamFriends.OverlayToStoreFlag;
+import team.rainfall.finality.FinalityLogger;
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
 import team.rainfall.fontFix.Sternstunden;
 import team.rainfall.fontFix.config.LinkConfig;
+import team.rainfall.fontFix.utils.AnimationUtil;
 import team.rainfall.fontFix.utils.IconParser;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -64,13 +65,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu extends Menu {
+    private long lastClick = 0;
+    private short clickCount = 0;
     public static Color sparksColors = new Color(1.0F, 1.0F, 1.0F, 0.25F);
     private int iXPos = 0;
     private int iYPos = 0;
     private int iWidth = 480;
     private int iHeight = 480;
+    private int lastXPos = 0;//上次增加的iXPos
+    private final ArrayList<Integer> buttonElementIDs = new ArrayList<>();
+    private final ArrayList<Integer> linkElementIDs = new ArrayList<>();
     public static boolean canContinue = false;
     public static Image flag = null;
+    public static long animTime = 1000;
+    public static long startTime = 0;
     public static SaveGameManager.SaveDetails savedGame = null;
     public static String savedGameKey = null;
     public static float bgAlpha = 0.0F;
@@ -78,6 +86,7 @@ public class MainMenu extends Menu {
     public static long bgTIME_CHANGE;
 
     public MainMenu() {
+
         List<MenuElement> menuElements = new ArrayList();
         int paddingTopBot = CFG.PADDING * 2 + CFG.PADDING / 2;
         int paddingLeft = Images.boxTitleBORDERWIDTH + CFG.PADDING * 2 + CFG.PADDING / 2;
@@ -91,14 +100,14 @@ public class MainMenu extends Menu {
                 width2 = -this.iWidth / 2;
                 break;
         }
-        this.iXPos = (int) ((float) CFG.GAME_WIDTH * Config.getConfig().MainMenu_PanelX / CFG.GUI_SCALE) - width2;
+        this.iXPos = (int) ((float) (CFG.GAME_WIDTH * Config.getConfig().MainMenu_PanelX - width2) / CFG.GUI_SCALE);
         this.iHeight = paddingTopBot * 2 + paddingTopBot / 2 + (CFG.BUTTON_HEIGHT + CFG.PADDING * 2) * 6;
         this.iYPos = (int) (0.5F * (float) (CFG.GAME_HEIGHT - this.iHeight - ImageManager.getImage(Images.mainTitle).getHeight()));
         if (this.iXPos + this.iWidth > CFG.GAME_WIDTH) {
             this.iXPos = CFG.PADDING * 2;
         }
 
-        Renderer.glyphLayout.setText((BitmapFont) Renderer.fontMain.get(CFG.FONT_REGULAR_SMALL), GameValues.text.VERSION);
+        Renderer.glyphLayout.setText(Renderer.fontMain.get(CFG.FONT_REGULAR_SMALL), GameValues.text.VERSION);
         Game.versionWidth = (int) Renderer.glyphLayout.width;
         menuElements.add(new ButtonMainTitle("", 0, -1, this.iXPos, this.iYPos, this.iWidth, true) {
             public void actionElement() {
@@ -111,7 +120,6 @@ public class MainMenu extends Menu {
             }
 
             public void actionElementPPM() {
-                MenuManager var10000 = Game.menuManager;
                 MenuManager.addClickAnimation(new ClickAnimation(this.getPosX() + this.getWidth() / 2 + MainMenu.this.getMenuPosX(), this.getPosY() + this.getHeight() / 2 + MainMenu.this.getMenuPosY(), this.getWidth(), this.getHeight()) {
                     public Color getColor() {
                         return DiplomacyManager.COLOR_ALLIANCE;
@@ -123,6 +131,7 @@ public class MainMenu extends Menu {
                 this.menuElementHover = MainMenu.getHoverAbout();
             }
         });
+        buttonElementIDs.add(0);
         int buttonY = this.iYPos + ImageManager.getImage(Images.mainTitle).getHeight() + paddingTopBot;
 
         try {
@@ -183,6 +192,7 @@ public class MainMenu extends Menu {
 
                     }
                 });
+                buttonElementIDs.add(menuElements.size() - 1);
                 buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
             } else {
                 FileHandle file;
@@ -225,10 +235,12 @@ public class MainMenu extends Menu {
                             Game.menuManager.setViewIDWithoutAnimation(View.LOAD_SAVED_GAME);
                         }
                     });
+                    buttonElementIDs.add(menuElements.size() - 1);
                     buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
                 } else {
                     menuElements.add(new ButtonGame2(Game.lang.get("Continue"), 1, -1, this.iXPos + paddingLeft, buttonY, this.iWidth - paddingLeft * 2, false) {
                     });
+                    buttonElementIDs.add(menuElements.size() - 1);
                     buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
                 }
             }
@@ -243,6 +255,7 @@ public class MainMenu extends Menu {
                 Game.menuManager.setOrderOfMenu_Scenarios();
             }
         });
+        buttonElementIDs.add(menuElements.size() - 1);
         buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
         int statsW = CFG.BUTTON_WIDTH;
         if (FileManager.loadFile("game/Multiplayer.txt").exists()) {
@@ -252,11 +265,18 @@ public class MainMenu extends Menu {
                     Game.menuManager.setOrderOfMenu_Scenarios();
                 }
             });
+            buttonElementIDs.add(menuElements.size() - 1);
             menuElements.add(new ButtonGame2Sparks_Hovered(Game.lang.get("Multiplayer"), 1, -1, this.iXPos + paddingLeft + CFG.PADDING + (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, buttonY, (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, true) {
                 public void actionElement() {
-                    SteamManager.steamFriends.activateGameOverlayToStore(3250400, OverlayToStoreFlag.None);
+                    try {
+                        MenuManager.class.getDeclaredMethod("setCustomViewID", String.class).invoke(Game.menuManager, "MP_Main");
+                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                        FinalityLogger.error("Resonance ERR", e);
+                        Game.menuManager.addToast_Error("Resonance is not installed");
+                    }
                 }
             });
+            buttonElementIDs.add(menuElements.size() - 1);
         } else {
             menuElements.add(new ButtonGame2Sparks_Hovered(Game.lang.get("Campaign"), 1, -1, this.iXPos + paddingLeft, buttonY, this.iWidth - paddingLeft * 2, true) {
                 public void actionElement() {
@@ -264,6 +284,7 @@ public class MainMenu extends Menu {
                     Game.menuManager.setOrderOfMenu_Scenarios();
                 }
             });
+            buttonElementIDs.add(menuElements.size() - 1);
         }
 
         buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
@@ -272,6 +293,7 @@ public class MainMenu extends Menu {
                 Game.menuManager.setViewID(View.LOAD_GAMES_LIST);
             }
         });
+        buttonElementIDs.add(menuElements.size() - 1);
         buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2 + paddingTopBot / 2;
         menuElements.add(new ButtonGame2(Game.lang.get("Editor"), 1, -1, this.iXPos + paddingLeft, buttonY, (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, true) {
             public void actionElement() {
@@ -302,21 +324,24 @@ public class MainMenu extends Menu {
 
             }
         });
+        buttonElementIDs.add(menuElements.size() - 1);
         menuElements.add(new ButtonGame2(Game.lang.get("Settings"), 1, -1, this.iXPos + paddingLeft + (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2 + CFG.PADDING, buttonY, (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, true) {
             public void actionElement() {
                 Settings_Menu.goBackToMenu = View.MAINMENU;
                 Game.menuManager.setViewID(View.SETTINGS);
             }
         });
+        buttonElementIDs.add(menuElements.size() - 1);
         buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
         menuElements.add(new ButtonGame2(Game.lang.get("ExitGame"), 1, -1, this.iXPos + paddingLeft, buttonY, this.iWidth - paddingLeft * 2 - CFG.PADDING - statsW, true) {
             public void actionElement() {
                 Dialog.setDialogType(DialogType.EXIT_GAME);
             }
         });
+        buttonElementIDs.add(menuElements.size() - 1);
         menuElements.add(new ButtonGame2_IMG((String) null, 1, -1, this.iXPos + paddingLeft + this.iWidth - paddingLeft * 2 - statsW, buttonY, statsW, true, Images.development) {
             public void actionElement() {
-                Game.menuManager.setViewID(View.MAINMENU_STATS);
+                Game.menuManager.setViewIDWithoutAnimation(View.MAINMENU_STATS);
             }
 
             public void buildElementHover() {
@@ -328,6 +353,7 @@ public class MainMenu extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
+        buttonElementIDs.add(menuElements.size() - 1);
         int var10000 = buttonY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
         Renderer.glyphLayout.setText(Renderer.fontMain.get(CFG.FONT_REGULAR_SMALL), GameValues.text.VERSION);
         float width1 = Renderer.glyphLayout.width;
@@ -340,9 +366,9 @@ public class MainMenu extends Menu {
                 });
                 Game.addSimpleTask(new Game.SimpleTask("loadBackground") {
                     public void update() {
-                        if(Config.getConfig().uniqueBGforMainMenu) {
+                        if (Config.getConfig().uniqueBGforMainMenu) {
                             InitGame.loadBackground2();
-                        }else {
+                        } else {
                             InitGame.loadBackground();
                         }
                         MainMenu.bgTIME = System.currentTimeMillis();
@@ -369,73 +395,10 @@ public class MainMenu extends Menu {
                     this.menuElementHover = new MenuElement_Hover(nElements);
                 }
             });
-            buttonsY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight();
+            linkElementIDs.add(menuElements.size() - 1);
+            buttonsY += menuElements.get(menuElements.size() - 1).getHeight();
         }
 
-//        menuElements.add(new Button_MainMenuIcon(Images.yt, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
-//            public void actionElement() {
-//                Dialog.GO_TO_LINK = "https://www.youtube.com/channel/UCppKzood12fbJhZClXfukFw";
-//                Dialog.setDialogType(DialogType.GO_TO_LINK);
-//            }
-//
-//            public void buildElementHover() {
-//                List<MenuElement_HoverElement> nElements = new ArrayList();
-//                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-//                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("YouTube: ", "Age of History 3", Images.yt, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
-//                nElements.add(new MenuElement_HoverElement(nData));
-//                nData.clear();
-//                this.menuElementHover = new MenuElement_Hover(nElements);
-//            }
-//        });
-//        buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
-//        menuElements.add(new Button_MainMenuIcon(Images.android, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
-//            public void actionElement() {
-//                Dialog.GO_TO_LINK = "https://play.google.com/store/apps/details?id=age.of.history3.lukasz.jakowski";
-//                Dialog.setDialogType(DialogType.GO_TO_LINK);
-//            }
-//
-//            public void buildElementHover() {
-//                List<MenuElement_HoverElement> nElements = new ArrayList();
-//                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-//                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Android: ", "Age of History 3", Images.android, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
-//                nElements.add(new MenuElement_HoverElement(nData));
-//                nData.clear();
-//                this.menuElementHover = new MenuElement_Hover(nElements);
-//            }
-//        });
-//        buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
-//        menuElements.add(new Button_MainMenuIcon(Images.app, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
-//            public void actionElement() {
-//                Dialog.GO_TO_LINK = "https://apps.apple.com/app/age-of-history-3/id6686394372";
-//                Dialog.setDialogType(DialogType.GO_TO_LINK);
-//            }
-//
-//            public void buildElementHover() {
-//                List<MenuElement_HoverElement> nElements = new ArrayList();
-//                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-//                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("iOS: ", "Age of History 3", Images.app, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
-//                nElements.add(new MenuElement_HoverElement(nData));
-//                nData.clear();
-//                this.menuElementHover = new MenuElement_Hover(nElements);
-//            }
-//        });
-//        buttonsY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
-//        menuElements.add(new Button_MainMenuIcon(Images.pc, CFG.GAME_WIDTH - CFG.BUTTON_WIDTH, buttonsY, CFG.BUTTON_WIDTH, CFG.BUTTON_HEIGHT) {
-//            public void actionElement() {
-//                Dialog.GO_TO_LINK = "https://store.steampowered.com/app/2772750/Age_of_History_3/";
-//                Dialog.setDialogType(DialogType.GO_TO_LINK);
-//            }
-//
-//            public void buildElementHover() {
-//                List<MenuElement_HoverElement> nElements = new ArrayList();
-//                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-//                nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Steam: ", "Age of History 3", Images.pc, CFG.FONT_BOLD, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
-//                nElements.add(new MenuElement_HoverElement(nData));
-//                nData.clear();
-//                this.menuElementHover = new MenuElement_Hover(nElements);
-//            }
-//        });
-//        var10000 = buttonsY + ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
         menuElements.add(new Text_Static("Lukasz Jakowski", CFG.PADDING * 3, CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT - CFG.PADDING * 3, CFG.FONT_REGULAR_SMALL) {
             public void actionElement() {
                 MenuManager var10000 = Game.menuManager;
@@ -455,15 +418,24 @@ public class MainMenu extends Menu {
             }
         });
 
-        String text1 = CFG.isDesktop() ? "Polaris Core by Team Rainfall" : Sternstunden.getCopyrightString();
+        String text1 = (CFG.isDesktop() && !FontFix.fakeAndroid)? "Polaris Core by Team Rainfall" : Sternstunden.getCopyrightString();
         menuElements.add(new Text_Static(text1, CFG.PADDING * 3, CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT * 3 - 1 - CFG.PADDING * 3, CFG.FONT_REGULAR_SMALL) {
             public void actionElement() {
+                if(System.currentTimeMillis() - lastClick > 700L){
+                    clickCount = 0;
+                }
+                clickCount++;
+                lastClick = System.currentTimeMillis();
                 MenuManager var10000 = Game.menuManager;
                 MenuManager.addClickAnimation(new ClickAnimation(this.getPosX() + this.getWidth() / 2 + MainMenu.this.getMenuPosX(), this.getPosY() + this.getHeight() / 2 + MainMenu.this.getMenuPosY(), this.getWidth(), this.getHeight()) {
                     public Color getColor() {
                         return DiplomacyManager.COLOR_WAR;
                     }
                 });
+                if(clickCount >= 5){
+                    clickCount = 0;
+                    Gdx.net.openURI("https://www.bilibili.com/list/215276?oid=1052051297&bvid=BV1eH4y1p7H9");
+                }
             }
 
             public void buildElementHover() {
@@ -480,31 +452,51 @@ public class MainMenu extends Menu {
         }
         bgTIME = System.currentTimeMillis();
         bgTIME_CHANGE = System.currentTimeMillis();
+
     }
 
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
+        if(!Config.getConfig().noMainMenuAnimation && animTime < 100) {
+            lastXPos = 0;
+            for (Integer buttonElementID : buttonElementIDs) {
+                MenuElement element = getMenuElement(buttonElementID);
+                element.setPosX(element.getPosX() - iXPos * 2);
+            }
+            startTime = System.currentTimeMillis();
+            animTime = startTime + Config.getAnimationConfig().MainMenu;
+        }
         if (bgAlpha < 1.0F) {
             oSB.setColor(0.0F, 0.0F, 0.0F, 1.0F);
             Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
             bgAlpha = Math.min(1.0F, (float) (CFG.currentTimeMillis - bgTIME) / (float) GameValues.text.MAIN_MENU_BG_ANIMATION_TIME);
         }
 
-        oSB.setColor(new Color(0.050980393F, 0.08627451F, 0.13333334F, 1.0F * bgAlpha));
+        int XPos2 = (int) (iXPos * 2 * AnimationUtil.easeOut(System.currentTimeMillis(),animTime,startTime));
+        if(Config.getGradientConfig().mainMenu < 2) {
+            oSB.setColor(new Color(0.050980393F, 0.08627451F, 0.13333334F, bgAlpha));
+        }else {
+            //确保下方的gradient被禁用时显示仍然正常
+            oSB.setColor(new Color(1, 1, 1, bgAlpha));
+        }
         InitGame.background.draw(oSB, iTranslateX + (CFG.GAME_WIDTH - InitGame.backgroundWidth) / 2, iTranslateY + (CFG.GAME_HEIGHT - InitGame.backgroundHeight) / 2, InitGame.backgroundWidth, InitGame.backgroundHeight);
-        oSB.setColor(new Color(1.0F, 1.0F, 1.0F, bgAlpha));
-        oSB.setShader(Renderer.shaderAlpha);
-        InitGame.background.getTexture().bind(1);
-        Gdx.gl.glActiveTexture(33984);
-        ImageManager.getImage(Images.gradientHorizontal2).draw(oSB, this.getPosX() + (CFG.GAME_WIDTH - InitGame.backgroundWidth) / 2 + iTranslateX, this.getPosY() + (CFG.GAME_HEIGHT - InitGame.backgroundHeight) / 2 + iTranslateY, InitGame.backgroundWidth, InitGame.backgroundHeight);
-        oSB.flush();
+        if(Config.getGradientConfig().mainMenu < 2) {
+            oSB.setColor(new Color(1.0F, 1.0F, 1.0F, bgAlpha));
+            oSB.setShader(Renderer.shaderAlpha);
+            InitGame.background.getTexture().bind(1);
+            Gdx.gl.glActiveTexture(33984);
+            ImageManager.getImage(Images.gradientHorizontal2).draw(oSB, this.getPosX() + (CFG.GAME_WIDTH - InitGame.backgroundWidth) / 2 + iTranslateX, this.getPosY() + (CFG.GAME_HEIGHT - InitGame.backgroundHeight) / 2 + iTranslateY, InitGame.backgroundWidth, InitGame.backgroundHeight);
+            oSB.flush();
+        }
         oSB.setShader(Renderer.shaderDefault);
         oSB.setColor(sparksColors);
         MenuManager.sparksAnimation.draw2(oSB, iTranslateX, CFG.GAME_HEIGHT - Images.sparkHeight + iTranslateY, CFG.GAME_WIDTH, Images.sparkHeight);
         oSB.setColor(Color.WHITE);
-        Renderer.drawBoxCorner(oSB, iTranslateX + this.iXPos, iTranslateY + this.iYPos, this.iWidth, this.iHeight + ImageManager.getImage(Images.mainTitle).getHeight());
-        Renderer.drawBox_EDGE_TOP_LR(oSB, Images.mainBox, this.iXPos + iTranslateX, this.iYPos + ImageManager.getImage(Images.mainTitle).getHeight() + iTranslateY, this.iWidth, this.iHeight, true);
-        oSB.setColor(new Color(Colors.COLOR_GRADIENT.r, Colors.COLOR_GRADIENT.g, Colors.COLOR_GRADIENT.b, 0.3F));
-        Images.gradientXY.draw(oSB, this.iXPos + iTranslateX, this.iYPos + ImageManager.getImage(Images.mainTitle).getHeight() + iTranslateY, this.iWidth, this.iHeight, false, true);
+        Renderer.drawBoxCorner(oSB, iTranslateX + XPos2 - iXPos, iTranslateY + this.iYPos, this.iWidth, this.iHeight + ImageManager.getImage(Images.mainTitle).getHeight());
+        Renderer.drawBox_EDGE_TOP_LR(oSB, Images.mainBox, XPos2 + iTranslateX - iXPos, this.iYPos + ImageManager.getImage(Images.mainTitle).getHeight() + iTranslateY, this.iWidth, this.iHeight, true);
+        if(Config.getGradientConfig().mainMenu < 4) {
+            oSB.setColor(new Color(Colors.COLOR_GRADIENT.r, Colors.COLOR_GRADIENT.g, Colors.COLOR_GRADIENT.b, 0.3F));
+            Images.gradientXY.draw(oSB, XPos2 + iTranslateX - iXPos, this.iYPos + ImageManager.getImage(Images.mainTitle).getHeight() + iTranslateY, this.iWidth, this.iHeight, false, true);
+        }
         oSB.setColor(Color.WHITE);
         if ((CFG.isDesktop() && GameValues.text.MAIN_MENU_BG_ENABLE_AUTO_BG_CHANGE || !CFG.isDesktop() && GameValues.text.MAIN_MENU_BG_ENABLE_AUTO_BG_CHANGE_MOBILE) && CFG.currentTimeMillis > bgTIME_CHANGE + (long) GameValues.text.MAIN_MENU_BG_CHANGE_BG_EVERY_X_MS) {
             bgTIME_CHANGE = CFG.currentTimeMillis;
@@ -516,8 +508,17 @@ public class MainMenu extends Menu {
                     MainMenu.bgAlpha = 0.0F;
                 }
             });
-        }
+        };
 
+        for (Integer buttonElementID : buttonElementIDs) {
+            MenuElement element = getMenuElement(buttonElementID);
+            element.setPosX(element.getPosX() - lastXPos + XPos2);
+        }
+        lastXPos = XPos2;
+        for (int item : linkElementIDs) {
+            if(item < 10) continue;
+            getMenuElement(item).setPosX((int) (CFG.GAME_WIDTH - (CFG.BUTTON_WIDTH * AnimationUtil.easeOut(System.currentTimeMillis(), animTime,startTime))));
+        }
         super.draw(oSB, iTranslateX, iTranslateY, menuIsActive, titleStatus);
     }
 
@@ -614,8 +615,8 @@ public class MainMenu extends Menu {
         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(getVersion(), "", Images.time, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
         nElements.add(new MenuElement_HoverElement(nData));
         nData.clear();
-        if (CFG.isAndroid()) {
-            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Sternstunden " + Game.lang.get("Version") + ":" + Sternstunden.getVersion(), "", Images.technology, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
+        if (CFG.isAndroid() || FontFix.fakeAndroid) {
+            nData.add(new MenuElement_HoverElement_Type_Button_TextBonus("Sternstunden " + Game.lang.get("Version") + ":" + Sternstunden.getVersion().trim(), "", Images.technology, CFG.FONT_BOLD, CFG.FONT_BOLD, Colors.HOVER_LEFT, Colors.HOVER_LEFT));
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();
         }
@@ -623,10 +624,10 @@ public class MainMenu extends Menu {
     }
 
     public static String getVersion() {
-        if (CFG.isDesktop()) {
+        if (CFG.isDesktop() && !FontFix.fakeAndroid) {
             return "Polaris Core " + Game.lang.get("Version") + ":" + FontFix.CORE_VERSION;
         }
-        return "Polaris AoH3 " + Game.lang.get("Version") + ":" + FontFix.POLARIS_VERSION;
+        return "Polaris AoH3 " + Game.lang.get("Version") + ":" + FontFix.POLARIS_VERSION + " " + Sternstunden.versionAppend.trim();
     }
 
     public static String getRandomStr() {

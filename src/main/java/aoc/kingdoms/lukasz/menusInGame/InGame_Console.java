@@ -130,6 +130,8 @@ public class InGame_Console extends Menu {
                             FPS.drawFPS = !FPS.drawFPS;
                         } else if (tempCommand[0].equals("debug")) {
                             CFG.debugMode = !CFG.debugMode;
+                        } else if (tempCommand[0].equals("adversity_reload")) {
+                            Class.forName("team.rainfall.adversity.LuaManager").getDeclaredMethod("reloadScripts").invoke(null);
                         } else if (tempCommand[0].equals("callvassals")) {
                             Game.ENABLE_CALL_VASSALS = !Game.ENABLE_CALL_VASSALS;
                         } else if (tempCommand[0].equals("sandbox")) {

@@ -1,10 +1,10 @@
 package team.rainfall.fontFix;
-import aoc.kingdoms.lukasz.jakowski.CFG;
-import aoc.kingdoms.lukasz.jakowski.FileManager;
-import aoc.kingdoms.lukasz.jakowski.Game;
-import aoc.kingdoms.lukasz.jakowski.GameValues;
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+
+import aoc.kingdoms.lukasz.jakowski.*;
+import aoc.kingdoms.lukasz.menu.Colors;
+import aoc.kingdoms.lukasz.menus.InitGame;
+import aoc.kingdoms.lukasz.textures.ImageManager;
+import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,10 +12,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
-import team.rainfall.fluctlight.Fluctlight;
 
-import java.awt.*;
 import java.util.List;
+
+import static aoc.kingdoms.lukasz.jakowski.Renderer.Renderer.*;
 
 @SuppressWarnings("unused")
 @Mixin(mixinClass = "aoc.kingdoms.lukasz.jakowski.Renderer.Renderer")
@@ -29,25 +29,27 @@ public class MixinRenderer {
 
     public void dispose() {
         this.oSB.dispose();
-        Fluctlight.getInstance().dispose();
-        for(int i = 0; i < fontMain.size(); ++i) {
-            ((BitmapFont)fontMain.get(i)).dispose();
+        for (int i = 0; i < fontMain.size(); ++i) {
+            ((BitmapFont) fontMain.get(i)).dispose();
         }
 
-        for(int i = 0; i < fontBorder.size(); ++i) {
-            ((BitmapFont)fontBorder.get(i)).dispose();
+        for (int i = 0; i < fontBorder.size(); ++i) {
+            ((BitmapFont) fontBorder.get(i)).dispose();
         }
 
     }
+
     public static final void loadFont(String sFont, String charset, int fontSize) {
         float texSize = charset.getBytes().length;
         int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
         FinalityLogger.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
-        if(!CFG.isDesktop()) FreeTypeFontGenerator.setMaxTextureSize(4096);
-        FreeTypeFontGenerator generator = null;
+        if (!CFG.isDesktop()) {
+            FreeTypeFontGenerator.setMaxTextureSize(Config.getConfig().extendCharset ? 8192 : 4096);
+        }
+        FreeTypeFontGenerator generator;
         if (fontSize < 0) {
-            fontSize = (int)((float) GameValues.value.DEFAULT_FONT_SIZE * CFG.GUI_SCALE);
+            fontSize = (int) ((float) GameValues.value.DEFAULT_FONT_SIZE * CFG.GUI_SCALE);
         }
 
         try {
@@ -58,10 +60,10 @@ public class MixinRenderer {
 
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        if(CFG.isDesktop()){
+        if (CFG.isDesktop()) {
             params.characters = charset;
             params.incremental = false;
-        }else {
+        } else {
             params.characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!.?";
             params.incremental = true;
         }
@@ -71,7 +73,7 @@ public class MixinRenderer {
         params.magFilter = Texture.TextureFilter.Linear;
         fontMain.add(generator.generateFont(params));
         fontMainSize = fontMain.size();
-        if(CFG.isDesktop()) {
+        if (CFG.isDesktop()) {
             generator.dispose();
         }
     }
@@ -81,7 +83,7 @@ public class MixinRenderer {
         int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
         FinalityLogger.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
-        if(!CFG.isDesktop()) FreeTypeFontGenerator.setMaxTextureSize(4096);
+        if (!CFG.isDesktop()) FreeTypeFontGenerator.setMaxTextureSize(4096);
         FreeTypeFontGenerator generator = null;
 
         try {
@@ -91,10 +93,10 @@ public class MixinRenderer {
         }
 
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        if(CFG.isDesktop()){
+        if (CFG.isDesktop()) {
             params.characters = charset;
             params.incremental = false;
-        }else {
+        } else {
             params.characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!.?";
             params.incremental = true;
         }
@@ -104,13 +106,47 @@ public class MixinRenderer {
         params.magFilter = Texture.TextureFilter.Linear;
         params.kerning = false;
         params.borderColor = new Color(Game.settingsManager.civNamesFontColorBorder_R, Game.settingsManager.civNamesFontColorBorder_G, Game.settingsManager.civNamesFontColorBorder_B, Game.settingsManager.civNamesFontColorBorder_A);
-        params.borderWidth = (float)Game.settingsManager.FONT_BORDER_WIDTH_OF_BORDER;
+        params.borderWidth = (float) Game.settingsManager.FONT_BORDER_WIDTH_OF_BORDER;
         fontBorder.add(generator.generateFont(params));
         fontBorderSize = fontBorder.size();
-        ((BitmapFont)fontBorder.get(0)).setFixedWidthGlyphs(charset);
-        if(CFG.isDesktop()) {
+        fontBorder.get(0).setFixedWidthGlyphs(charset);
+        if (CFG.isDesktop()) {
             generator.dispose();
         }
     }
 
+    public static final void drawLoading(SpriteBatch oSB, int iTranslateX, int iTranslateY, float nProgress) {
+        int nHeight = ImageManager.getImage(Images.logo).getHeight() + CFG.BUTTON_HEIGHT * 2;
+        if (CFG.currentTimeMillis - 4000L > loadingTime) {
+            try {
+                sLoadingText = Game.lang.getLoading("L" + Game.oR.nextInt(Game.lang.iLoading_NumOfTexts)) + "..";
+                loadingTime = CFG.currentTimeMillis;
+                GlyphLayout_Game glyphLayout = new GlyphLayout_Game();
+                glyphLayout.setText(fontMain.get(CFG.FONT_REGULAR), sLoadingText);
+                iLoadingTextWidth = (int) glyphLayout.width;
+                if (Config.getConfig().changeBGinInitGame) {
+                    InitGame.loadBackground();
+                }
+            } catch (Exception ex) {
+                CFG.exceptionStack(ex);
+            }
+        }
+        if(Config.getGradientConfig().loading < 2) {
+            oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.65F));
+            Images.gradientFull.draw(oSB, iTranslateX, iTranslateY + CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT - CFG.PADDING * 11, CFG.GAME_WIDTH, CFG.TEXT_HEIGHT + CFG.PADDING * 6);
+        }
+        if(Config.getGradientConfig().loading < 5) {
+            oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.4F));
+            Images.gradientXY.draw(oSB, iTranslateX + CFG.GAME_WIDTH / 2 - (iLoadingTextWidth + CFG.PADDING * 6) / 2, iTranslateY + CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT - CFG.PADDING * 11, iLoadingTextWidth + CFG.PADDING * 6, CFG.TEXT_HEIGHT + CFG.PADDING * 6);
+            oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.65F));
+            Images.gradientFull.draw(oSB, iTranslateX, iTranslateY + CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT - CFG.PADDING * 11 + 1, CFG.GAME_WIDTH, 1);
+            Images.gradientFull.draw(oSB, iTranslateX, iTranslateY + CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT - CFG.PADDING * 11 + CFG.TEXT_HEIGHT + CFG.PADDING * 6 - 2, CFG.GAME_WIDTH, 1);
+        }
+        oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.65F));
+        drawText(oSB, CFG.FONT_REGULAR, sLoadingText, iTranslateX + CFG.GAME_WIDTH / 2 - iLoadingTextWidth / 2, iTranslateY + CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT - CFG.PADDING * 8, new Color(Colors.COLOR_LOGO.r, Colors.COLOR_LOGO.g, Colors.COLOR_LOGO.b, 0.75F));
+        oSB.setColor(new Color(1.0F, 1.0F, 1.0F, 0.15F));
+        ImageManager.getImage(Images.logo).draw(oSB, iTranslateX + CFG.GAME_WIDTH / 2 - ImageManager.getImage(Images.logo).getWidth() / 2, iTranslateY + CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT - CFG.PADDING * 14 - ImageManager.getImage(Images.logo).getHeight());
+        oSB.setColor(Color.WHITE);
+        ImageManager.getImage(Images.logo).draw2(oSB, iTranslateX + CFG.GAME_WIDTH / 2 - ImageManager.getImage(Images.logo).getWidth() / 2, iTranslateY + CFG.GAME_HEIGHT - CFG.TEXT_HEIGHT - CFG.PADDING * 14 - ImageManager.getImage(Images.logo).getHeight(), Math.min(ImageManager.getImage(Images.logo).getWidth(), (int) ((float) ImageManager.getImage(Images.logo).getWidth() * nProgress)), ImageManager.getImage(Images.logo).getHeight());
+    }
 }

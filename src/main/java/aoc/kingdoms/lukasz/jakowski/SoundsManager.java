@@ -11,11 +11,10 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.ogg.OggFileReader;
-import team.rainfall.finality.FinalityLogger;
+
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
+import team.rainfall.fontFix.utils.MP3DurationParser;
 import team.rainfall.fontFix.utils.OggDurationParser;
 
 import java.util.ArrayList;
@@ -626,8 +625,15 @@ public class SoundsManager {
     public final void setCurrentMusic(FileHandle fileHandle){
         currentMusic =  Gdx.audio.newMusic(fileHandle);
         try {
-            currentMusicDuration = (int) OggDurationParser.getOggDuration(fileHandle);
-            currentMusicDuraStr = FontFix.formatSecondsToMinutes(currentMusicDuration);
+            byte[] header = new byte[64];
+            int read = fileHandle.readBytes(header, 0, header.length);
+            if ("OggS".equals(new String(header, 0, 4))) {
+                currentMusicDuration = (int) OggDurationParser.getOggDuration(fileHandle);
+                currentMusicDuraStr = FontFix.formatSecondsToMinutes(currentMusicDuration);
+            }else {
+                currentMusicDuration = (int) MP3DurationParser.getMP3Duration(fileHandle);
+                currentMusicDuraStr = FontFix.formatSecondsToMinutes(currentMusicDuration);
+            }
             CFG.LOG("[PolarisCore-Radio]","tag loaded,dura "+currentMusicDuration);
         } catch (Exception e) {
             CFG.LOG("[PolarisCore-Radio]","Failed to load tag");

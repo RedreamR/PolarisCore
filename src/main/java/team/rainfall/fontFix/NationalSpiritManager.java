@@ -164,119 +164,12 @@ public class NationalSpiritManager {
     }
 
     public static void applyNS(int civID, String id) {
-        if (Config.getConfig().applyNSv2) {
-            applyNS2(civID, id);
-            return;
-        }
         Game.getCiv(civID).eventsDataVariables.addVariable("$$NationalSpirit_" + id + "-0");
-        CivilizationBonuses bonuses = INSTANCE.getNS(id).Bonuses;
-        CivilizationBonuses advisor = Game.getCiv(civID).civBonuses;
-        if (bonuses.MonthlyIncome != 0) {
-            advisor.MonthlyIncome += bonuses.MonthlyIncome;
-        }
-        if (bonuses.TaxEfficiency != 0) {
-            advisor.TaxEfficiency += bonuses.TaxEfficiency;
-        }
-        if (bonuses.ProvinceMaintenance != 0) {
-            advisor.ProvinceMaintenance += bonuses.ProvinceMaintenance;
-        }
-        if (bonuses.GrowthRate != 0) {
-            advisor.GrowthRate += bonuses.GrowthRate;
-        }
-        if (bonuses.ProductionEfficiency != 0) {
-            advisor.ProductionEfficiency += bonuses.ProductionEfficiency;
-        }
-        if (bonuses.IncomeProduction != 0) {
-            advisor.IncomeProduction += bonuses.IncomeProduction;
-        }
-        if (bonuses.MonthlyLegacy != 0) {
-            advisor.MonthlyLegacy += bonuses.MonthlyLegacy;
-        }
-        if (bonuses.MaxManpower != 0) {
-            advisor.MaxManpower += bonuses.MaxManpower;
-        }
-        if (bonuses.ArmyMaintenance != 0) {
-            advisor.ArmyMaintenance += bonuses.ArmyMaintenance;
-        }
-        if (bonuses.RecruitmentTime != 0) {
-            advisor.RecruitmentTime += bonuses.RecruitmentTime;
-        }
-        if (bonuses.RecruitArmyCost != 0) {
-            advisor.RecruitArmyCost += bonuses.RecruitArmyCost;
-        }
-        if (bonuses.Research != 0) {
-            advisor.Research += bonuses.Research;
-        }
-        if (bonuses.ConstructionCost != 0) {
-            advisor.ConstructionCost += bonuses.ConstructionCost;
-        }
-        if (bonuses.AdministrationBuildingsCost != 0) {
-            advisor.AdministrationBuildingsCost += bonuses.AdministrationBuildingsCost;
-        }
-        if (bonuses.MilitaryBuildingsCost != 0) {
-            advisor.MilitaryBuildingsCost += bonuses.MilitaryBuildingsCost;
-        }
-        if (bonuses.EconomyBuildingsCost != 0) {
-            advisor.EconomyBuildingsCost += bonuses.EconomyBuildingsCost;
-        }
-        if (bonuses.ConstructionTime != 0) {
-            advisor.ConstructionTime += bonuses.ConstructionTime;
-        }
-        if (bonuses.InvestInEconomyCost != 0) {
-            advisor.InvestInEconomyCost += bonuses.InvestInEconomyCost;
-        }
-        if (bonuses.IncreaseManpowerCost != 0) {
-            advisor.IncreaseManpowerCost += bonuses.IncreaseManpowerCost;
-        }
-        if (bonuses.IncreaseTaxEfficiencyCost != 0) {
-            advisor.IncreaseTaxEfficiencyCost += bonuses.IncreaseTaxEfficiencyCost;
-        }
-        if (bonuses.IncreaseGrowthRateCost != 0) {
-            advisor.IncreaseGrowthRateCost += bonuses.IncreaseGrowthRateCost;
-        }
-        if (bonuses.DevelopInfrastructureCost != 0) {
-            advisor.DevelopInfrastructureCost += bonuses.DevelopInfrastructureCost;
-        }
-        if (bonuses.GeneralAttack != 0) {
-            advisor.GeneralAttack += bonuses.GeneralAttack;
-        }
-        if (bonuses.GeneralDefense != 0) {
-            advisor.GeneralDefense += bonuses.GeneralDefense;
-        }
-        if (bonuses.UnitsAttack != 0) {
-            advisor.UnitsAttack += bonuses.UnitsAttack;
-        }
-        if (bonuses.UnitsDefense != 0) {
-            advisor.UnitsDefense += bonuses.UnitsDefense;
-        }
-        if (bonuses.MaxMorale != 0) {
-            advisor.MaxMorale += bonuses.MaxMorale;
-        }
-        if (bonuses.ArmyMovementSpeed != 0) {
-            advisor.ArmyMovementSpeed += bonuses.ArmyMovementSpeed;
-        }
-        if (bonuses.SiegeEffectiveness != 0) {
-            advisor.SiegeEffectiveness += bonuses.SiegeEffectiveness;
-        }
-        if (bonuses.ImproveRelationsModifier != 0) {
-            advisor.ImproveRelationsModifier += bonuses.ImproveRelationsModifier;
-        }
-        if (bonuses.LoanInterest != 0) {
-            advisor.LoanInterest += bonuses.LoanInterest;
-        }
-        if (bonuses.CoreCost != 0) {
-            advisor.CoreCost += bonuses.CoreCost;
-        }
-        if (bonuses.ReligionCost != 0) {
-            advisor.ReligionCost += bonuses.ReligionCost;
-        }
-        if (bonuses.RegimentsLimit != 0) {
-            advisor.RegimentsLimit += bonuses.RegimentsLimit;
-        }
+        applyNS2(civID, id);
     }
 
     public static void applyNS2(int civID, String id) {
-        Game.getCiv(civID).eventsDataVariables.addVariable("$$NationalSpirit_" + id + "-0");
+        //Game.getCiv(civID).eventsDataVariables.addVariable("$$NationalSpirit_" + id + "-0");
         CivilizationBonuses bonuses = INSTANCE.getNS(id).Bonuses;
         CivilizationBonuses advisor = Game.getCiv(civID).civBonuses;
         // --- 经济与收入 ---
