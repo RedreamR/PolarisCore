@@ -41,7 +41,7 @@ public class InGame_CourtOptions extends Menu {
         int buttonW = CFG.BUTTON_HEIGHT2;
         int buttonH = CFG.isDesktop() ? CFG.BUTTON_HEIGHT4 : CFG.BUTTON_HEIGHT2;
         menuElements.add(new Empty(0, 0, 1, 1));
-        buttonY = ((MenuElement)menuElements.get(0)).getPosY() + ((MenuElement)menuElements.get(0)).getHeight();
+        buttonY = menuElements.get(0).getPosY() + menuElements.get(0).getHeight();
         int menuHeight = buttonY + 2;
         menuHeight = 0;
         menuH = menuHeight + ImageManager.getImage(Images.title500).getHeight();

@@ -6,7 +6,6 @@ import aoc.kingdoms.lukasz.map.civilization.save.CivData3;
 import aoc.kingdoms.lukasz.menusInGame.InGame_CivBonuses;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import space.earlygrey.shapedrawer.ShapeDrawer;
 import team.rainfall.finality.FinalityLogger;
 
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
@@ -17,24 +16,54 @@ public class FontFix {
     public static final boolean fakeAndroid = false;
     //玄星的定制提示
     public static final boolean isXuanxing = false;
+
+    public static int manpowerSid = -1;
     public static int musicIconID = -1;
     //是否尝试过加载compactScale
     public static boolean tried = false;
     public static CompactScale compactScale = null;
+    public static final boolean NO_GOAL = false;
     public static boolean titleSet = false;
-    public static final String CORE_VERSION = "4.0.0";
-    public static final String POLARIS_VERSION = "2.9";
-    public static int isSplash = 0;
-
-
-    public static boolean isSplash() {
-        if (isSplash == 0 && FileManager.loadFile("splashScreen").exists()) {
-            isSplash = 1;
-            return true;
-        } else if (isSplash == 0 && !FileManager.loadFile("splashScreen").exists()) {
-            isSplash = 2;
+    public static final String CORE_VERSION = "4.1.0";
+    public static final String POLARIS_VERSION = "2.11 \"Rainfall\" Patch 1";
+    public static int isLocalStorage = 0;
+    public static boolean isXuanxing(){
+        if(CFG.isDesktop() && !fakeAndroid) return false;
+        return Sternstunden.getPackageString().contains("age.of.history3.polaris.xuanxing.cbtm") || isXuanxing;
+    }
+    public static boolean canUseGoal(){
+        if(NO_GOAL) return false;
+        try {
+            int i = (int)Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalID").invoke(null);
+            return i > -2;
+        } catch (Exception e) {
+            FinalityLogger.error("GoalERR ",e);
             return false;
-        } else return isSplash == 1;
+        }
+    }
+    public static int getGoalID(){
+        try {
+            return (int)Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalID").invoke(null);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+    public static int getGoalDura(){
+        try {
+            return (int)Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalDura").invoke(null);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    public static boolean isLocalStorage() {
+        if (isLocalStorage == 0 && Gdx.files.internal("localStorage").exists()) {
+            isLocalStorage = 1;
+            return true;
+        } else if (isLocalStorage == 0 && !Gdx.files.internal("localStorage").exists()) {
+            isLocalStorage = 2;
+            return false;
+        } else return isLocalStorage == 1;
     }
 
     public static String langGet(String key, String fallback) {

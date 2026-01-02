@@ -30,11 +30,11 @@ public class MixinRenderer {
     public void dispose() {
         this.oSB.dispose();
         for (int i = 0; i < fontMain.size(); ++i) {
-            ((BitmapFont) fontMain.get(i)).dispose();
+            fontMain.get(i).dispose();
         }
 
         for (int i = 0; i < fontBorder.size(); ++i) {
-            ((BitmapFont) fontBorder.get(i)).dispose();
+            fontBorder.get(i).dispose();
         }
 
     }
@@ -42,7 +42,7 @@ public class MixinRenderer {
     public static final void loadFont(String sFont, String charset, int fontSize) {
         float texSize = charset.getBytes().length;
         int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
-        FinalityLogger.debug("FontFix.textureSize = " + texSize2);
+        //FinalityLogger.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
         if (!CFG.isDesktop()) {
             FreeTypeFontGenerator.setMaxTextureSize(Config.getConfig().extendCharset ? 8192 : 4096);

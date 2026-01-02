@@ -37,8 +37,6 @@ public class Fluctlight implements Disposable {
         taskThreads.clear();
         taskThreads.add(new TaskThread());
         taskThreads.add(new TaskThread());
-        taskThreads.add(new TaskThread());
-        taskThreads.add(new TaskThread());
         for (TaskThread taskThread : taskThreads) {
             taskThread.start();
         }

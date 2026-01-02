@@ -23,7 +23,7 @@ public class Ruler {
 
     public Ruler(int iCivID, String Name, String ImageID, int BornDay, int BornMonth, int BornYear, int ReignYear, boolean isRandom, boolean kingImage) {
         this.Name = Name;
-        this.ImageID = "" + ImageID;
+        this.ImageID = ImageID;
         this.kingImage = kingImage;
         this.BornDay = Math.max(1, BornDay);
         this.BornMonth = BornMonth;
@@ -35,7 +35,7 @@ public class Ruler {
 
     public Ruler(int iCivID, String Name, String ImageID, int BornDay, int BornMonth, int BornYear, int ReignYear, boolean isRandom, boolean kingImage,CivilizationBonuses civilizationBonuses) {
         this.Name = Name;
-        this.ImageID = "" + ImageID;
+        this.ImageID = ImageID;
         this.kingImage = kingImage;
         this.BornDay = Math.max(1, BornDay);
         this.BornMonth = BornMonth;

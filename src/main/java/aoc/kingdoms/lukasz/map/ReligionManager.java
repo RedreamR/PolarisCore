@@ -47,7 +47,7 @@ public class ReligionManager {
             String fileContent = fileList.readString();
             Json json = new Json();
             json.setElementType(LoadManager.ConfigJson.class, "Data", Religion.class);
-            LoadManager.ConfigJson data = (LoadManager.ConfigJson)json.fromJson(LoadManager.ConfigJson.class, fileContent);
+            LoadManager.ConfigJson data = json.fromJson(LoadManager.ConfigJson.class, fileContent);
 
             for(Object e : data.Data) {
                 Religion tempData = (Religion)e;
@@ -58,9 +58,9 @@ public class ReligionManager {
             this.iReligionsSize = this.lReligions.size();
 
             for(int i = 0; i < this.iReligionsSize; ++i) {
-                ((Religion)this.lReligions.get(i)).Color[0] /= 255.0F;
-                ((Religion)this.lReligions.get(i)).Color[1] /= 255.0F;
-                ((Religion)this.lReligions.get(i)).Color[2] /= 255.0F;
+                this.lReligions.get(i).Color[0] /= 255.0F;
+                this.lReligions.get(i).Color[1] /= 255.0F;
+                this.lReligions.get(i).Color[2] /= 255.0F;
             }
 
             Object var12 = null;
@@ -70,10 +70,10 @@ public class ReligionManager {
 
         for(int i = 0; i < this.iReligionsSize; ++i) {
             try {
-                if (FileManager.loadFile("gfx/religion/" + CFG.getRescouresPath_Short() + ((Religion)this.lReligions.get(i)).Icon).exists()) {
-                    this.religionImages.add(new Image(ImageManager.loadTexture("gfx/religion/" + CFG.getRescouresPath_Short() + ((Religion)this.lReligions.get(i)).Icon)));
+                if (FileManager.loadFile("gfx/religion/" + CFG.getRescouresPath_Short() + this.lReligions.get(i).Icon).exists()) {
+                    this.religionImages.add(new Image(ImageManager.loadTexture("gfx/religion/" + CFG.getRescouresPath_Short() + this.lReligions.get(i).Icon)));
                 } else {
-                    this.religionImages.add(new Image(ImageManager.loadTexture("gfx/religion/" + CFG.getRescouresPath_Short_H() + ((Religion)this.lReligions.get(i)).Icon)));
+                    this.religionImages.add(new Image(ImageManager.loadTexture("gfx/religion/" + CFG.getRescouresPath_Short_H() + this.lReligions.get(i).Icon)));
                 }
             } catch (GdxRuntimeException var8) {
                 this.religionImages.add(new Image(ImageManager.loadTexture("gfx/religion/" + CFG.getRescouresPath_Short() + "notfound.png")));
@@ -81,12 +81,12 @@ public class ReligionManager {
         }
 
         for(int i = 0; i < this.iReligionsSize; ++i) {
-            if (((Image)this.religionImages.get(i)).getWidth() > this.maxWidth) {
-                this.maxWidth = ((Image)this.religionImages.get(i)).getWidth();
+            if (this.religionImages.get(i).getWidth() > this.maxWidth) {
+                this.maxWidth = this.religionImages.get(i).getWidth();
             }
 
-            if (((Image)this.religionImages.get(i)).getHeight() > this.maxHeight) {
-                this.maxHeight = ((Image)this.religionImages.get(i)).getHeight();
+            if (this.religionImages.get(i).getHeight() > this.maxHeight) {
+                this.maxHeight = this.religionImages.get(i).getHeight();
             }
         }
 
@@ -97,7 +97,7 @@ public class ReligionManager {
     }
 
     public final Religion getReligion(int i) {
-        return (Religion)this.lReligions.get(i);
+        return this.lReligions.get(i);
     }
 
     public final int getReligionConversionCost(int iProvinceID) {
@@ -187,115 +187,115 @@ public class ReligionManager {
         List<MenuElement> mElementsToSort = new ArrayList();
         int maxIconW = ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 2;
         if (this.getReligion(religionID).MonthlyIncome != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MonthlyIncome") + "", (this.getReligion(religionID).MonthlyIncome > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).MonthlyIncome, 100), Images.gold, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MonthlyIncome == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MonthlyIncome < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MonthlyIncome"), (this.getReligion(religionID).MonthlyIncome > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).MonthlyIncome, 100), Images.gold, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MonthlyIncome == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MonthlyIncome < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).TaxEfficiency != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("TaxEfficiency") + "", (this.getReligion(religionID).TaxEfficiency > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).TaxEfficiency, 100) + "%", Images.tax, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).TaxEfficiency == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).TaxEfficiency < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("TaxEfficiency"), (this.getReligion(religionID).TaxEfficiency > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).TaxEfficiency, 100) + "%", Images.tax, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).TaxEfficiency == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).TaxEfficiency < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).ProvinceMaintenance != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ProvinceMaintenance") + "", (this.getReligion(religionID).ProvinceMaintenance > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ProvinceMaintenance, 100) + "%", Images.gold, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ProvinceMaintenance == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ProvinceMaintenance > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ProvinceMaintenance"), (this.getReligion(religionID).ProvinceMaintenance > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ProvinceMaintenance, 100) + "%", Images.gold, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ProvinceMaintenance == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ProvinceMaintenance > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).ProductionEfficiency != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ProductionEfficiency") + "", (this.getReligion(religionID).ProductionEfficiency > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ProductionEfficiency, 100) + "%", Images.goods, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ProductionEfficiency == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ProductionEfficiency < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ProductionEfficiency"), (this.getReligion(religionID).ProductionEfficiency > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ProductionEfficiency, 100) + "%", Images.goods, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ProductionEfficiency == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ProductionEfficiency < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).MonthlyLegacy != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MonthlyLegacy") + "", (this.getReligion(religionID).MonthlyLegacy > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).MonthlyLegacy, 100), Images.legacy, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MonthlyLegacy == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MonthlyLegacy < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MonthlyLegacy"), (this.getReligion(religionID).MonthlyLegacy > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).MonthlyLegacy, 100), Images.legacy, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MonthlyLegacy == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MonthlyLegacy < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).MaxManpower != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MaximumManpower") + "", (this.getReligion(religionID).MaxManpower > 0.0F ? "+" : "") + (int)this.getReligion(religionID).MaxManpower, Game_Calendar.IMG_MANPOWER_UP, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MaxManpower == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MaxManpower < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MaximumManpower"), (this.getReligion(religionID).MaxManpower > 0.0F ? "+" : "") + (int)this.getReligion(religionID).MaxManpower, Game_Calendar.IMG_MANPOWER_UP, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MaxManpower == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MaxManpower < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).ArmyMaintenance != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ArmyMaintenance") + "", (this.getReligion(religionID).ArmyMaintenance > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ArmyMaintenance, 100) + "%", Images.armyMaintenance, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ArmyMaintenance == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ArmyMaintenance > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ArmyMaintenance"), (this.getReligion(religionID).ArmyMaintenance > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ArmyMaintenance, 100) + "%", Images.armyMaintenance, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ArmyMaintenance == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ArmyMaintenance > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).RecruitmentTime != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("RecruitmentTime") + "", (this.getReligion(religionID).RecruitmentTime > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).RecruitmentTime == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).RecruitmentTime > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("RecruitmentTime"), (this.getReligion(religionID).RecruitmentTime > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).RecruitmentTime == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).RecruitmentTime > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).ConstructionCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ConstructionCost") + "", (this.getReligion(religionID).ConstructionCost > 0.0F ? "+" : "") + "" + CFG.getPrecision2(this.getReligion(religionID).ConstructionCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ConstructionCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ConstructionCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ConstructionCost"), (this.getReligion(religionID).ConstructionCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ConstructionCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ConstructionCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ConstructionCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).AdministrationBuildingsCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("AdministrationBuildingsCost") + "", (this.getReligion(religionID).AdministrationBuildingsCost > 0.0F ? "+" : "") + "" + CFG.getPrecision2(this.getReligion(religionID).AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).AdministrationBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).AdministrationBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("AdministrationBuildingsCost"), (this.getReligion(religionID).AdministrationBuildingsCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).AdministrationBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).AdministrationBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).EconomyBuildingsCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("EconomyBuildingsCost") + "", (this.getReligion(religionID).EconomyBuildingsCost > 0.0F ? "+" : "") + "" + CFG.getPrecision2(this.getReligion(religionID).EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).EconomyBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).EconomyBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("EconomyBuildingsCost"), (this.getReligion(religionID).EconomyBuildingsCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).EconomyBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).EconomyBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).MilitaryBuildingsCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MilitaryBuildingsCost") + "", (this.getReligion(religionID).MilitaryBuildingsCost > 0.0F ? "+" : "") + "" + CFG.getPrecision2(this.getReligion(religionID).MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MilitaryBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MilitaryBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MilitaryBuildingsCost"), (this.getReligion(religionID).MilitaryBuildingsCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MilitaryBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MilitaryBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).ConstructionTime != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ConstructionTime") + "", (this.getReligion(religionID).ConstructionTime > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ConstructionTime * 100.0F, 100) + "%", Images.buildTime, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ConstructionTime == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ConstructionTime > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ConstructionTime"), (this.getReligion(religionID).ConstructionTime > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ConstructionTime * 100.0F, 100) + "%", Images.buildTime, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ConstructionTime == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ConstructionTime > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).BuildingSlot != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("BuildingSlot") + "", (this.getReligion(religionID).BuildingSlot > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).BuildingSlot, 100), Images.build, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).BuildingSlot == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).BuildingSlot < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("BuildingSlot"), (this.getReligion(religionID).BuildingSlot > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).BuildingSlot, 100), Images.build, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).BuildingSlot == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).BuildingSlot < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).InvestInEconomyCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("InvestInEconomyCost") + "", "" + CFG.getPrecision2(this.getReligion(religionID).InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).InvestInEconomyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).InvestInEconomyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("InvestInEconomyCost"), CFG.getPrecision2(this.getReligion(religionID).InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).InvestInEconomyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).InvestInEconomyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).IncreaseTaxEfficiencyCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("IncreaseTaxEfficiencyCost") + "", "" + CFG.getPrecision2(this.getReligion(religionID).IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).IncreaseTaxEfficiencyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).IncreaseTaxEfficiencyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("IncreaseTaxEfficiencyCost"), CFG.getPrecision2(this.getReligion(religionID).IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).IncreaseTaxEfficiencyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).IncreaseTaxEfficiencyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).DevelopInfrastructureCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("DevelopInfrastructureCost") + "", "" + CFG.getPrecision2(this.getReligion(religionID).DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).DevelopInfrastructureCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).DevelopInfrastructureCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("DevelopInfrastructureCost"), CFG.getPrecision2(this.getReligion(religionID).DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).DevelopInfrastructureCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).DevelopInfrastructureCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).IncreaseManpowerCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("IncreaseManpowerCost") + "", "" + CFG.getPrecision2(this.getReligion(religionID).IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).IncreaseManpowerCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).IncreaseManpowerCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("IncreaseManpowerCost"), CFG.getPrecision2(this.getReligion(religionID).IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).IncreaseManpowerCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).IncreaseManpowerCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).RecruitArmyCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ArmyRecruitmentCost") + "", "" + CFG.getPrecision2(this.getReligion(religionID).RecruitArmyCost, 100) + "%", Images.gold, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).RecruitArmyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).RecruitArmyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ArmyRecruitmentCost"), CFG.getPrecision2(this.getReligion(religionID).RecruitArmyCost, 100) + "%", Images.gold, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).RecruitArmyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).RecruitArmyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).GeneralAttack != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralsAttack") + "", (this.getReligion(religionID).GeneralAttack > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).GeneralAttack, 100), Images.attack, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).GeneralAttack == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).GeneralAttack < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralsAttack"), (this.getReligion(religionID).GeneralAttack > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).GeneralAttack, 100), Images.attack, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).GeneralAttack == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).GeneralAttack < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).GeneralDefense != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralsDefense") + "", (this.getReligion(religionID).GeneralDefense > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).GeneralDefense, 100), Images.defense, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).GeneralDefense == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).GeneralDefense < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralsDefense"), (this.getReligion(religionID).GeneralDefense > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).GeneralDefense, 100), Images.defense, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).GeneralDefense == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).GeneralDefense < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).UnitsAttack != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("UnitsAttack") + "", (this.getReligion(religionID).UnitsAttack > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).UnitsAttack, 100), Images.attack, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).UnitsAttack == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).UnitsAttack < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("UnitsAttack"), (this.getReligion(religionID).UnitsAttack > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).UnitsAttack, 100), Images.attack, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).UnitsAttack == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).UnitsAttack < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).UnitsDefense != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("UnitsDefense") + "", (this.getReligion(religionID).UnitsDefense > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).UnitsDefense, 100), Images.defense, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).UnitsDefense == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).UnitsDefense < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("UnitsDefense"), (this.getReligion(religionID).UnitsDefense > 0 ? "+" : "") + CFG.getPrecision2((float)this.getReligion(religionID).UnitsDefense, 100), Images.defense, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).UnitsDefense == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).UnitsDefense < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).AdvisorCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("AdvisorCost") + "", (this.getReligion(religionID).AdvisorCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).AdvisorCost * 100.0F, 100) + "%", Images.council, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).AdvisorCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).AdvisorCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("AdvisorCost"), (this.getReligion(religionID).AdvisorCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).AdvisorCost * 100.0F, 100) + "%", Images.council, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).AdvisorCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).AdvisorCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).GeneralCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralCost") + "", (this.getReligion(religionID).GeneralCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).GeneralCost * 100.0F, 100) + "%", Images.general, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).GeneralCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).GeneralCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralCost"), (this.getReligion(religionID).GeneralCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).GeneralCost * 100.0F, 100) + "%", Images.general, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).GeneralCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).GeneralCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).MaxNumberOfLoans != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MaximumNumberOfLoans") + "", (this.getReligion(religionID).MaxNumberOfLoans > 0 ? "+" : "") + this.getReligion(religionID).MaxNumberOfLoans, Images.loan, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MaxNumberOfLoans == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MaxNumberOfLoans < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MaximumNumberOfLoans"), (this.getReligion(religionID).MaxNumberOfLoans > 0 ? "+" : "") + this.getReligion(religionID).MaxNumberOfLoans, Images.loan, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).MaxNumberOfLoans == 0 ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).MaxNumberOfLoans < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).CoreCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("CoreConstruction") + "", (this.getReligion(religionID).CoreCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).CoreCost, 100) + "%", Images.core, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).CoreCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).CoreCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("CoreConstruction"), (this.getReligion(religionID).CoreCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).CoreCost, 100) + "%", Images.core, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).CoreCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).CoreCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getReligion(religionID).ReligionCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ReligionConversionCost") + "", (this.getReligion(religionID).ReligionCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ReligionCost, 100) + "%", Images.religion, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ReligionCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ReligionCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ReligionConversionCost"), (this.getReligion(religionID).ReligionCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getReligion(religionID).ReligionCost, 100) + "%", Images.religion, iX, 0, iW, iH, maxIconW, this.getReligion(religionID).ReligionCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getReligion(religionID).ReligionCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         List<MenuElement> elementsOut = new ArrayList();
@@ -305,14 +305,14 @@ public class ReligionManager {
             int o = 1;
 
             for(int oSize = mElementsToSort.size(); o < oSize; ++o) {
-                if (CFG.compareAlphabetic_TwoString(((MenuElement)mElementsToSort.get(addID)).getText(), ((MenuElement)mElementsToSort.get(o)).getText())) {
+                if (CFG.compareAlphabetic_TwoString(mElementsToSort.get(addID).getText(), mElementsToSort.get(o).getText())) {
                     addID = o;
                 }
             }
 
-            elementsOut.add((MenuElement)mElementsToSort.get(addID));
-            ((MenuElement)elementsOut.get(elementsOut.size() - 1)).setPosY(iY);
-            iY += ((MenuElement)elementsOut.get(elementsOut.size() - 1)).getHeight() + CFG.PADDING;
+            elementsOut.add(mElementsToSort.get(addID));
+            elementsOut.get(elementsOut.size() - 1).setPosY(iY);
+            iY += elementsOut.get(elementsOut.size() - 1).getHeight() + CFG.PADDING;
             mElementsToSort.remove(addID);
         }
 
@@ -525,7 +525,7 @@ public class ReligionManager {
                 }
 
                 for(int i = 0; i < Game.getCiv(civID).getNumOfProvinces(); ++i) {
-                    religionPop.set(Game.getProvince(Game.getCiv(civID).getProvinceID(i)).getReligion(), (Integer)religionPop.get(Game.getProvince(Game.getCiv(civID).getProvinceID(i)).getReligion()) + Game.getProvince(Game.getCiv(civID).getProvinceID(i)).getPopulationTotal());
+                    religionPop.set(Game.getProvince(Game.getCiv(civID).getProvinceID(i)).getReligion(), religionPop.get(Game.getProvince(Game.getCiv(civID).getProvinceID(i)).getReligion()) + Game.getProvince(Game.getCiv(civID).getProvinceID(i)).getPopulationTotal());
                 }
 
                 nData.add(new MenuElement_HoverElement_Type_Line());
@@ -533,7 +533,7 @@ public class ReligionManager {
                 nData.clear();
 
                 for(int i = religionPop.size() - 1; i >= 0; --i) {
-                    if ((Integer)religionPop.get(i) <= 0) {
+                    if (religionPop.get(i) <= 0) {
                         religionPop.remove(i);
                         lReligionID.remove(i);
                     }
@@ -543,16 +543,16 @@ public class ReligionManager {
                     int bestID = 0;
 
                     for(int i = 1; i < religionPop.size(); ++i) {
-                        if ((Integer)religionPop.get(bestID) < (Integer)religionPop.get(i)) {
+                        if (religionPop.get(bestID) < religionPop.get(i)) {
                             bestID = i;
                         }
                     }
 
-                    nData.add(new MenuElement_HoverElement_Type_Text(Game.religionManager.getReligion((Integer)lReligionID.get(bestID)).Name + ": ", CFG.FONT_REGULAR_SMALL));
+                    nData.add(new MenuElement_HoverElement_Type_Text(Game.religionManager.getReligion(lReligionID.get(bestID)).Name + ": ", CFG.FONT_REGULAR_SMALL));
                     nData.add(new MenuElement_HoverElement_Type_Text(CFG.getNumberWithSpaces("" + religionPop.get(bestID)), CFG.FONT_BOLD_SMALL, Colors.COLOR_POPULATION));
                     nData.add(new MenuElement_HoverElement_Type_Image(Images.population, CFG.PADDING, 0));
-                    nData.add(new MenuElement_HoverElement_Type_Religion((Integer)lReligionID.get(bestID), CFG.PADDING, CFG.PADDING));
-                    nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float)((long)(Integer)religionPop.get(bestID) / Game.getCiv(civID).getPopulationTotal()) * 100.0F, 100) + "%", CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT2));
+                    nData.add(new MenuElement_HoverElement_Type_Religion(lReligionID.get(bestID), CFG.PADDING, CFG.PADDING));
+                    nData.add(new MenuElement_HoverElement_Type_Text(CFG.getPrecision2((float)((long) religionPop.get(bestID) / Game.getCiv(civID).getPopulationTotal()) * 100.0F, 100) + "%", CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT2));
                     nElements.add(new MenuElement_HoverElement(nData));
                     nData.clear();
                     lReligionID.remove(bestID);

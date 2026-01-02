@@ -25,33 +25,33 @@ public class AI_SelectTechnology {
 
         if (!possibleResearch.isEmpty()) {
             if (possibleResearch.size() == 1) {
-                Game.getCiv(civID).setActiveTechResearch((Integer)possibleResearch.get(0));
+                Game.getCiv(civID).setActiveTechResearch(possibleResearch.get(0));
                 Game.getCiv(civID).iAlternativeTechResearch = -1;
             } else {
                 int totalScore = 0;
 
                 for(int i = possibleResearch.size() - 1; i >= 0; --i) {
-                    totalScore += ((TechnologyTree.Technology)TechnologyTree.lTechnology.get((Integer)possibleResearch.get(i))).AI;
+                    totalScore += TechnologyTree.lTechnology.get(possibleResearch.get(i)).AI;
                 }
 
                 if (totalScore <= 0) {
-                    Game.getCiv(civID).setActiveTechResearch((Integer)possibleResearch.get(0));
+                    Game.getCiv(civID).setActiveTechResearch(possibleResearch.get(0));
                     Game.getCiv(civID).iAlternativeTechResearch = -1;
                 } else {
                     int select = Game.oR.nextInt(totalScore);
                     int i = 0;
 
                     for(int cScore = 0; i < possibleResearch.size(); ++i) {
-                        if (select < cScore + ((TechnologyTree.Technology)TechnologyTree.lTechnology.get((Integer)possibleResearch.get(i))).AI) {
-                            Game.getCiv(civID).setActiveTechResearch((Integer)possibleResearch.get(i));
+                        if (select < cScore + TechnologyTree.lTechnology.get(possibleResearch.get(i)).AI) {
+                            Game.getCiv(civID).setActiveTechResearch(possibleResearch.get(i));
                             Game.getCiv(civID).iAlternativeTechResearch = -1;
                             return;
                         }
 
-                        cScore += ((TechnologyTree.Technology)TechnologyTree.lTechnology.get((Integer)possibleResearch.get(i))).AI;
+                        cScore += TechnologyTree.lTechnology.get(possibleResearch.get(i)).AI;
                     }
 
-                    Game.getCiv(civID).setActiveTechResearch((Integer)possibleResearch.get(0));
+                    Game.getCiv(civID).setActiveTechResearch(possibleResearch.get(0));
                     Game.getCiv(civID).iAlternativeTechResearch = -1;
                 }
             }

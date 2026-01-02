@@ -94,7 +94,7 @@ public class InGame_Audio extends Menu {
         });
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Text_Title_v2_TextLR(Game.soundsManager.getCurrentMusicTittle(), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, Game.soundsManager.currentMusicDuraStr));
-        buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         final int LRid = menuElements.size() - 1;
         menuElements.add(new ButtonStatsRect_Active("<<", paddingLeft, buttonY, (int) ((float) menuWidth * 1 / 3) - paddingLeft, CFG.BUTTON_HEIGHT4) {
             public void actionElement() {
@@ -226,7 +226,7 @@ public class InGame_Audio extends Menu {
         });
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Musics"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement) menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         for (int i = 0; i < Game.soundsManager.lTitles.size(); ++i) {
             menuElements.add(new ButtonStatsRect_Active_Value2(Game.soundsManager.lTitles.get(i).replace("_", " "), paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, i) {
                 public void actionElement() {

@@ -130,7 +130,7 @@ public class ButtonAdvisorGeneral extends Button {
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();
             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Born") + ": ", CFG.FONT_REGULAR_SMALL));
-            nData.add(new MenuElement_HoverElement_Type_Text("" + AdvisorManager.getAdvisor(3).iDayOfBirth + " " + Game_Calendar.getMonthName(AdvisorManager.getAdvisor(3).iMonthOfBirth) + " " + AdvisorManager.getAdvisor(3).iYearOfBirth, CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+            nData.add(new MenuElement_HoverElement_Type_Text(AdvisorManager.getAdvisor(3).iDayOfBirth + " " + Game_Calendar.getMonthName(AdvisorManager.getAdvisor(3).iMonthOfBirth) + " " + AdvisorManager.getAdvisor(3).iYearOfBirth, CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
             nData.add(new MenuElement_HoverElement_Type_Image(Images.time, CFG.PADDING, 0));
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();

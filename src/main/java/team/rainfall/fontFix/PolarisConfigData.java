@@ -3,17 +3,19 @@ package team.rainfall.fontFix;
 import team.rainfall.fontFix.config.ColorConfig;
 import team.rainfall.fontFix.config.LinkConfig;
 import com.badlogic.gdx.utils.Array;
+import team.rainfall.fontFix.config.SplashScreenConfig;
 
 
 public class PolarisConfigData {
+    public Array<SplashScreenConfig> splashScreen = new Array<>();
     public Array<LinkConfig> links = new Array<>();
     public Array<ColorConfig> textColors = new Array<>();
-    public int SplashScreen_FadeIn = 1500;
-    public int SplashScreen_FadeOut = 500;
+    //主菜单面板位置
     public float MainMenu_PanelX = 0.1f;
     public String MainMenu_Alignment = "left";
     public boolean forceFlagNearest = false;
     public boolean extendCharset = false;
+    public String defaultCharset = "NONE";
     //A simple method to detect encode,may cause detection mistake
     public boolean fastEncodeCheck = true;
     public boolean useFluctlight = true;
@@ -28,5 +30,6 @@ public class PolarisConfigData {
     public boolean noMainMenuAnimation = false;
     public boolean randNameCache = false;
     public boolean changeBGinInitGame = false;
-
+    public boolean noOverlay = true;
+    public boolean useNewTextDraw = true;
 }

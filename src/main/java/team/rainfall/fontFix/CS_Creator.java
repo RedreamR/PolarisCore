@@ -27,7 +27,7 @@ public class CS_Creator {
                     .collect(Collectors.toList());
         }
 
-        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(outputFile))) {
+        try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(outputFile.toPath()))) {
             // 首先写入单元数量(2字节)
             byte[] unitCountBytes = ByteBuffer.allocate(2)
                     .order(ByteOrder.BIG_ENDIAN)

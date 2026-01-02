@@ -15,9 +15,6 @@ public class EncodeChecker {
             return true;
         }
 
-        if(fileHandle.path().contains("game/rulersRandom") || fileHandle.path().startsWith("saves") || fileHandle.path().contains("game/randomNames") || fileHandle.path().contains("game/rulers") || fileHandle.path().contains("game/advisors") || fileHandle.path().contains("game/characters") || fileHandle.path().contains("audio/music")){
-            return true;
-        }
-        return false;
+        return fileHandle.path().contains("game/rulersRandom") || fileHandle.path().startsWith("saves") || fileHandle.path().contains("game/randomNames") || fileHandle.path().contains("game/rulers") || fileHandle.path().contains("game/advisors") || fileHandle.path().contains("game/characters") || fileHandle.path().contains("audio/music");
     }
 }

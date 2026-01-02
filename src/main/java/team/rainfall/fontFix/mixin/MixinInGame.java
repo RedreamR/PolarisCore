@@ -5,7 +5,7 @@ import aoc.kingdoms.lukasz.menu.Menu;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.utils.AnimationUtil;
-@Mixin(mixinClass = "aoc.kingdoms.lukasz.menusInGame.InGame")
+//@Mixin(mixinClass = "aoc.kingdoms.lukasz.menusInGame.InGame")
 public class MixinInGame extends Menu {
     public static int iMinimapPosY = 0;
     public static boolean inAnimation = false;

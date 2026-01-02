@@ -103,7 +103,7 @@ public class TextTop extends MenuElement {
 
         if (this.getClickable() && this.getIsHovered() && animationState >= 0) {
             if (animationState == 0) {
-                float drawPerc = Math.min(1.0F * (float)(CFG.currentTimeMillis - lTimeAnimation) / 1000.0F, 1.0F);
+                float drawPerc = Math.min((float) (CFG.currentTimeMillis - lTimeAnimation) / 1000.0F, 1.0F);
                 oSB.setColor(ButtonGame.getColorLine());
                 Images.line_32_off1.draw(oSB, iTranslateX + CFG.PADDING, iTranslateY + 1, (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), 1);
                 Images.line_32_off1.draw(oSB, iTranslateX + CFG.PADDING, iTranslateY + this.getHeight() - 2, (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), 1);
@@ -112,7 +112,7 @@ public class TextTop extends MenuElement {
                     lTimeAnimation = CFG.currentTimeMillis;
                 }
             } else {
-                float drawPerc = Math.min(1.0F * (float)(CFG.currentTimeMillis - lTimeAnimation) / 1000.0F, 1.0F);
+                float drawPerc = Math.min((float) (CFG.currentTimeMillis - lTimeAnimation) / 1000.0F, 1.0F);
                 oSB.setColor(ButtonGame.getColorLine());
                 Images.line_32_off1.draw(oSB, iTranslateX + CFG.PADDING + (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), iTranslateY + 1, this.getWidth() - CFG.PADDING * 2 - (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), 1);
                 Images.line_32_off1.draw(oSB, iTranslateX + CFG.PADDING + (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), iTranslateY + this.getHeight() - 2, this.getWidth() - CFG.PADDING * 2 - (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), 1);
@@ -154,7 +154,7 @@ public class TextTop extends MenuElement {
         this.sText = sText;
 
         try {
-            Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), sText);
+            Renderer.glyphLayout.setText(Renderer.fontMain.get(this.fontID), sText);
             this.iTextWidth = (int)Renderer.glyphLayout.width;
             this.iTextHeight = (int)Renderer.glyphLayout.height;
             if (super.getWidth() < this.iTextWidth + this.extraWidth()) {
@@ -175,7 +175,7 @@ public class TextTop extends MenuElement {
         this.sText2 = sText2;
 
         try {
-            Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID2), sText2);
+            Renderer.glyphLayout.setText(Renderer.fontMain.get(this.fontID2), sText2);
             this.iTextWidth2 = (int)Renderer.glyphLayout.width;
             this.iTextHeight2 = (int)Renderer.glyphLayout.height;
             if (super.getWidth() < this.iTextWidth2 + this.extraWidth()) {

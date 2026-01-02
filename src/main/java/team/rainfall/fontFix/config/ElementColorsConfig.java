@@ -120,4 +120,5 @@ public class ElementColorsConfig {
     public String TECH_GRAY = "232323FF";
     public String TECH_GRAY2 = "484848FF";
     public String TECH_GRAY3 = "373737FF";
+    public String MAIN_MENU_SPARK = "FFFFFF40";
 }

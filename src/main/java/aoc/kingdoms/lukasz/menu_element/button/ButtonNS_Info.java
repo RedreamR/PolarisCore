@@ -65,7 +65,7 @@ public class ButtonNS_Info extends Button {
         int i = 0;
 
         for (int iSize = words.length; i < iSize; ++i) {
-            Renderer.glyphLayout.setText((BitmapFont) Renderer.fontMain.get(this.fontID), words[i] + " ");
+            Renderer.glyphLayout.setText(Renderer.fontMain.get(this.fontID), words[i] + " ");
             this.iTextWidth = (int) Renderer.glyphLayout.width;
             textPosX += this.iTextWidth;
             if (textPosX < maxW) {
@@ -88,15 +88,15 @@ public class ButtonNS_Info extends Button {
             this.sLines.add(currentLine);
         }
 
-        if (!this.sLines.isEmpty() && !((String) this.sLines.get(0)).isEmpty()) {
-            Renderer.glyphLayout.setText((BitmapFont) Renderer.fontMain.get(this.fontID), (CharSequence) this.sLines.get(0));
+        if (!this.sLines.isEmpty() && !this.sLines.get(0).isEmpty()) {
+            Renderer.glyphLayout.setText(Renderer.fontMain.get(this.fontID), this.sLines.get(0));
             this.iTextHeight = (int) Renderer.glyphLayout.height;
         }
 
         this.iLineSize = this.sLines.size();
 
         for (i = 0; i < this.iLineSize; ++i) {
-            Renderer.glyphLayout.setText((BitmapFont) Renderer.fontMain.get(this.fontID), (CharSequence) this.sLines.get(i));
+            Renderer.glyphLayout.setText(Renderer.fontMain.get(this.fontID), this.sLines.get(i));
             this.iLinesWidth.add((int) Renderer.glyphLayout.width);
         }
 

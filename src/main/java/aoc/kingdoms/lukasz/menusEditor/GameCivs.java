@@ -46,8 +46,8 @@ import java.util.List;
 
 public class GameCivs extends Menu {
     private List<String> lCivsTags = null;
-    private List<Image> lFlags = new ArrayList();
-    private List<Integer> lLoadedFlags_TagsIDs = new ArrayList();
+    private final List<Image> lFlags = new ArrayList();
+    private final List<Integer> lLoadedFlags_TagsIDs = new ArrayList();
     public static String chosen_AlphabetCharachter = "";
     public static String sSearch = "";
 
@@ -61,7 +61,7 @@ public class GameCivs extends Menu {
         int buttonYPadding = CFG.PADDING * 2;
         int textPosX = CFG.PADDING * 4;
         this.lCivsTags = new ArrayList<>();
-        menuElements.add(new ButtonMain((String)null, 1, -1, paddingLeft, buttonYPadding, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
+        menuElements.add(new ButtonMain(null, 1, -1, paddingLeft, buttonYPadding, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("Back"));
             }
@@ -72,7 +72,7 @@ public class GameCivs extends Menu {
         });
         Timer.end();
         Timer.start(true,"init2");
-        int buttonY = buttonYPadding + ((MenuElement)menuElements.get(0)).getHeight() + buttonYPadding;
+        int buttonY = buttonYPadding + menuElements.get(0).getHeight() + buttonYPadding;
         String[] tagsSPLITED = null;
         FileHandle tempFileT = FileManager.loadFile("game/Civilizations.txt");
         EncodingDetector.setBypassEncoding("UTF-8");
@@ -89,9 +89,9 @@ public class GameCivs extends Menu {
             for(int i = 0; i < SteamManager.modsFoldersSize; ++i) {
                 FileHandle[] files;
                 if (FileManager.IS_MAC) {
-                    files = Gdx.files.external((String)SteamManager.modsFolders.get(i) + "game/" + "civilizations/").list();
+                    files = Gdx.files.external(SteamManager.modsFolders.get(i) + "game/" + "civilizations/").list();
                 } else {
-                    files = Gdx.files.internal((String)SteamManager.modsFolders.get(i) + "game/" + "civilizations/").list();
+                    files = Gdx.files.internal(SteamManager.modsFolders.get(i) + "game/" + "civilizations/").list();
                 }
 
                 for(FileHandle file : files) {
@@ -113,26 +113,26 @@ public class GameCivs extends Menu {
             int i = 0;
 
             for(int iSize = tCivsTags.size(); i < iSize; ++i) {
-                if (Game.lang.getCiv((String) tCivsTags.get(i)).toLowerCase().contains(sSearch.toLowerCase())) {
-                    lTempNames.add(Game.lang.getCiv((String)tCivsTags.get(i)));
-                    lTempTags.add((String)tCivsTags.get(i));
+                if (Game.lang.getCiv(tCivsTags.get(i)).toLowerCase().contains(sSearch.toLowerCase())) {
+                    lTempNames.add(Game.lang.getCiv(tCivsTags.get(i)));
+                    lTempTags.add(tCivsTags.get(i));
                 }
             }
         } else if (!chosen_AlphabetCharachter.isEmpty()) {
             int i = 0;
 
             for(int iSize = tCivsTags.size(); i < iSize; ++i) {
-                if (Game.lang.getCiv((String)tCivsTags.get(i)).charAt(0) == chosen_AlphabetCharachter.charAt(0)) {
-                    lTempNames.add(Game.lang.getCiv((String)tCivsTags.get(i)));
-                    lTempTags.add((String)tCivsTags.get(i));
+                if (Game.lang.getCiv(tCivsTags.get(i)).charAt(0) == chosen_AlphabetCharachter.charAt(0)) {
+                    lTempNames.add(Game.lang.getCiv(tCivsTags.get(i)));
+                    lTempTags.add(tCivsTags.get(i));
                 }
             }
         } else {
             int i = 0;
 
             for(int iSize = tCivsTags.size(); i < iSize; ++i) {
-                lTempNames.add(Game.lang.getCiv((String)tCivsTags.get(i)));
-                lTempTags.add((String)tCivsTags.get(i));
+                lTempNames.add(Game.lang.getCiv(tCivsTags.get(i)));
+                lTempTags.add(tCivsTags.get(i));
             }
         }
         Timer.end();
@@ -143,12 +143,12 @@ public class GameCivs extends Menu {
                 int toAddID = 0;
 
                 for(int i = 1; i < lTempNames.size(); ++i) {
-                    if (CFG.compareAlphabetic_TwoString((String)lTempNames.get(toAddID), (String)lTempNames.get(i))) {
+                    if (CFG.compareAlphabetic_TwoString(lTempNames.get(toAddID), lTempNames.get(i))) {
                         toAddID = i;
                     }
                 }
 
-                menuElements.add(new ButtonMain(Game.lang.getCiv((String)lTempTags.get(toAddID)) + " [" + (String)lTempTags.get(toAddID) + "]", 1, CFG.PADDING * 2 + CFG.CIV_FLAG_WIDTH, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2 - CFG.BUTTON_HEIGHT, true) {
+                menuElements.add(new ButtonMain(Game.lang.getCiv(lTempTags.get(toAddID)) + " [" + lTempTags.get(toAddID) + "]", 1, CFG.PADDING * 2 + CFG.CIV_FLAG_WIDTH, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2 - CFG.BUTTON_HEIGHT, true) {
                     public void buildElementHover() {
                         try {
                             String tTag = this.getText().substring(this.getText().indexOf("[") + 1, this.getText().indexOf("]"));
@@ -167,7 +167,7 @@ public class GameCivs extends Menu {
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Group") + ": ", CFG.FONT_REGULAR_SMALL));
-                            nData.add(new MenuElement_HoverElement_Type_Text((String)RulersManager.groups.get(nCivs.GroupID), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                            nData.add(new MenuElement_HoverElement_Type_Text(RulersManager.groups.get(nCivs.GroupID), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
                             nElements.add(new MenuElement_HoverElement(nData));
                             nData.clear();
                             nData.add(new MenuElement_HoverElement_Type_Text("Wiki: ", CFG.FONT_REGULAR_SMALL));
@@ -185,8 +185,8 @@ public class GameCivs extends Menu {
                         ImageManager.getImage(Images.wiki).draw(oSB, iTranslateX + this.getPosX() + this.getWidth() / 2 - ImageManager.getImage(Images.wiki).getWidth() / 2, iTranslateY + this.getPosY() + this.getHeight() / 2 - ImageManager.getImage(Images.wiki).getHeight() / 2);
                     }
                 });
-                buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-                this.lCivsTags.add((String)lTempTags.get(toAddID));
+                buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+                this.lCivsTags.add(lTempTags.get(toAddID));
                 lTempNames.remove(toAddID);
                 lTempTags.remove(toAddID);
             }
@@ -212,7 +212,7 @@ public class GameCivs extends Menu {
         try {
             for(int i = 1; i < this.getMenuElementsSize(); i += 2) {
                 if (this.getMenuElement(i).getIsInView()) {
-                    ((Image)this.lFlags.get(this.getFlagID((i - 1) / 2))).draw(oSB, this.getPosX() + this.getMenuElement(i).getPosX() + CFG.PADDING + iTranslateX, this.getMenuElement(i).getPosY() + this.getMenuPosY() + this.getMenuElement(i).getHeight() / 2 - CFG.CIV_FLAG_HEIGHT / 2 + iTranslateY, CFG.CIV_FLAG_WIDTH, CFG.CIV_FLAG_HEIGHT);
+                    this.lFlags.get(this.getFlagID((i - 1) / 2)).draw(oSB, this.getPosX() + this.getMenuElement(i).getPosX() + CFG.PADDING + iTranslateX, this.getMenuElement(i).getPosY() + this.getMenuPosY() + this.getMenuElement(i).getHeight() / 2 - CFG.CIV_FLAG_HEIGHT / 2 + iTranslateY, CFG.CIV_FLAG_WIDTH, CFG.CIV_FLAG_HEIGHT);
                     ImageManager.getImage(Images.flag_rect).draw(oSB, this.getPosX() + this.getMenuElement(i).getPosX() + this.getMenuElement(i).getTextPos() / 2 - CFG.CIV_FLAG_WIDTH / 2 + iTranslateX, this.getMenuElement(i).getPosY() + this.getMenuPosY() + this.getMenuElement(i).getHeight() / 2 - CFG.CIV_FLAG_HEIGHT / 2 + iTranslateY);
                 }
             }
@@ -235,12 +235,12 @@ public class GameCivs extends Menu {
         if (nMenuElementID == 0) {
             super.actionElement(nMenuElementID);
         } else if (nMenuElementID % 2 == 1) {
-            String tempCivTag = (String)this.lCivsTags.get((nMenuElementID - 1) / 2);
+            String tempCivTag = this.lCivsTags.get((nMenuElementID - 1) / 2);
             GameCivsEdit.nCiv = Game.loadCivilization(tempCivTag);
             GameCivsEdit.goBackTo = View.EDITOR_GAMECIVS;
             Game.menuManager.setViewID(View.EDITOR_GAMECIVS_EDIT);
         } else {
-            String tempCivTag = (String)this.lCivsTags.get((nMenuElementID - 1) / 2);
+            String tempCivTag = this.lCivsTags.get((nMenuElementID - 1) / 2);
 
             try {
                 Game.LoadCivilizationData nCiv = Game.loadCivilization(tempCivTag);
@@ -258,13 +258,13 @@ public class GameCivs extends Menu {
         int tempRandomButton = 1;
 
         for(int i = tempRandomButton; i < this.getMenuElementsSize(); i += 2) {
-            int tempTagID = this.getIsLoaded((String)this.lCivsTags.get((i - tempRandomButton) / 2));
+            int tempTagID = this.getIsLoaded(this.lCivsTags.get((i - tempRandomButton) / 2));
             if (this.getMenuElement(i).getIsInView()) {
                 if (tempTagID < 0) {
                     this.loadFlag((i - tempRandomButton) / 2);
                 }
             } else if (tempTagID >= 0) {
-                ((Image)this.lFlags.get(tempTagID)).getTexture().dispose();
+                this.lFlags.get(tempTagID).getTexture().dispose();
                 this.lFlags.set(tempTagID, null);
                 this.lFlags.remove(tempTagID);
                 this.lLoadedFlags_TagsIDs.remove(tempTagID);
@@ -275,7 +275,7 @@ public class GameCivs extends Menu {
 
     private final int getIsLoaded(String nCivTag) {
         for(int i = 0; i < this.lLoadedFlags_TagsIDs.size(); ++i) {
-            if (((String)this.lCivsTags.get((Integer)this.lLoadedFlags_TagsIDs.get(i))).equals(nCivTag)) {
+            if (this.lCivsTags.get(this.lLoadedFlags_TagsIDs.get(i)).equals(nCivTag)) {
                 return i;
             }
         }
@@ -285,7 +285,7 @@ public class GameCivs extends Menu {
 
     private final int getFlagID(int nCivTagID) {
         for(int i = 0; i < this.lLoadedFlags_TagsIDs.size(); ++i) {
-            if ((Integer)this.lLoadedFlags_TagsIDs.get(i) == nCivTagID) {
+            if (this.lLoadedFlags_TagsIDs.get(i) == nCivTagID) {
                 return i;
             }
         }
@@ -297,15 +297,15 @@ public class GameCivs extends Menu {
         try {
             try {
                 try {
-                    this.lFlags.add(new Image(new Texture(FileManager.loadFile("gfx/flags/" + (String)this.lCivsTags.get(nCivTagID) + ".png")), TextureFilter.Nearest));
+                    this.lFlags.add(new Image(new Texture(FileManager.loadFile("gfx/flags/" + this.lCivsTags.get(nCivTagID) + ".png")), TextureFilter.Nearest));
                 } catch (GdxRuntimeException var5) {
-                    this.lFlags.add(new Image(new Texture(FileManager.loadFile("gfx/flags/" + Game.ideologiesManager.getRealTag((String)this.lCivsTags.get(nCivTagID)) + ".png")), TextureFilter.Nearest));
+                    this.lFlags.add(new Image(new Texture(FileManager.loadFile("gfx/flags/" + Game.ideologiesManager.getRealTag(this.lCivsTags.get(nCivTagID)) + ".png")), TextureFilter.Nearest));
                 }
             } catch (GdxRuntimeException var6) {
                 try {
-                    this.lFlags.add(new Image(new Texture(FileManager.loadFile("gfx/flagsXH/" + (String)this.lCivsTags.get(nCivTagID) + ".png")), TextureFilter.Nearest));
+                    this.lFlags.add(new Image(new Texture(FileManager.loadFile("gfx/flagsXH/" + this.lCivsTags.get(nCivTagID) + ".png")), TextureFilter.Nearest));
                 } catch (GdxRuntimeException var4) {
-                    this.lFlags.add(new Image(new Texture(FileManager.loadFile("gfx/flagsXH/" + Game.ideologiesManager.getRealTag((String)this.lCivsTags.get(nCivTagID)) + ".png")), TextureFilter.Nearest));
+                    this.lFlags.add(new Image(new Texture(FileManager.loadFile("gfx/flagsXH/" + Game.ideologiesManager.getRealTag(this.lCivsTags.get(nCivTagID)) + ".png")), TextureFilter.Nearest));
                 }
             }
         } catch (GdxRuntimeException var7) {
@@ -325,7 +325,7 @@ public class GameCivs extends Menu {
 
     public void disposeData() {
         for(int i = 0; i < this.lFlags.size(); ++i) {
-            ((Image)this.lFlags.get(i)).getTexture().dispose();
+            this.lFlags.get(i).getTexture().dispose();
         }
 
         this.lFlags.clear();

@@ -63,7 +63,7 @@ public class InGame_Escape extends Menu {
             }
         });
         buttonY += menuElements.get(0).getHeight() + buttonYPadding;
-        menuElements.add(new ButtonGame2((String)null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
+        menuElements.add(new ButtonGame2(null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("ReturnToGame"));
             }
@@ -74,8 +74,8 @@ public class InGame_Escape extends Menu {
                 Game.mapBG.updateActiveMapBGShader();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-        menuElements.add(new ButtonGame2((String)null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+        menuElements.add(new ButtonGame2(null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("SaveTheGame"));
             }
@@ -89,8 +89,8 @@ public class InGame_Escape extends Menu {
 
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding + buttonYPadding;
-        menuElements.add(new ButtonGame2((String)null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding + buttonYPadding;
+        menuElements.add(new ButtonGame2(null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("Audio"));
             }
@@ -102,8 +102,8 @@ public class InGame_Escape extends Menu {
                 Game.menuManager.rebuildInGame_Audio();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-        menuElements.add(new ButtonGame2((String)null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+        menuElements.add(new ButtonGame2(null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("GameOptions"));
             }
@@ -113,8 +113,8 @@ public class InGame_Escape extends Menu {
                 Game.menuManager.setViewID(View.SETTINGS);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-        menuElements.add(new ButtonGame2((String)null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+        menuElements.add(new ButtonGame2(null, 1, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("ExitToMainMenu"));
             }
@@ -123,9 +123,9 @@ public class InGame_Escape extends Menu {
                 Dialog.setDialogType(DialogType.ESCAPE_TO_MAIN_MENU);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING + Images.boxTitleBORDERWIDTH;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING + Images.boxTitleBORDERWIDTH;
         int menuHeight = Math.min(buttonY, CFG.GAME_HEIGHT - titleHeight - menuY - CFG.PADDING * 2);
-        this.initMenu((MenuTitle)null, CFG.GAME_WIDTH / 10, CFG.GAME_HEIGHT / 2 - (titleHeight + menuHeight) / 2, menuWidth, menuHeight, menuElements, false, false);
+        this.initMenu(null, CFG.GAME_WIDTH / 10, CFG.GAME_HEIGHT / 2 - (titleHeight + menuHeight) / 2, menuWidth, menuHeight, menuElements, false, false);
     }
 
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
@@ -161,7 +161,7 @@ public class InGame_Escape extends Menu {
             ImageManager.getImage(Images.gradientHorizontal).draw(oSB, iTranslateX, 0, CFG.LEFT_MENU_WIDTH / 2, CFG.GAME_HEIGHT);
             ImageManager.getImage(Images.gradientHorizontal).draw(oSB, CFG.GAME_WIDTH - CFG.LEFT_MENU_WIDTH / 2 + iTranslateX, 0, CFG.LEFT_MENU_WIDTH / 2, CFG.GAME_HEIGHT, true, false);
             ImageManager.getImage(Images.gradientVertical).draw(oSB, iTranslateX, 0, CFG.GAME_WIDTH, CFG.LEFT_MENU_WIDTH / 2);
-            ImageManager.getImage(Images.gradientVertical).draw(oSB, iTranslateX, 0 + CFG.GAME_HEIGHT - CFG.LEFT_MENU_WIDTH / 2, CFG.GAME_WIDTH, CFG.LEFT_MENU_WIDTH / 2, false, true);
+            ImageManager.getImage(Images.gradientVertical).draw(oSB, iTranslateX, CFG.GAME_HEIGHT - CFG.LEFT_MENU_WIDTH / 2, CFG.GAME_WIDTH, CFG.LEFT_MENU_WIDTH / 2, false, true);
             oSB.setColor(MainMenu.sparksColors);
             MenuManager.sparksAnimation.draw2(oSB, iTranslateX, CFG.GAME_HEIGHT - Images.sparkHeight + iTranslateY, CFG.GAME_WIDTH, Images.sparkHeight);
             oSB.setColor(Color.WHITE);

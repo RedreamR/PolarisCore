@@ -49,7 +49,7 @@ public class IdeologiesManager {
             Json json = new Json();
             json.setElementType(ConfigIdeologiesData.class, "Government", Ideology.class);
             new ConfigIdeologiesData();
-            ConfigIdeologiesData data = (ConfigIdeologiesData)json.fromJson(ConfigIdeologiesData.class, fileContent);
+            ConfigIdeologiesData data = json.fromJson(ConfigIdeologiesData.class, fileContent);
 
             for(Object e : data.Government) {
                 Ideology tempIdeology = (Ideology)e;
@@ -76,10 +76,10 @@ public class IdeologiesManager {
 
         for(int i = 0; i < this.iIdeologiesSize; ++i) {
             try {
-                if (FileManager.loadFile("gfx/government/" + CFG.getRescouresPath_Short() + "gov" + ((Ideology)this.lIdeologies.get(i)).Extra_Tag + ".png").exists()) {
-                    this.ideologiesImages.add(new Image(ImageManager.loadTexture("gfx/government/" + CFG.getRescouresPath_Short() + "gov" + ((Ideology)this.lIdeologies.get(i)).Extra_Tag + ".png")));
+                if (FileManager.loadFile("gfx/government/" + CFG.getRescouresPath_Short() + "gov" + this.lIdeologies.get(i).Extra_Tag + ".png").exists()) {
+                    this.ideologiesImages.add(new Image(ImageManager.loadTexture("gfx/government/" + CFG.getRescouresPath_Short() + "gov" + this.lIdeologies.get(i).Extra_Tag + ".png")));
                 } else {
-                    this.ideologiesImages.add(new Image(ImageManager.loadTexture("gfx/government/" + CFG.getRescouresPath_Short_H() + "gov" + ((Ideology)this.lIdeologies.get(i)).Extra_Tag + ".png")));
+                    this.ideologiesImages.add(new Image(ImageManager.loadTexture("gfx/government/" + CFG.getRescouresPath_Short_H() + "gov" + this.lIdeologies.get(i).Extra_Tag + ".png")));
                 }
             } catch (GdxRuntimeException var9) {
                 this.ideologiesImages.add(new Image(ImageManager.loadTexture("gfx/government/" + CFG.getRescouresPath_Short() + "gov.png")));
@@ -87,12 +87,12 @@ public class IdeologiesManager {
         }
 
         for(int i = 0; i < this.iIdeologiesSize; ++i) {
-            if (((Image)this.ideologiesImages.get(i)).getWidth() > this.maxWidth) {
-                this.maxWidth = ((Image)this.ideologiesImages.get(i)).getWidth();
+            if (this.ideologiesImages.get(i).getWidth() > this.maxWidth) {
+                this.maxWidth = this.ideologiesImages.get(i).getWidth();
             }
 
-            if (((Image)this.ideologiesImages.get(i)).getHeight() > this.maxHeight) {
-                this.maxHeight = ((Image)this.ideologiesImages.get(i)).getHeight();
+            if (this.ideologiesImages.get(i).getHeight() > this.maxHeight) {
+                this.maxHeight = this.ideologiesImages.get(i).getHeight();
             }
         }
 
@@ -108,7 +108,7 @@ public class IdeologiesManager {
 
             for(int i = 0; i < this.iIdeologiesSize; ++i) {
                 try {
-                    if (trueTag.charAt(trueTag.length() - 1) == ((Ideology)this.lIdeologies.get(i)).Extra_Tag.charAt(1) || trueTag.charAt(trueTag.indexOf(95) + 1) == ((Ideology)this.lIdeologies.get(i)).Extra_Tag.charAt(1)) {
+                    if (trueTag.charAt(trueTag.length() - 1) == this.lIdeologies.get(i).Extra_Tag.charAt(1) || trueTag.charAt(trueTag.indexOf(95) + 1) == this.lIdeologies.get(i).Extra_Tag.charAt(1)) {
                         return i;
                     }
                 } catch (StringIndexOutOfBoundsException var5) {
@@ -120,7 +120,7 @@ public class IdeologiesManager {
     }
 
     protected boolean canBeAdded(int nCivID, int nIdeologyID) {
-        String tTag = Game.getCiv(nCivID).realTag + ((Ideology)this.lIdeologies.get(nIdeologyID)).Extra_Tag;
+        String tTag = Game.getCiv(nCivID).realTag + this.lIdeologies.get(nIdeologyID).Extra_Tag;
 
         for(int i = 0; i < Game.getCivsSize(); ++i) {
             if (Game.getCiv(i).getCivTag().equals(tTag)) {
@@ -137,11 +137,11 @@ public class IdeologiesManager {
         for(int i = 0; i < this.getIdeologiesSize(); ++i) {
             if (i == Game.getCiv(nCivID).getIdeologyID()) {
                 out.add(false);
-            } else if (((Ideology)this.lIdeologies.get(i)).REQUIRED_TECHNOLOGY >= 0 && !Game.getCiv(nCivID).getTechResearched(((Ideology)this.lIdeologies.get(i)).REQUIRED_TECHNOLOGY)) {
+            } else if (this.lIdeologies.get(i).REQUIRED_TECHNOLOGY >= 0 && !Game.getCiv(nCivID).getTechResearched(this.lIdeologies.get(i).REQUIRED_TECHNOLOGY)) {
                 out.add(false);
             } else if (!this.canBeAdded(nCivID, i)) {
                 out.add(false);
-            } else if (((Ideology)this.lIdeologies.get(i)).REVOLUTIONISTS) {
+            } else if (this.lIdeologies.get(i).REVOLUTIONISTS) {
                 out.add(false);
             } else {
                 out.add(true);
@@ -156,7 +156,7 @@ public class IdeologiesManager {
     }
 
     public final Ideology getIdeology(int i) {
-        return (Ideology)this.lIdeologies.get(i);
+        return this.lIdeologies.get(i);
     }
 
     public final void updateCivBonuses(int iCivID, int ideologyID, int mod, boolean initMode) {
@@ -238,115 +238,115 @@ public class IdeologiesManager {
         List<MenuElement> mElementsToSort = new ArrayList();
         int maxIconW = ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 2;
         if (this.getIdeology(ideologyID).MonthlyIncome != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MonthlyIncome") + "", (this.getIdeology(ideologyID).MonthlyIncome > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).MonthlyIncome, 100), Images.gold, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MonthlyIncome == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MonthlyIncome < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MonthlyIncome"), (this.getIdeology(ideologyID).MonthlyIncome > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).MonthlyIncome, 100), Images.gold, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MonthlyIncome == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MonthlyIncome < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).TaxEfficiency != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("TaxEfficiency") + "", (this.getIdeology(ideologyID).TaxEfficiency > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).TaxEfficiency, 100) + "%", Images.tax, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).TaxEfficiency == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).TaxEfficiency < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("TaxEfficiency"), (this.getIdeology(ideologyID).TaxEfficiency > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).TaxEfficiency, 100) + "%", Images.tax, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).TaxEfficiency == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).TaxEfficiency < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).ProvinceMaintenance != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ProvinceMaintenance") + "", (this.getIdeology(ideologyID).ProvinceMaintenance > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ProvinceMaintenance, 100) + "%", Images.gold, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ProvinceMaintenance == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ProvinceMaintenance > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ProvinceMaintenance"), (this.getIdeology(ideologyID).ProvinceMaintenance > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ProvinceMaintenance, 100) + "%", Images.gold, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ProvinceMaintenance == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ProvinceMaintenance > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).ProductionEfficiency != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ProductionEfficiency") + "", (this.getIdeology(ideologyID).ProductionEfficiency > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ProductionEfficiency, 100) + "%", Images.goods, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ProductionEfficiency == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ProductionEfficiency < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ProductionEfficiency"), (this.getIdeology(ideologyID).ProductionEfficiency > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ProductionEfficiency, 100) + "%", Images.goods, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ProductionEfficiency == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ProductionEfficiency < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).MonthlyLegacy != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MonthlyLegacy") + "", (this.getIdeology(ideologyID).MonthlyLegacy > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).MonthlyLegacy, 100), Images.legacy, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MonthlyLegacy == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MonthlyLegacy < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MonthlyLegacy"), (this.getIdeology(ideologyID).MonthlyLegacy > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).MonthlyLegacy, 100), Images.legacy, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MonthlyLegacy == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MonthlyLegacy < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).MaxManpower != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MaximumManpower") + "", (this.getIdeology(ideologyID).MaxManpower > 0.0F ? "+" : "") + (int)this.getIdeology(ideologyID).MaxManpower, Game_Calendar.IMG_MANPOWER_UP, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MaxManpower == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MaxManpower < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MaximumManpower"), (this.getIdeology(ideologyID).MaxManpower > 0.0F ? "+" : "") + (int)this.getIdeology(ideologyID).MaxManpower, Game_Calendar.IMG_MANPOWER_UP, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MaxManpower == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MaxManpower < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).ArmyMaintenance != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ArmyMaintenance") + "", (this.getIdeology(ideologyID).ArmyMaintenance > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ArmyMaintenance, 100) + "%", Images.armyMaintenance, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ArmyMaintenance == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ArmyMaintenance > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ArmyMaintenance"), (this.getIdeology(ideologyID).ArmyMaintenance > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ArmyMaintenance, 100) + "%", Images.armyMaintenance, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ArmyMaintenance == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ArmyMaintenance > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).RecruitmentTime != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("RecruitmentTime") + "", (this.getIdeology(ideologyID).RecruitmentTime > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).RecruitmentTime == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).RecruitmentTime > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("RecruitmentTime"), (this.getIdeology(ideologyID).RecruitmentTime > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).RecruitmentTime, 100) + "%", Game_Calendar.IMG_MANPOWER_TIME, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).RecruitmentTime == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).RecruitmentTime > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).ConstructionCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ConstructionCost") + "", (this.getIdeology(ideologyID).ConstructionCost > 0.0F ? "+" : "") + "" + CFG.getPrecision2(this.getIdeology(ideologyID).ConstructionCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ConstructionCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ConstructionCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ConstructionCost"), (this.getIdeology(ideologyID).ConstructionCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ConstructionCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ConstructionCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ConstructionCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).AdministrationBuildingsCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("AdministrationBuildingsCost") + "", (this.getIdeology(ideologyID).AdministrationBuildingsCost > 0.0F ? "+" : "") + "" + CFG.getPrecision2(this.getIdeology(ideologyID).AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).AdministrationBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).AdministrationBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("AdministrationBuildingsCost"), (this.getIdeology(ideologyID).AdministrationBuildingsCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).AdministrationBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).AdministrationBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).AdministrationBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).EconomyBuildingsCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("EconomyBuildingsCost") + "", (this.getIdeology(ideologyID).EconomyBuildingsCost > 0.0F ? "+" : "") + "" + CFG.getPrecision2(this.getIdeology(ideologyID).EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).EconomyBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).EconomyBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("EconomyBuildingsCost"), (this.getIdeology(ideologyID).EconomyBuildingsCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).EconomyBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).EconomyBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).EconomyBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).MilitaryBuildingsCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MilitaryBuildingsCost") + "", (this.getIdeology(ideologyID).MilitaryBuildingsCost > 0.0F ? "+" : "") + "" + CFG.getPrecision2(this.getIdeology(ideologyID).MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MilitaryBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MilitaryBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MilitaryBuildingsCost"), (this.getIdeology(ideologyID).MilitaryBuildingsCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).MilitaryBuildingsCost * 100.0F, 100) + "%", Images.construction, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MilitaryBuildingsCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MilitaryBuildingsCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).ConstructionTime != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ConstructionTime") + "", (this.getIdeology(ideologyID).ConstructionTime > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ConstructionTime * 100.0F, 100) + "%", Images.buildTime, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ConstructionTime == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ConstructionTime > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ConstructionTime"), (this.getIdeology(ideologyID).ConstructionTime > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ConstructionTime * 100.0F, 100) + "%", Images.buildTime, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ConstructionTime == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ConstructionTime > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).BuildingSlot != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("BuildingSlot") + "", (this.getIdeology(ideologyID).BuildingSlot > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).BuildingSlot, 100), Images.build, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).BuildingSlot == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).BuildingSlot < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("BuildingSlot"), (this.getIdeology(ideologyID).BuildingSlot > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).BuildingSlot, 100), Images.build, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).BuildingSlot == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).BuildingSlot < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).InvestInEconomyCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("InvestInEconomyCost") + "", "" + CFG.getPrecision2(this.getIdeology(ideologyID).InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).InvestInEconomyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).InvestInEconomyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("InvestInEconomyCost"), CFG.getPrecision2(this.getIdeology(ideologyID).InvestInEconomyCost * 100.0F, 100) + "%", Game_Calendar.IMG_ECONOMY_UP, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).InvestInEconomyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).InvestInEconomyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).IncreaseTaxEfficiencyCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("IncreaseTaxEfficiencyCost") + "", "" + CFG.getPrecision2(this.getIdeology(ideologyID).IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).IncreaseTaxEfficiencyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).IncreaseTaxEfficiencyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("IncreaseTaxEfficiencyCost"), CFG.getPrecision2(this.getIdeology(ideologyID).IncreaseTaxEfficiencyCost * 100.0F, 100) + "%", Images.taxUp, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).IncreaseTaxEfficiencyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).IncreaseTaxEfficiencyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).DevelopInfrastructureCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("DevelopInfrastructureCost") + "", "" + CFG.getPrecision2(this.getIdeology(ideologyID).DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).DevelopInfrastructureCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).DevelopInfrastructureCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("DevelopInfrastructureCost"), CFG.getPrecision2(this.getIdeology(ideologyID).DevelopInfrastructureCost * 100.0F, 100) + "%", Images.infrastructureUp, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).DevelopInfrastructureCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).DevelopInfrastructureCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).IncreaseManpowerCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("IncreaseManpowerCost") + "", "" + CFG.getPrecision2(this.getIdeology(ideologyID).IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).IncreaseManpowerCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).IncreaseManpowerCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("IncreaseManpowerCost"), CFG.getPrecision2(this.getIdeology(ideologyID).IncreaseManpowerCost, 100) + "%", Game_Calendar.IMG_MANPOWER, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).IncreaseManpowerCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).IncreaseManpowerCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).RecruitArmyCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ArmyRecruitmentCost") + "", "" + CFG.getPrecision2(this.getIdeology(ideologyID).RecruitArmyCost, 100) + "%", Images.gold, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).RecruitArmyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).RecruitArmyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ArmyRecruitmentCost"), CFG.getPrecision2(this.getIdeology(ideologyID).RecruitArmyCost, 100) + "%", Images.gold, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).RecruitArmyCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).RecruitArmyCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).GeneralAttack != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralsAttack") + "", (this.getIdeology(ideologyID).GeneralAttack > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).GeneralAttack, 100), Images.attack, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).GeneralAttack == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).GeneralAttack < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralsAttack"), (this.getIdeology(ideologyID).GeneralAttack > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).GeneralAttack, 100), Images.attack, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).GeneralAttack == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).GeneralAttack < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).GeneralDefense != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralsDefense") + "", (this.getIdeology(ideologyID).GeneralDefense > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).GeneralDefense, 100), Images.defense, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).GeneralDefense == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).GeneralDefense < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralsDefense"), (this.getIdeology(ideologyID).GeneralDefense > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).GeneralDefense, 100), Images.defense, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).GeneralDefense == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).GeneralDefense < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).UnitsAttack != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("UnitsAttack") + "", (this.getIdeology(ideologyID).UnitsAttack > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).UnitsAttack, 100), Images.attack, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).UnitsAttack == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).UnitsAttack < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("UnitsAttack"), (this.getIdeology(ideologyID).UnitsAttack > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).UnitsAttack, 100), Images.attack, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).UnitsAttack == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).UnitsAttack < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).UnitsDefense != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("UnitsDefense") + "", (this.getIdeology(ideologyID).UnitsDefense > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).UnitsDefense, 100), Images.defense, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).UnitsDefense == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).UnitsDefense < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("UnitsDefense"), (this.getIdeology(ideologyID).UnitsDefense > 0 ? "+" : "") + CFG.getPrecision2((float)this.getIdeology(ideologyID).UnitsDefense, 100), Images.defense, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).UnitsDefense == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).UnitsDefense < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).AdvisorCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("AdvisorCost") + "", (this.getIdeology(ideologyID).AdvisorCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).AdvisorCost * 100.0F, 100) + "%", Images.council, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).AdvisorCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).AdvisorCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("AdvisorCost"), (this.getIdeology(ideologyID).AdvisorCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).AdvisorCost * 100.0F, 100) + "%", Images.council, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).AdvisorCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).AdvisorCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).GeneralCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralCost") + "", (this.getIdeology(ideologyID).GeneralCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).GeneralCost * 100.0F, 100) + "%", Images.general, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).GeneralCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).GeneralCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("GeneralCost"), (this.getIdeology(ideologyID).GeneralCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).GeneralCost * 100.0F, 100) + "%", Images.general, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).GeneralCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).GeneralCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).MaxNumberOfLoans != 0) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MaximumNumberOfLoans") + "", (this.getIdeology(ideologyID).MaxNumberOfLoans > 0 ? "+" : "") + this.getIdeology(ideologyID).MaxNumberOfLoans, Images.loan, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MaxNumberOfLoans == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MaxNumberOfLoans < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MaximumNumberOfLoans"), (this.getIdeology(ideologyID).MaxNumberOfLoans > 0 ? "+" : "") + this.getIdeology(ideologyID).MaxNumberOfLoans, Images.loan, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MaxNumberOfLoans == 0 ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MaxNumberOfLoans < 0 ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).CoreCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("CoreConstruction") + "", (this.getIdeology(ideologyID).CoreCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).CoreCost, 100) + "%", Images.core, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).CoreCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).CoreCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("CoreConstruction"), (this.getIdeology(ideologyID).CoreCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).CoreCost, 100) + "%", Images.core, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).CoreCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).CoreCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         if (this.getIdeology(ideologyID).ReligionCost != 0.0F) {
-            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ReligionConversionCost") + "", (this.getIdeology(ideologyID).ReligionCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ReligionCost, 100) + "%", Images.religion, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ReligionCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ReligionCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
+            mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("ReligionConversionCost"), (this.getIdeology(ideologyID).ReligionCost > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).ReligionCost, 100) + "%", Images.religion, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).ReligionCost == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).ReligionCost > 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));
         }
 
         List<MenuElement> elementsOut = new ArrayList();
@@ -356,14 +356,14 @@ public class IdeologiesManager {
             int o = 1;
 
             for(int oSize = mElementsToSort.size(); o < oSize; ++o) {
-                if (CFG.compareAlphabetic_TwoString(((MenuElement)mElementsToSort.get(addID)).getText(), ((MenuElement)mElementsToSort.get(o)).getText())) {
+                if (CFG.compareAlphabetic_TwoString(mElementsToSort.get(addID).getText(), mElementsToSort.get(o).getText())) {
                     addID = o;
                 }
             }
 
-            elementsOut.add((MenuElement)mElementsToSort.get(addID));
-            ((MenuElement)elementsOut.get(elementsOut.size() - 1)).setPosY(iY);
-            iY += ((MenuElement)elementsOut.get(elementsOut.size() - 1)).getHeight() + CFG.PADDING;
+            elementsOut.add(mElementsToSort.get(addID));
+            elementsOut.get(elementsOut.size() - 1).setPosY(iY);
+            iY += elementsOut.get(elementsOut.size() - 1).getHeight() + CFG.PADDING;
             mElementsToSort.remove(addID);
         }
 
@@ -375,12 +375,12 @@ public class IdeologiesManager {
         List<MenuElement_HoverElement_Type> nData = new ArrayList();
         if (inChangeIdeology) {
             nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("ChangeTypeOfGovernmentTo") + ": ", CFG.FONT_BOLD));
-            nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Clear(((Ideology)this.lIdeologies.get(ideologyID)).Name, CFG.FONT_BOLD, Colors.HOVER_GOLD));
+            nData.add(new MenuElement_HoverElement_Type_TextTitle_BG_Clear(this.lIdeologies.get(ideologyID).Name, CFG.FONT_BOLD, Colors.HOVER_GOLD));
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();
-            if (((Ideology)this.lIdeologies.get(ideologyID)).REQUIRED_TECHNOLOGY >= 0) {
+            if (this.lIdeologies.get(ideologyID).REQUIRED_TECHNOLOGY >= 0) {
                 nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("RequiredTechnology") + ": ", CFG.FONT_REGULAR_SMALL));
-                nData.add(new MenuElement_HoverElement_Type_Text(((TechnologyTree.Technology)TechnologyTree.lTechnology.get(((Ideology)this.lIdeologies.get(ideologyID)).REQUIRED_TECHNOLOGY)).Name, CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_Text(TechnologyTree.lTechnology.get(this.lIdeologies.get(ideologyID).REQUIRED_TECHNOLOGY).Name, CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_Image(Game_Calendar.IMG_TECHNOLOGY, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
@@ -401,7 +401,7 @@ public class IdeologiesManager {
             nData.clear();
         } else {
             nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("Government") + ": ", CFG.FONT_BOLD));
-            nData.add(new MenuElement_HoverElement_Type_TextTitle(((Ideology)this.lIdeologies.get(ideologyID)).Name, CFG.FONT_BOLD, Colors.HOVER_GOLD));
+            nData.add(new MenuElement_HoverElement_Type_TextTitle(this.lIdeologies.get(ideologyID).Name, CFG.FONT_BOLD, Colors.HOVER_GOLD));
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();
             nData.add(new MenuElement_HoverElement_Type_Line());

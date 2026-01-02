@@ -139,7 +139,7 @@ public class Slider extends MenuElement {
     }
 
     public final void updateTextWidth() {
-        Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), this.getDrawText());
+        Renderer.glyphLayout.setText(Renderer.fontMain.get(this.fontID), this.getDrawText());
         this.iTextWidth = (int)Renderer.glyphLayout.width;
         this.iTextHeight = (int)Renderer.glyphLayout.height;
     }

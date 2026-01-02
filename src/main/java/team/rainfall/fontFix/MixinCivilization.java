@@ -58,12 +58,12 @@ public class MixinCivilization {
         Civilization self = (Civilization) (Object) this;
         if (iTechID >= 0) {
             for(int i = self.lResearching.size() - 1; i >= 0; --i) {
-                if (((TechnologyResearch)self.lResearching.get(i)).iTechID == iTechID) {
-                    ((TechnologyResearch)self.lResearching.get(i)).fProgress = Math.max(0.0F, ((TechnologyResearch)self.lResearching.get(i)).fProgress + nProgress);
+                if (self.lResearching.get(i).iTechID == iTechID) {
+                    self.lResearching.get(i).fProgress = Math.max(0.0F, self.lResearching.get(i).fProgress + nProgress);
                     if(nProgress == -727772f){
                         self.addTechnology(iTechID, false);
                     }
-                    if (((TechnologyResearch)self.lResearching.get(i)).fProgress >= TechnologyTree.getResearchCost(((TechnologyResearch)self.lResearching.get(i)).iTechID, self.getCivID())) {
+                    if (self.lResearching.get(i).fProgress >= TechnologyTree.getResearchCost(self.lResearching.get(i).iTechID, self.getCivID())) {
                         self.addTechnology(iTechID, false);
                     }
 

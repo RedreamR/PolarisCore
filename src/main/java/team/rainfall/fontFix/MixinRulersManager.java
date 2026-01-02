@@ -146,9 +146,9 @@ public class MixinRulersManager {
 
                             if (tempRulers.get(bestID).ReignYear <= Game_Calendar.currentYear && tempRulers.get(bestID).BornYear > Game_Calendar.currentYear - 96 && tempRulers.get(bestID).BornYear < Game_Calendar.currentYear) {
                                 if(getBonuses(tempRulers.get(bestID)) != null){
-                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(bestID).Name, "" + tempRulers.get(bestID).ImageID, tempRulers.get(bestID).BornDay, tempRulers.get(bestID).BornMonth, tempRulers.get(bestID).BornYear, tempRulers.get(bestID).ReignYear, false, false,getBonuses(tempRulers.get(bestID)));
+                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(bestID).Name, tempRulers.get(bestID).ImageID, tempRulers.get(bestID).BornDay, tempRulers.get(bestID).BornMonth, tempRulers.get(bestID).BornYear, tempRulers.get(bestID).ReignYear, false, false,getBonuses(tempRulers.get(bestID)));
                                 }else {
-                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(bestID).Name, "" + tempRulers.get(bestID).ImageID, tempRulers.get(bestID).BornDay, tempRulers.get(bestID).BornMonth, tempRulers.get(bestID).BornYear, tempRulers.get(bestID).ReignYear, false, false);
+                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(bestID).Name, tempRulers.get(bestID).ImageID, tempRulers.get(bestID).BornDay, tempRulers.get(bestID).BornMonth, tempRulers.get(bestID).BornYear, tempRulers.get(bestID).ReignYear, false, false);
                                 }
                                 Game.getCiv(iCivID).ruler.Desc = getDesc(tempRulers.get(bestID));
                                 tempRulers.clear();
@@ -223,9 +223,9 @@ public class MixinRulersManager {
                         if (!tempRulers.isEmpty()) {
                             if (tempRulers.get(order).ReignYear <= Game_Calendar.currentYear && tempRulers.get(order).BornYear > Game_Calendar.currentYear - 96 && tempRulers.get(order).BornYear < Game_Calendar.currentYear) {
                                 if(getBonuses(tempRulers.get(order)) != null){
-                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(order).Name, "" + tempRulers.get(order).ImageID, tempRulers.get(order).BornDay, tempRulers.get(order).BornMonth, tempRulers.get(order).BornYear, tempRulers.get(order).ReignYear, false, false,getBonuses(tempRulers.get(order)));
+                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(order).Name, tempRulers.get(order).ImageID, tempRulers.get(order).BornDay, tempRulers.get(order).BornMonth, tempRulers.get(order).BornYear, tempRulers.get(order).ReignYear, false, false,getBonuses(tempRulers.get(order)));
                                 }else {
-                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(order).Name, "" + tempRulers.get(order).ImageID, tempRulers.get(order).BornDay, tempRulers.get(order).BornMonth, tempRulers.get(order).BornYear, tempRulers.get(order).ReignYear, false, false);
+                                    Game.getCiv(iCivID).ruler = new Ruler(iCivID, tempRulers.get(order).Name, tempRulers.get(order).ImageID, tempRulers.get(order).BornDay, tempRulers.get(order).BornMonth, tempRulers.get(order).BornYear, tempRulers.get(order).ReignYear, false, false);
                                 }
                                 Game.getCiv(iCivID).ruler.Desc = getDesc(tempRulers.get(order));
                                 tempRulers.clear();

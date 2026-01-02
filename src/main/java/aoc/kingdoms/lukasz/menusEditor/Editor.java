@@ -42,7 +42,7 @@ public class Editor extends Menu {
         int buttonYPadding = CFG.PADDING * 2;
         int buttonY = buttonYPadding;
         int textPosX = CFG.PADDING * 4;
-        menuElements.add(new ButtonMain((String)null, 1, -1, paddingLeft, CFG.PADDING, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
+        menuElements.add(new ButtonMain(null, 1, -1, paddingLeft, CFG.PADDING, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("Back"));
             }
@@ -52,7 +52,7 @@ public class Editor extends Menu {
                 Game.menuManager.setViewID(View.MAINMENU);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
+        buttonY += menuElements.get(0).getHeight() + buttonYPadding;
         menuElements.add(new ButtonMain(Game.lang.get("GameCivilizations"), 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
             public void actionElement() {
                 MainMenu.canContinue = false;
@@ -60,7 +60,7 @@ public class Editor extends Menu {
                 Game.menuManager.setViewID(View.EDITOR_GAMECIVS);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
         menuElements.add(new ButtonMain(Game.lang.get("CreateaCivilization"), 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
             public void actionElement() {
                 MainMenu.canContinue = false;
@@ -70,8 +70,8 @@ public class Editor extends Menu {
                 Game.menuManager.setViewID(View.CREATE_CIV);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-        menuElements.add(new ButtonMain((String)null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+        menuElements.add(new ButtonMain(null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("CreateaScenario"));
             }
@@ -82,8 +82,8 @@ public class Editor extends Menu {
                 Game.menuManager.setViewID(View.EDITOR_SCENARIOS_LIST);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-        menuElements.add(new ButtonMain((String)null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+        menuElements.add(new ButtonMain(null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("MapEditor"));
             }
@@ -96,8 +96,8 @@ public class Editor extends Menu {
                 Game.menuManager.setViewID(View.EDITOR_MAPS);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding * 3;
-        menuElements.add(new ButtonMain((String)null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, CFG.isDesktop()) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding * 3;
+        menuElements.add(new ButtonMain(null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, CFG.isDesktop() || FontFix.isLocalStorage()) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("ManageMods"));
             }
@@ -115,8 +115,8 @@ public class Editor extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-        menuElements.add(new ButtonMain((String)null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, CFG.isDesktop()) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+        menuElements.add(new ButtonMain(null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, CFG.isDesktop()) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("SteamWorkshop"));
             }
@@ -134,14 +134,14 @@ public class Editor extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
         menuElements.add(new Text_Desc_Simple("All modifications, custom content, and user-generated assets created within or for the game are the sole property of Łukasz Jakowski Games. By creating or uploading any mods, you agree that Łukasz Jakowski Games retains full ownership and rights to use, modify, distribute, or remove the content at its discretion. Mod creators waive any claim to ownership or compensation for their creations.", paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2) {
             public void actionElement() {
                 Game.menuManager.addToastGold("Terms of Use", Images.technology2);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-        menuElements.add(new ButtonMain((String)null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2,true) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+        menuElements.add(new ButtonMain(null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2,true) {
             public void updateLanguage() {
                 this.setText(Game.lang.get("SelectProvinces"));
             }
@@ -153,8 +153,8 @@ public class Editor extends Menu {
                 Game.menuManager.setViewID(View.EDITOR_SELECT_PROVINCES);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-        menuElements.add(new ButtonMain((String)null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+        menuElements.add(new ButtonMain(null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
             public void updateLanguage() {
                 this.setText("www.LukaszJakowski.pl");
             }
@@ -164,9 +164,9 @@ public class Editor extends Menu {
                 Dialog.setDialogType(DialogType.GO_TO_LINK);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
         if(!CFG.isDesktop()) {
-            menuElements.add(new ButtonMain((String) null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
+            menuElements.add(new ButtonMain(null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
                 public void updateLanguage() {
                     this.setText("Team Rainfall QQ");
                 }
@@ -176,10 +176,10 @@ public class Editor extends Menu {
                         Dialog.setDialogType(DialogType.GO_TO_LINK);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
         }
-        if(FontFix.isXuanxing) {
-            menuElements.add(new ButtonMain((String) null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
+        if(FontFix.isXuanxing()) {
+            menuElements.add(new ButtonMain(null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
                 public void updateLanguage() {
                     this.setText("玄星汉化，Team Rainfall提供技术支持");
                 }
@@ -187,12 +187,12 @@ public class Editor extends Menu {
                 public void actionElement() {
                     Dialog.GO_TO_LINK = "";
                     Dialog.setDialogType(DialogType.GO_TO_LINK);
-                    Game.menuManager.dialogMenu.getTitle().setText("基于玄星v240汉化，免费分享，禁止倒卖，禁止二创\n系统基于Polaris AoH3 2.8制作，作者为Team Rainfall");
+                    Game.menuManager.dialogMenu.getTitle().setText("基于玄星v240汉化，免费分享，禁止倒卖，禁止二创\n系统基于Polaris AoH3 "+FontFix.POLARIS_VERSION+"制作，作者为Team Rainfall");
                 }
             });
         }
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + buttonYPadding;
-        buttonY += ((MenuElement)menuElements.get(0)).getHeight() + buttonYPadding * 2;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + buttonYPadding;
+        buttonY += menuElements.get(0).getHeight() + buttonYPadding * 2;
         this.initMenu(new MenuTitle("", 1.0F, titleHeight, true, true), menuX, titleHeight + menuY, CFG.LEFT_MENU_WIDTH, Math.min(buttonY, CFG.GAME_HEIGHT - titleHeight - menuY - CFG.PADDING * 2), menuElements, true, false);
     }
 

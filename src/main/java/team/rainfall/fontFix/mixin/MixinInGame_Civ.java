@@ -10,7 +10,6 @@ import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.fontFix.Config;
-import team.rainfall.fontFix.config.AnimationConfig;
 import team.rainfall.fontFix.utils.AnimationUtil;
 
 import static aoc.kingdoms.lukasz.menusInGame.Civ.InGame_Civ.lTime;

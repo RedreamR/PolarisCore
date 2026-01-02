@@ -37,6 +37,7 @@ import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import team.rainfall.fontFix.FontFix;
+import team.rainfall.fontFix.utils.MemTransferUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -593,7 +594,7 @@ public class  Settings_Menu extends Menu {
             }
         });
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
-        menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("TexturesQuality"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
+        menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Performance"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(SettingsProvince.getSettingsText_Double(), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH + CFG.PADDING), true, CFG.BUTTON_HEIGHT, true) {
             public void updateLanguage() {
@@ -631,6 +632,46 @@ public class  Settings_Menu extends Menu {
             }
         });
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+
+        //内存转移
+        menuElements.add(new ButtonGame2(SettingsProvince.getSettingsText_Double(), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH + CFG.PADDING), true, CFG.BUTTON_HEIGHT, true) {
+            public void updateLanguage() {
+                this.setText(Game.lang.get("MemoryTransfer") + ": " + (MemTransferUtil.MemTransfer ? Game.lang.get("On") : Game.lang.get("Off")));
+            }
+
+            public boolean getCheckboxState() {
+                return MemTransferUtil.MemTransfer;
+            }
+
+            public void buildElementHover() {
+                List<MenuElement_HoverElement> nElements = new ArrayList();
+                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                nData.add(new MenuElement_HoverElement_Type_Text_Desc(FontFix.langGet("MemoryTransfer2","Transfer some objects to off-heap space to reduce the risk of OOM Crash."), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                nElements.add(new MenuElement_HoverElement(nData));
+                nData.clear();
+                this.menuElementHover = new MenuElement_Hover(nElements);
+            }
+        });
+        menuElements.add(new ButtonGame2(">>", CFG.FONT_BOLD, -1, paddingLeft + (menuWidth - paddingLeft * 2 - (CFG.BUTTON_WIDTH * 2 + CFG.PADDING * 2)) + CFG.PADDING * 2 + CFG.BUTTON_WIDTH, buttonY, CFG.BUTTON_WIDTH, true, CFG.BUTTON_HEIGHT) {
+            public void actionElement() {
+                MemTransferUtil.MemTransfer = !MemTransferUtil.MemTransfer;
+                MemTransferUtil.saveMTSettings();
+                Game.menuManager.addToastGold(Game.lang.get("GameNeedsToBeRestartedToApplyTheChanges"), Images.settings);
+                Settings_Menu.this.updateLanguage();
+            }
+
+            public void buildElementHover() {
+                List<MenuElement_HoverElement> nElements = new ArrayList();
+                List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                nData.add(new MenuElement_HoverElement_Type_Text_Desc(FontFix.langGet("MemoryTransfer","Transfer some objects to off-heap space to reduce the risk of OOM Crash."), CFG.FONT_REGULAR_SMALL, Colors.HOVER_RIGHT));
+                nElements.add(new MenuElement_HoverElement(nData));
+                nData.clear();
+                this.menuElementHover = new MenuElement_Hover(nElements);
+            }
+        });
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+
+
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("More"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonGame2(Game.lang.get("Council") + ": " + Game.lang.get("Tip"), CFG.FONT_REGULAR, -1, paddingLeft, buttonY, menuWidth - paddingLeft * 2, true, CFG.BUTTON_HEIGHT, true) {
@@ -700,7 +741,7 @@ public class  Settings_Menu extends Menu {
             int paddingL = CFG.PADDING * 4;
             int extraY = 0;
             long totalTime = drawProvinces_Time + drawProvincesFBO_Time + drawArmies_Time + drawProvincesBorder_Time + drawProvincesNames_Time + drawCivsNames_Time + drawCities_Time + drawMoveUnits_Time + drawClouds_Time + drawShips_Time + drawShips2_Time + drawMapBorder_Time;
-            Renderer.drawBoxCorner(oSB, this.getPosX() + this.getWidth() + paddingL - CFG.PADDING * 2 + iTranslateX, this.getPosY() + extraY - CFG.PADDING * 2 + iTranslateY, CFG.PADDING * 4 + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + this.nanoW, (CFG.TEXT_HEIGHT_SMALL + CFG.PADDING) * 16 + CFG.PADDING * 2);
+            Renderer.drawBoxCorner(oSB, this.getPosX() + this.getWidth() + paddingL - CFG.PADDING * 2 + iTranslateX, this.getPosY() + extraY - CFG.PADDING * 2 + iTranslateY, CFG.PADDING * 4 + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + this.nanoW, (CFG.TEXT_HEIGHT_SMALL + CFG.PADDING) * 20 + CFG.PADDING * 2);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_A0","Draw"), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_A1","Perc"), this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_A2","Nanotime"), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
@@ -756,6 +797,16 @@ public class  Settings_Menu extends Menu {
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B13","Map Border "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getPrecision2((float)drawMapBorder_Time / (float)totalTime * 100.0F, 1) + "%", this.getPosX() + this.getWidth() + this.statTextW + CFG.PADDING * 2 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces("" + drawMapBorder_Time), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
+            extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B14","Free memory "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, Runtime.getRuntime().freeMemory() / (1024 * 1024) + "M", this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B15","Requested Memory "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, Runtime.getRuntime().totalMemory() / (1024 * 1024) + "M", this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, FontFix.langGet("RTD_B16","Max memory "), this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
+            Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, CFG.getNumberWithSpaces(Runtime.getRuntime().maxMemory() / (1024 * 1024) + "M"), this.getPosX() + this.getWidth() + this.statTextW + this.statTextPercW + CFG.PADDING * 3 + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             extraY += CFG.TEXT_HEIGHT_SMALL + CFG.PADDING;
             Renderer.drawText(oSB, CFG.FONT_REGULAR_SMALL, "1 FPS", this.getPosX() + this.getWidth() + paddingL + iTranslateX, this.getPosY() + extraY + iTranslateY, Colors.HOVER_LEFT);

@@ -32,8 +32,8 @@ import aoc.kingdoms.lukasz.map.province.ProvinceDrawArmy;
 import aoc.kingdoms.lukasz.map.province.ProvinceNamesManager;
 import aoc.kingdoms.lukasz.map.technology.TechnologyTree;
 import aoc.kingdoms.lukasz.menu.Menu;
+import aoc.kingdoms.lukasz.menu.MenuManager;
 import aoc.kingdoms.lukasz.menu.View;
-import aoc.kingdoms.lukasz.menu.menuTitle.MenuTitle;
 import aoc.kingdoms.lukasz.menu_element.MenuElement;
 import aoc.kingdoms.lukasz.menu_element.MessageButton;
 import aoc.kingdoms.lukasz.menu_element.MessageWar;
@@ -56,14 +56,26 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import team.rainfall.finality.FinalityLogger;
 
+import team.rainfall.fluctlight.Fluctlight;
+import team.rainfall.fluctlight.Task;
 import team.rainfall.fontFix.*;
-import team.rainfall.fontFix.utils.Timer;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InitGame extends Menu {
-
+    public static Task task1 = new Task() {
+        @Override
+        public Object run() {
+            Game.mapScenarios.loadScenario_10();
+            Game.mapScenarios.loadScenario_11();
+            return null;
+        }
+    };
+    public static int fromViewID = -1;
+    public static boolean fullReload = true;
+    public static boolean reloadOnResume = false;
     public static boolean finished64 = false;
     public static long timer2 = System.currentTimeMillis();
     static long timer = System.currentTimeMillis();
@@ -79,31 +91,47 @@ public class InitGame extends Menu {
     private boolean justOnce = true;
     public int takeABreak = 0;
     public boolean reloadBoldFont = false;
+    public static Image image = null;
+    public static int splash_id = -1;
+    public static long splash_timer = 0;
 
     public InitGame() {
+        if(!Config.getConfig().splashScreen.isEmpty()){
+            splash_id = 0;
+        }
         finished64 = false;
         timer2 = System.currentTimeMillis();
         List<MenuElement> menuElements = new ArrayList();
         this.initMenu(null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements, true);
         numOfProvincesBGToLoad = CFG.isDesktop() ? GameValues.value.LOADING_NUM_OF_PROVINCES_PC : GameValues.value.LOADING_NUM_OF_PROVINCES_MOBILE;
     }
-
+    public void drawSplash(SpriteBatch oSB){
+        image.draw(oSB,(CFG.GAME_WIDTH - backgroundWidth) / 2,  (CFG.GAME_HEIGHT - backgroundHeight) / 2, backgroundWidth, backgroundHeight);
+        if(splash_timer + Config.getConfig().splashScreen.get(splash_id).duration < System.currentTimeMillis()) {
+            splash_timer = 0;
+            splash_id++;
+        }
+    }
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
-        if (System.currentTimeMillis() - timer2 < Config.getConfig().SplashScreen_FadeIn && FontFix.isSplash()) {
-            oSB.setColor(Color.BLACK);
-            Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
-            oSB.setColor(255, 255, 255, (float) (System.currentTimeMillis() - timer2) / Config.getConfig().SplashScreen_FadeIn);
-            ImageManager.getImage(Images.logo).draw(oSB, iTranslateX + (CFG.GAME_WIDTH - ImageManager.getImage(Images.logo).getWidth()) / 2, iTranslateY + (CFG.GAME_HEIGHT - ImageManager.getImage(Images.logo).getHeight()) / 2);
+        if (splash_id >= 0) {
+            this.initGame();
+            if(splash_id > Config.getConfig().splashScreen.size - 1){
+                splash_id = -1;
+                return;
+            }
+            if (splash_timer < 1) {
+                splash_timer = System.currentTimeMillis();
+                image = new Image(ImageManager.loadTexture_RGB888("rainfall/splashScreen/" + Config.getConfig().splashScreen.get(splash_id).path + ".png"), TextureFilter.Linear, TextureWrap.ClampToEdge);
+                float fScale = Math.max((float) CFG.GAME_WIDTH / (float) image.getWidth(), (float) CFG.GAME_HEIGHT / (float) image.getHeight());
+                backgroundWidth = (int) ((float) image.getWidth() * fScale);
+                backgroundHeight = (int) ((float) image.getHeight() * fScale);
+            }
+            drawSplash(oSB);
+
             return;
         }
-        if (System.currentTimeMillis() - timer2 < Config.getConfig().SplashScreen_FadeOut + Config.getConfig().SplashScreen_FadeIn && FontFix.isSplash()) {
-            oSB.setColor(Color.BLACK);
-            Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
-            //设置颜色为随时间变化逐渐透明
-            oSB.setColor(255, 255, 255, 1 - (float) (System.currentTimeMillis() - timer2 - Config.getConfig().SplashScreen_FadeIn) / Config.getConfig().SplashScreen_FadeOut);
-            ImageManager.getImage(Images.logo).draw(oSB, iTranslateX + (CFG.GAME_WIDTH - ImageManager.getImage(Images.logo).getWidth()) / 2, iTranslateY + (CFG.GAME_HEIGHT - ImageManager.getImage(Images.logo).getHeight()) / 2);
-            return;
-        }
+
+
         this.initGame();
         if (background != null) {
             oSB.setColor(new Color(0.047058824F, 0.047058824F, 0.047058824F, 1.0F));
@@ -201,7 +229,7 @@ public class InitGame extends Menu {
     }
 
     public boolean loadMapOverlays() {
-        return CFG.isDesktop() || !GameValues.value.MOBILE_DISABLE_MAP_OVERLAYS;
+        return !Config.getConfig().noOverlay && (CFG.isDesktop() || !GameValues.value.MOBILE_DISABLE_MAP_OVERLAYS);
     }
 
     public static boolean loadArmy_Default() {
@@ -214,6 +242,10 @@ public class InitGame extends Menu {
         } else {
             try {
                 if (iStepID == 0) {
+                    if(reloadOnResume){
+                        iStepID = 1;
+                        return;
+                    }
                     Game.gameThreadUpdate.start();
 
                     try {
@@ -239,7 +271,7 @@ public class InitGame extends Menu {
                         return;
                     }
                 } else if (iStepID == 3) {
-                    if (Game.map.lMaps.size() > 1) {
+                    if (Game.map.lMaps.size() > 1 && !reloadOnResume) {
                         ++iStepID;
                         Game.menuManager.setViewIDWithoutAnimation(View.INIT_GAME_MENU_SELECT_MAP);
                         return;
@@ -277,8 +309,13 @@ public class InitGame extends Menu {
                     Renderer.loadFont_UpdateTextHeightSmall();
                     this.takeABreak = 2;
                     this.setLoadText("Loading");
+
                 } else if (iStepID == 10) {
                     Game.menuManager.initColorPicker();
+                    if(reloadOnResume){
+                        iStepID = 12;
+                        return;
+                    }
                     Game.lang.loadModsLanguages(Game.settingsManager.LANGUAGE_TAG == null ? "" : Game.settingsManager.LANGUAGE_TAG);
                 } else if (iStepID == 11) {
                     Game.loadAiValues();
@@ -287,6 +324,10 @@ public class InitGame extends Menu {
                     Renderer.loadFontBorder(Game.lang.get("fontCivNames"), Game.lang.get("charset2"));
                     this.takeABreak = 2;
                     this.setLoadText("Loading Fonts");
+                    if(reloadOnResume){
+                        iStepID = 42;
+                        return;
+                    }
                 } else if (iStepID == 13) {
                     Game.menuManager.dialogMenu = new Dialog();
                     this.setLoadText("Loading");
@@ -311,11 +352,15 @@ public class InitGame extends Menu {
                         return;
                     }
                 } else if (iStepID == 19) {
+                    if(reloadOnResume){
+                        iStepID = 23;
+                        return;
+                    }
                     Game.mapBG.loadMapBG_End();
                 } else if (iStepID == 20) {
                     this.setLoadText("Loading");
                 } else if (iStepID == 21) {
-                    if (CFG.isDesktop()) {
+                    if (CFG.isDesktop() && !reloadOnResume) {
                         SettingsDesktop.readConfig();
                     }
 
@@ -331,6 +376,10 @@ public class InitGame extends Menu {
 
                     this.setLoadText("Loading Map");
                 } else if (iStepID == 24) {
+                    if(reloadOnResume){
+                        iStepID = 36;
+                        return;
+                    }
                     Game.mapBG.loadMapBG_ZoomOut_End();
                     this.setLoadText("Loading Map");
                 } else if (iStepID == 25) {
@@ -446,6 +495,10 @@ public class InitGame extends Menu {
                 } else if (iStepID == 49) {
                     this.loadImages_8();
                     this.loadSparks();
+                    if(reloadOnResume){
+                        iStepID = 84;
+                        return;
+                    }
                     this.setLoadText("Loading Province Map Data");
                 } else if (iStepID == 50) {
                     LoadManager.loadProvinceMapData();
@@ -570,10 +623,12 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_3_A();
                     this.setLoadText("Loading Scenario #3B Flags");
                 } else if (iStepID == 84) {
-                    Timer.start(false, "loadFlag");
                     Game.mapScenarios.loadScenario_3_B();
-                    Timer.end();
                     this.setLoadText("Loading Scenario #3C Civilization's Provinces");
+                    if(reloadOnResume && fullReload){
+                        iStepID = 153;
+                        return;
+                    }
                 } else if (iStepID == 85) {
                     Game.mapScenarios.loadScenario_3_C();
                     this.setLoadText("Loading Scenario #4");
@@ -596,10 +651,16 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_9();
                     this.setLoadText("Loading Scenario #10");
                 } else if (iStepID == 92) {
-                    Game.mapScenarios.loadScenario_10();
+                    if(Config.getConfig().useFluctlight){
+                        Fluctlight.getInstance().addTask(task1);
+                    }else {
+                        Game.mapScenarios.loadScenario_10();
+                    }
                     this.setLoadText("Loading Scenario #11");
                 } else if (iStepID == 93) {
-                    Game.mapScenarios.loadScenario_11();
+                    if(!Config.getConfig().useFluctlight) {
+                        Game.mapScenarios.loadScenario_11();
+                    }
                     this.setLoadText("Loading Scenario #12");
                 } else if (iStepID == 94) {
                     Game.mapScenarios.loadScenario_12();
@@ -718,9 +779,7 @@ public class InitGame extends Menu {
                     Game.mapScenarios.loadScenario_49(false);
                     this.setLoadText("Loading Scenario #50");
                 } else if (iStepID == 133) {
-                    if (!Config.getConfig().useFluctlight) {
-                        Game.mapScenarios.loadScenario_50(false);
-                    }
+                    Game.mapScenarios.loadScenario_50(false);
                     this.setLoadText("Loading Scenario #51");
                 } else if (iStepID == 134) {
                     Game.mapScenarios.loadScenario_51(false);
@@ -764,6 +823,7 @@ public class InitGame extends Menu {
                     if (!finished64) {
                         Game.mapScenarios.loadScenario_64();
                     }
+                    task1.blockOn();
                     this.setLoadText("Loading National Spirits");
                 } else if (iStepID == 148) {
                     NationalSpiritManager.INSTANCE.loadNS();
@@ -782,11 +842,14 @@ public class InitGame extends Menu {
                     EventsManager.loadScenarioEventsTag = Game.mapScenarios.lScenarios_TagsList.get(Game.scenarioID);
                     EventsManager.loadEvents();
                     EventsManager.loadEvents_Scenario();
+                    Fluctlight.getInstance().dispose();
                     this.setLoadText("Loading HRE");
                 } else {
                     if (iStepID != 153) {
                         if (iStepID >= 154 && iStepID < 154 + Game.getProvincesSize()) {
-                            SoundsManager.playMode = (short) Config.getConfig().defaultPlayMode;
+                            if(!reloadOnResume) {
+                                SoundsManager.playMode = (short) Config.getConfig().defaultPlayMode;
+                            }
                             for (int i = 0; i < numOfProvincesBGToLoad && iStepID < 154 + Game.getProvincesSize(); ++i) {
                                 Game.loadProvinceBG(iStepID++ - 154);
                             }
@@ -794,8 +857,10 @@ public class InitGame extends Menu {
                             this.setLoadText("Loading Province BG #" + (iStepID - 154));
                             return;
                         }
-
-                        if (this.justOnce) {
+                        Field viewID = MenuManager.class.getDeclaredField("viewID");
+                        viewID.setAccessible(true);
+                        viewID.set(Game.menuManager,fromViewID);
+                        if (this.justOnce && !reloadOnResume) {
                             Game.mapScale.setEnableScaling(true);
                             Game.setUpdateProvincesInView(true);
                             CivilizationRegionsManager.updateRegionsInView = true;
@@ -1214,6 +1279,7 @@ public class InitGame extends Menu {
         Images.peace = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "peace.png");
         Images.disease = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "disease.png");
         Images.vassal = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "vassal.png");
+        FontFix.manpowerSid = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "manpower_sidebar.png");
         FontFix.musicIconID = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "music.png");
         Images.vassalBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "vassalBig.png");
         Images.resourceNone = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "resourceNone.png");

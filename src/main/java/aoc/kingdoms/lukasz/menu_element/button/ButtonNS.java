@@ -25,13 +25,13 @@ public class ButtonNS extends Button {
     public ButtonNS(int ideologyID, int iPosX, int iPosY, int iWidth, int iHeight) {
         this.ideologyID = ideologyID;
         this.init(Game.lang.get("NationalSpirit"), CFG.FONT_REGULAR_SMALL, this.iTextPositionX, iPosX, iPosY, iWidth, iHeight, true, true, false, false);
-        if (ImageManager.getImage(Images.population).getHeight() < ((Image)Game.ideologiesManager.ideologiesImages.get(ideologyID)).getHeight()) {
-            float fScale = (float)ImageManager.getImage(Images.population).getHeight() / (float)((Image)Game.ideologiesManager.ideologiesImages.get(ideologyID)).getHeight();
-            this.imgWidth = (int)((float)((Image)Game.ideologiesManager.ideologiesImages.get(ideologyID)).getWidth() * fScale);
-            this.imgHeight = (int)((float)((Image)Game.ideologiesManager.ideologiesImages.get(ideologyID)).getHeight() * fScale);
+        if (ImageManager.getImage(Images.population).getHeight() < Game.ideologiesManager.ideologiesImages.get(ideologyID).getHeight()) {
+            float fScale = (float)ImageManager.getImage(Images.population).getHeight() / (float) Game.ideologiesManager.ideologiesImages.get(ideologyID).getHeight();
+            this.imgWidth = (int)((float) Game.ideologiesManager.ideologiesImages.get(ideologyID).getWidth() * fScale);
+            this.imgHeight = (int)((float) Game.ideologiesManager.ideologiesImages.get(ideologyID).getHeight() * fScale);
         } else {
-            this.imgWidth = ((Image)Game.ideologiesManager.ideologiesImages.get(ideologyID)).getWidth();
-            this.imgHeight = ((Image)Game.ideologiesManager.ideologiesImages.get(ideologyID)).getHeight();
+            this.imgWidth = Game.ideologiesManager.ideologiesImages.get(ideologyID).getWidth();
+            this.imgHeight = Game.ideologiesManager.ideologiesImages.get(ideologyID).getHeight();
         }
 
         int tWMax = 0;

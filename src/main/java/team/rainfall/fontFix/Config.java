@@ -1,15 +1,13 @@
 package team.rainfall.fontFix;
 
+import aoc.kingdoms.lukasz.jakowski.CFG;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.menu.Colors;
+import aoc.kingdoms.lukasz.menus.MainMenu;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Json;
 import team.rainfall.finality.FinalityLogger;
-import team.rainfall.fontFix.config.AnimationConfig;
-import team.rainfall.fontFix.config.ElementColorsConfig;
-import team.rainfall.fontFix.config.GradientConfig;
-import team.rainfall.fontFix.config.LinkConfig;
-import team.rainfall.fontFix.utils.ColorUtil;
+import team.rainfall.fontFix.config.*;
 
 import java.lang.reflect.Field;
 
@@ -18,7 +16,9 @@ public class Config {
     private static AnimationConfig animationConfig = null;
     private static GradientConfig gradientConfig = null;
     private static ElementColorsConfig elementColorsConfig = null;
-
+    public static boolean isConfigLoaded(){
+        return configData != null;
+    }
     public static void applyElementColorsConfig() {
         if (elementColorsConfig == null) {
             try {
@@ -30,6 +30,7 @@ public class Config {
                 elementColorsConfig = new ElementColorsConfig();
             }
         }
+        MainMenu.sparksColors = Color.valueOf(elementColorsConfig.MAIN_MENU_SPARK);
         for (Field declaredField : ElementColorsConfig.class.getDeclaredFields()) {
             try {
                 declaredField.setAccessible(true);
@@ -76,6 +77,11 @@ public class Config {
                 json.setIgnoreUnknownFields(true);
                 json.setElementType(PolarisConfigData.class, "links", LinkConfig.class);
                 configData = json.fromJson(PolarisConfigData.class, FileManager.loadFile("rainfall/polaris_core.json"));
+                if(CFG.isAndroid() || FontFix.fakeAndroid) {
+                    if (Sternstunden.getPackageString().equals("age.of.history3.polaris") || Sternstunden.getPackageString().equals("MoonIsBrightTonight0")) {
+                        configData.splashScreen.add(new SplashScreenConfig("polaris", 5000));
+                    }
+                }
             } catch (Exception e) {
                 FinalityLogger.error("Failed to load config file", e);
                 buildDefaultConfig();

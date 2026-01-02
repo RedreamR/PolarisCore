@@ -4,23 +4,15 @@ import aoc.kingdoms.lukasz.jakowski.CFG;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.GameValues;
-import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
-import aoc.kingdoms.lukasz.map.diplomacy.DiplomacyManager;
 import aoc.kingdoms.lukasz.map.map.Continents;
 import aoc.kingdoms.lukasz.map.province.Province;
 import aoc.kingdoms.lukasz.textures.Image;
-import aoc.kingdoms.lukasz.textures.ImageManager;
-import aoc.kingdoms.lukasz.textures.Images;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import space.earlygrey.shapedrawer.ShapeDrawer;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
@@ -54,7 +46,10 @@ public class MixinProvince {
         }
     }
     public final void loadProvinceBG() {
+        Province self = (Province) (Object) this;
+        self.getPointsX(0);
         loadFromCompact();
+
         try {
             if (this.getSeaProvince() && !GameValues.value.LOAD_SEA_PROVINCES) {
                 return;

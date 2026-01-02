@@ -58,19 +58,19 @@ public class InGame_Console extends Menu {
                 Game.keyboard.showKeyboard(KeyboardActionType.CONSOLE, InGame_Console.sMessage);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING * 2;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
 
         for(int i = sConsole.size() - 1; i >= 0; --i) {
-            menuElements.add(new Text_StaticBG((String)sConsole.get(i), CFG.FONT_REGULAR_SMALL, paddingLeft, buttonX, buttonY, menuWidth - paddingLeft * 2, buttonH));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            menuElements.add(new Text_StaticBG(sConsole.get(i), CFG.FONT_REGULAR_SMALL, paddingLeft, buttonX, buttonY, menuWidth - paddingLeft * 2, buttonH));
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         }
 
         buttonY = 0;
         int i = 0;
 
         for(int iSize = menuElements.size(); i < iSize; ++i) {
-            if (buttonY < ((MenuElement)menuElements.get(i)).getPosY() + ((MenuElement)menuElements.get(i)).getHeight() + CFG.PADDING * 2) {
-                buttonY = ((MenuElement)menuElements.get(i)).getPosY() + ((MenuElement)menuElements.get(i)).getHeight() + CFG.PADDING * 2;
+            if (buttonY < menuElements.get(i).getPosY() + menuElements.get(i).getHeight() + CFG.PADDING * 2) {
+                buttonY = menuElements.get(i).getPosY() + menuElements.get(i).getHeight() + CFG.PADDING * 2;
             }
         }
 
@@ -177,7 +177,7 @@ public class InGame_Console extends Menu {
                             addMessage(Game.getCiv(Game.player.iCivID).getCivName() + ": " + CFG.getPrecision2(GameValues.console.CONSOLE_LEGACY, 10) + " Legacy added");
                         } else if (tempCommand[0].equals(GameValues.console.CONSOLE_COMMAND_MANPOWER)) {
                             Civilization var8 = Game.getCiv(Game.player.iCivID);
-                            var8.fManpower += (double)GameValues.console.CONSOLE_MANPOWER;
+                            var8.fManpower += GameValues.console.CONSOLE_MANPOWER;
                             addMessage(Game.getCiv(Game.player.iCivID).getCivName() + ": " + CFG.getPrecision2(GameValues.console.CONSOLE_MANPOWER, 10) + " Manpower added");
                         } else if (tempCommand[0].equals(GameValues.console.CONSOLE_COMMAND_DIPLOMACY)) {
                             Civilization var9 = Game.getCiv(Game.player.iCivID);

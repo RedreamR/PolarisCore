@@ -27,13 +27,13 @@ public class ButtonReligion2 extends Button {
     public ButtonReligion2(int religionID, int iPosX, int iPosY, int iWidth, int iHeight) {
         this.religionID = religionID;
         this.init(Game.religionManager.getReligion(religionID).Name, CFG.FONT_REGULAR_SMALL, this.iTextPositionX, iPosX, iPosY, iWidth, iHeight, true, true, false, false);
-        if (ImageManager.getImage(Images.population).getHeight() < ((Image)Game.religionManager.religionImages.get(religionID)).getHeight()) {
-            float fScale = (float)ImageManager.getImage(Images.population).getHeight() / (float)((Image)Game.religionManager.religionImages.get(religionID)).getHeight();
-            this.imgWidth = (int)((float)((Image)Game.religionManager.religionImages.get(religionID)).getWidth() * fScale);
-            this.imgHeight = (int)((float)((Image)Game.religionManager.religionImages.get(religionID)).getHeight() * fScale);
+        if (ImageManager.getImage(Images.population).getHeight() < Game.religionManager.religionImages.get(religionID).getHeight()) {
+            float fScale = (float)ImageManager.getImage(Images.population).getHeight() / (float) Game.religionManager.religionImages.get(religionID).getHeight();
+            this.imgWidth = (int)((float) Game.religionManager.religionImages.get(religionID).getWidth() * fScale);
+            this.imgHeight = (int)((float) Game.religionManager.religionImages.get(religionID).getHeight() * fScale);
         } else {
-            this.imgWidth = ((Image)Game.religionManager.religionImages.get(religionID)).getWidth();
-            this.imgHeight = ((Image)Game.religionManager.religionImages.get(religionID)).getHeight();
+            this.imgWidth = Game.religionManager.religionImages.get(religionID).getWidth();
+            this.imgHeight = Game.religionManager.religionImages.get(religionID).getHeight();
         }
 
     }
@@ -41,8 +41,8 @@ public class ButtonReligion2 extends Button {
     public ButtonReligion2(int religionID, int iPosX, int iPosY, int iWidth, int iHeight, boolean x) {
         this.religionID = religionID;
         this.init(Game.religionManager.getReligion(religionID).Name, CFG.FONT_REGULAR_SMALL, this.iTextPositionX, iPosX, iPosY, iWidth, iHeight, true, true, false, false);
-        this.imgWidth = ((Image)Game.religionManager.religionImages.get(religionID)).getWidth();
-        this.imgHeight = ((Image)Game.religionManager.religionImages.get(religionID)).getHeight();
+        this.imgWidth = Game.religionManager.religionImages.get(religionID).getWidth();
+        this.imgHeight = Game.religionManager.religionImages.get(religionID).getHeight();
     }
 
     protected void drawButtonBG(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive) {
@@ -64,7 +64,7 @@ public class ButtonReligion2 extends Button {
     }
 
     protected void drawText(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive) {
-        ((Image)Game.religionManager.religionImages.get(this.religionID)).draw(oSB, this.getPosX() + this.getWidth() / 2 - this.imgWidth / 2 + iTranslateX, this.getPosY() + (this.getHeight() - getTextHeightBG()) / 2 - this.imgHeight / 2 + iTranslateY, this.imgWidth, this.imgHeight);
+        Game.religionManager.religionImages.get(this.religionID).draw(oSB, this.getPosX() + this.getWidth() / 2 - this.imgWidth / 2 + iTranslateX, this.getPosY() + (this.getHeight() - getTextHeightBG()) / 2 - this.imgHeight / 2 + iTranslateY, this.imgWidth, this.imgHeight);
         Renderer.drawText(oSB, this.fontID, this.getText(), this.getPosX() + this.getWidth() / 2 - this.getTextWidth() / 2 + iTranslateX, this.getPosY() + this.getHeight() - CFG.TEXT_HEIGHT / 2 - this.getTextHeight() / 2 - CFG.PADDING + iTranslateY, this.getColor(isActive));
     }
 

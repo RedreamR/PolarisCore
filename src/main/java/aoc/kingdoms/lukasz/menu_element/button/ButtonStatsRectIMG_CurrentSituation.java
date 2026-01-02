@@ -79,7 +79,7 @@ public class ButtonStatsRectIMG_CurrentSituation extends Button {
         }
         if (this.getClickable() && this.getIsHovered() && animationState >= 0) {
             if (animationState == 0) {
-                float drawPerc = Math.min(1.0F * (float)(CFG.currentTimeMillis - lTimeAnimation) / 1000.0F, 1.0F);
+                float drawPerc = Math.min((float) (CFG.currentTimeMillis - lTimeAnimation) / 1000.0F, 1.0F);
                 oSB.setColor(ButtonGame.getColorLine());
                 Images.line_32_off1.draw(oSB, iTranslateX + CFG.PADDING, iTranslateY + 1, (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), 1);
                 Images.line_32_off1.draw(oSB, iTranslateX + CFG.PADDING, iTranslateY + this.getHeight() - 2, (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), 1);
@@ -88,7 +88,7 @@ public class ButtonStatsRectIMG_CurrentSituation extends Button {
                     lTimeAnimation = CFG.currentTimeMillis;
                 }
             } else {
-                float drawPerc = Math.min(1.0F * (float)(CFG.currentTimeMillis - lTimeAnimation) / 1000.0F, 1.0F);
+                float drawPerc = Math.min((float) (CFG.currentTimeMillis - lTimeAnimation) / 1000.0F, 1.0F);
                 oSB.setColor(ButtonGame.getColorLine());
                 Images.line_32_off1.draw(oSB, iTranslateX + CFG.PADDING + (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), iTranslateY + 1, this.getWidth() - CFG.PADDING * 2 - (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), 1);
                 Images.line_32_off1.draw(oSB, iTranslateX + CFG.PADDING + (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), iTranslateY + this.getHeight() - 2, this.getWidth() - CFG.PADDING * 2 - (int)((float)(this.getWidth() - CFG.PADDING * 2) * drawPerc), 1);
@@ -183,7 +183,7 @@ public class ButtonStatsRectIMG_CurrentSituation extends Button {
 
             if (Game.player.currSituation.newLawAvailable) {
                 nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Law") + ": ", CFG.FONT_REGULAR_SMALL));
-                nData.add(new MenuElement_HoverElement_Type_Text("" + Game.lang.get("Unlocked"), CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("Unlocked"), CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_Image(Images.law, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();

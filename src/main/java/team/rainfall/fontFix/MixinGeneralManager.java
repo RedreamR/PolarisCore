@@ -18,8 +18,8 @@ import java.util.List;
 public class MixinGeneralManager {
     public Image noGeneral;
     public List<Integer> generalsImagesSize = new ArrayList();
-    private ArrayList<List<String>> generalNames = new ArrayList();
-    private ArrayList<List<String>> generalSurnames = new ArrayList();
+    private final ArrayList<List<String>> generalNames = new ArrayList();
+    private final ArrayList<List<String>> generalSurnames = new ArrayList();
 
     public String getGeneralRandomName(int iCivID) {
         if(Config.getConfig().randNameCache){
@@ -27,10 +27,10 @@ public class MixinGeneralManager {
             if(s != null) return s;
             // - - -
             try {
-                return (String)((List)this.generalNames.get(Game.getCiv(iCivID).iGroupID)).get(Game.oR.nextInt(((List)this.generalNames.get(Game.getCiv(iCivID).iGroupID)).size()));
+                return (String)((List)this.generalNames.get(Game.getCiv(iCivID).iGroupID)).get(Game.oR.nextInt(this.generalNames.get(Game.getCiv(iCivID).iGroupID).size()));
             } catch (Exception var6) {
                 CFG.exceptionStack(var6);
-                return (String)((List)this.generalNames.get(0)).get(Game.oR.nextInt(((List)this.generalNames.get(0)).size()));
+                return (String)((List)this.generalNames.get(0)).get(Game.oR.nextInt(this.generalNames.get(0).size()));
             }
         }
 
@@ -94,11 +94,11 @@ public class MixinGeneralManager {
         }
 
         try {
-            return (String)((List)this.generalNames.get(Game.getCiv(iCivID).iGroupID)).get(Game.oR.nextInt(((List)this.generalNames.get(Game.getCiv(iCivID).iGroupID)).size()));
+            return (String)((List)this.generalNames.get(Game.getCiv(iCivID).iGroupID)).get(Game.oR.nextInt(this.generalNames.get(Game.getCiv(iCivID).iGroupID).size()));
         } catch (Exception var6) {
             Exception ex = var6;
             CFG.exceptionStack(ex);
-            return (String)((List)this.generalNames.get(0)).get(Game.oR.nextInt(((List)this.generalNames.get(0)).size()));
+            return (String)((List)this.generalNames.get(0)).get(Game.oR.nextInt(this.generalNames.get(0).size()));
         }
     }
 
@@ -108,11 +108,11 @@ public class MixinGeneralManager {
             if (s != null) return s;
             // - - -
             try {
-                return (String)((List)this.generalSurnames.get(Game.getCiv(iCivID).iGroupID)).get(Game.oR.nextInt(((List)this.generalSurnames.get(Game.getCiv(iCivID).iGroupID)).size()));
+                return (String)((List)this.generalSurnames.get(Game.getCiv(iCivID).iGroupID)).get(Game.oR.nextInt(this.generalSurnames.get(Game.getCiv(iCivID).iGroupID).size()));
             } catch (Exception var6) {
                 Exception ex = var6;
                 CFG.exceptionStack(ex);
-                return (String)((List)this.generalSurnames.get(0)).get(Game.oR.nextInt(((List)this.generalSurnames.get(0)).size()));
+                return (String)((List)this.generalSurnames.get(0)).get(Game.oR.nextInt(this.generalSurnames.get(0).size()));
             }
         }
         String sCivTAG = Game.getCiv(iCivID).realTag;
@@ -155,11 +155,11 @@ public class MixinGeneralManager {
             }
 
             try {
-                return (String)((List)this.generalSurnames.get(Game.getCiv(iCivID).iGroupID)).get(Game.oR.nextInt(((List)this.generalSurnames.get(Game.getCiv(iCivID).iGroupID)).size()));
+                return (String)((List)this.generalSurnames.get(Game.getCiv(iCivID).iGroupID)).get(Game.oR.nextInt(this.generalSurnames.get(Game.getCiv(iCivID).iGroupID).size()));
             } catch (Exception var6) {
                 Exception ex = var6;
                 CFG.exceptionStack(ex);
-                return (String)((List)this.generalSurnames.get(0)).get(Game.oR.nextInt(((List)this.generalSurnames.get(0)).size()));
+                return (String)((List)this.generalSurnames.get(0)).get(Game.oR.nextInt(this.generalSurnames.get(0).size()));
             }
         }
     }

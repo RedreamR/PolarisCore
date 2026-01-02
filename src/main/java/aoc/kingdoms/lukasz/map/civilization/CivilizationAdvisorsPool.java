@@ -45,7 +45,7 @@ public class CivilizationAdvisorsPool {
 
             this.lAdvisors.add(new Advisor(Game.generalManager.getGeneralRandomName(iCivID) + " " + Game.generalManager.getGeneralRandomSurname(iCivID), advIMG, Game_Calendar.currentYear - GameValues.advisors.ADVISOR_YEARS_OLD_MIN - Game.oR.nextInt(Math.max(1, GameValues.advisors.ADVISOR_YEARS_OLD_RANDOM)), sIMG));
             int advID = this.lAdvisors.size() - 1;
-            this.lAdvisors.set(advID, buildAdvisorBonuses((Advisor)this.lAdvisors.get(advID), this.iAdvisorType));
+            this.lAdvisors.set(advID, buildAdvisorBonuses(this.lAdvisors.get(advID), this.iAdvisorType));
         }
 
     }
@@ -60,7 +60,7 @@ public class CivilizationAdvisorsPool {
 
             this.lAdvisors.add(new Advisor(Game.generalManager.getGeneralRandomName(iCivID) + " " + Game.generalManager.getGeneralRandomSurname(iCivID), advIMG, Game_Calendar.currentYear - GameValues.advisors.ADVISOR_YEARS_OLD_MIN - Game.oR.nextInt(Math.max(1, GameValues.advisors.ADVISOR_YEARS_OLD_RANDOM)), sIMG));
             int advID = this.lAdvisors.size() - 1;
-            this.lAdvisors.set(advID, buildAdvisorBonuses((Advisor)this.lAdvisors.get(advID), this.iAdvisorType));
+            this.lAdvisors.set(advID, buildAdvisorBonuses(this.lAdvisors.get(advID), this.iAdvisorType));
         }
 
     }
@@ -73,7 +73,7 @@ public class CivilizationAdvisorsPool {
             advIMG = Game.advisorManager.getRandomImage(iCivID, iAdvisorType);
         }
 
-        return buildAdvisorBonuses(new Advisor(Game.generalManager.getGeneralRandomName(iCivID) + " " + Game.generalManager.getGeneralRandomSurname(iCivID), advIMG, Game_Calendar.currentYear - GameValues.advisors.ADVISOR_YEARS_OLD_MIN - Game.oR.nextInt(Math.max(1, GameValues.advisors.ADVISOR_YEARS_OLD_RANDOM)), (String)null), iAdvisorType);
+        return buildAdvisorBonuses(new Advisor(Game.generalManager.getGeneralRandomName(iCivID) + " " + Game.generalManager.getGeneralRandomSurname(iCivID), advIMG, Game_Calendar.currentYear - GameValues.advisors.ADVISOR_YEARS_OLD_MIN - Game.oR.nextInt(Math.max(1, GameValues.advisors.ADVISOR_YEARS_OLD_RANDOM)), null), iAdvisorType);
     }
 
     public static final Advisor buildAdvisorBonuses(Advisor advisor, int iAdvisorType) {
@@ -210,14 +210,14 @@ public class CivilizationAdvisorsPool {
 
     public final void updatePoolOfAdvisors(int iCivID) {
         if (this.lAdvisors.isEmpty()) {
-            this.generateAdvisors2(iCivID, (String)null);
+            this.generateAdvisors2(iCivID, null);
             this.generateYear = Game_Calendar.currentYear;
         } else if (this.generateYear + GameValues.advisors.RECRUIT_ADVISOR_REGENERATE_YEARS <= Game_Calendar.currentYear) {
             this.lAdvisors.clear();
-            this.generateAdvisors(iCivID, (String)null);
+            this.generateAdvisors(iCivID, null);
             this.generateYear = Game_Calendar.currentYear;
         } else if (this.lAdvisors.size() < this.getPoolOfAdvisors(iCivID)) {
-            this.generateAdvisors(iCivID, (String)null);
+            this.generateAdvisors(iCivID, null);
         }
 
     }
@@ -245,7 +245,7 @@ public class CivilizationAdvisorsPool {
                             AdvisorManager.updateCivBonuses(Game.getCiv(iCivID).advisorAdministration, iCivID, -1);
                         }
 
-                        Game.getCiv(iCivID).advisorAdministration = (Advisor)this.lAdvisors.get(id);
+                        Game.getCiv(iCivID).advisorAdministration = this.lAdvisors.get(id);
                         AdvisorManager var10 = Game.advisorManager;
                         AdvisorManager.updateCivBonuses(Game.getCiv(iCivID).advisorAdministration, iCivID, 1);
                         break;
@@ -255,7 +255,7 @@ public class CivilizationAdvisorsPool {
                             AdvisorManager.updateCivBonuses(Game.getCiv(iCivID).advisorEconomy, iCivID, -1);
                         }
 
-                        Game.getCiv(iCivID).advisorEconomy = (Advisor)this.lAdvisors.get(id);
+                        Game.getCiv(iCivID).advisorEconomy = this.lAdvisors.get(id);
                         AdvisorManager var8 = Game.advisorManager;
                         AdvisorManager.updateCivBonuses(Game.getCiv(iCivID).advisorEconomy, iCivID, 1);
                         break;
@@ -265,7 +265,7 @@ public class CivilizationAdvisorsPool {
                             AdvisorManager.updateCivBonuses(Game.getCiv(iCivID).advisorTechnology, iCivID, -1);
                         }
 
-                        Game.getCiv(iCivID).advisorTechnology = (Advisor)this.lAdvisors.get(id);
+                        Game.getCiv(iCivID).advisorTechnology = this.lAdvisors.get(id);
                         AdvisorManager var6 = Game.advisorManager;
                         AdvisorManager.updateCivBonuses(Game.getCiv(iCivID).advisorTechnology, iCivID, 1);
                         break;
@@ -275,13 +275,13 @@ public class CivilizationAdvisorsPool {
                             AdvisorManager.updateCivBonuses(Game.getCiv(iCivID).advisorMilitary, iCivID, -1);
                         }
 
-                        Game.getCiv(iCivID).advisorMilitary = (Advisor)this.lAdvisors.get(id);
+                        Game.getCiv(iCivID).advisorMilitary = this.lAdvisors.get(id);
                         AdvisorManager var12 = Game.advisorManager;
                         AdvisorManager.updateCivBonuses(Game.getCiv(iCivID).advisorMilitary, iCivID, 1);
                 }
 
                 this.lAdvisors.remove(id);
-                this.generateAdvisors(iCivID, (String)null);
+                this.generateAdvisors(iCivID, null);
                 return true;
             }
         } else {

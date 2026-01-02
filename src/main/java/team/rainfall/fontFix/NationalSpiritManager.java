@@ -17,7 +17,7 @@ public class NationalSpiritManager {
     public static int nsEntryImg = -1;
     public static final NationalSpiritManager INSTANCE = new NationalSpiritManager();
     private Array<NationalSpirit> nationalSpirits = new Array<>();
-    private HashMap<String, Integer> nsImages = new HashMap<>();
+    private final HashMap<String, Integer> nsImages = new HashMap<>();
 
     public void loadNS() {
         try {

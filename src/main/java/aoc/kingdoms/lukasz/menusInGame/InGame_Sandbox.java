@@ -68,7 +68,7 @@ public class InGame_Sandbox extends Menu {
         int menuY = ImageManager.getImage(Images.flagBG).getHeight() + Renderer.boxBGExtraY + CFG.PADDING + ImageManager.getImage(Images.title1Red).getHeight();
         int buttonY = 0;
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Player"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(0)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(0).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("Player") + ": " + Game.lang.get("SelectCivilization"), Images.council, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 if (Game.iActiveProvince >= 0) {
@@ -114,7 +114,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         if (Game.SPECTATOR_MODE) {
             menuElements.add(new ButtonStatsBudget(Game.lang.get("Player") + ": " + Game.lang.get("Neutral"), Images.council, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
                 public void actionElement() {
@@ -152,11 +152,11 @@ public class InGame_Sandbox extends Menu {
                     this.menuElementHover = new MenuElement_Hover(nElements);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         }
 
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Civilization"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         int maxIconW = ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 2;
         int buttonH = CFG.BUTTON_HEIGHT4;
         int buttonW = (menuWidth - paddingLeft * 2 - CFG.PADDING * 3) / 4;
@@ -202,7 +202,7 @@ public class InGame_Sandbox extends Menu {
                 Game.menuManager.addToastPositive(Game.lang.get("Gold") + ": ", "+" + GameValues.sandbox.GOLD_1, Images.gold);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsRectIMG_Bonuses("", "-" + GameValues.sandbox.MANPOWER_1, Game_Calendar.IMG_MANPOWER, paddingLeft, buttonY, buttonW, buttonH, maxIconW, CFG.FONT_REGULAR_SMALL, CFG.FONT_REGULAR_SMALL) {
             public Color getColorBonus() {
                 return Colors.COLOR_TEXT_NEGATIVE;
@@ -230,7 +230,7 @@ public class InGame_Sandbox extends Menu {
 
             public void actionElement() {
                 Civilization var10000 = Game.getCiv(Game.player.iCivID);
-                var10000.fManpower += (double)GameValues.sandbox.MANPOWER_2;
+                var10000.fManpower += GameValues.sandbox.MANPOWER_2;
                 Game.menuManager.addToastPositive(Game.lang.get("Manpower") + ": ", "+" + GameValues.sandbox.MANPOWER_2, Game_Calendar.IMG_MANPOWER);
             }
         });
@@ -241,11 +241,11 @@ public class InGame_Sandbox extends Menu {
 
             public void actionElement() {
                 Civilization var10000 = Game.getCiv(Game.player.iCivID);
-                var10000.fManpower += (double)GameValues.sandbox.MANPOWER_1;
+                var10000.fManpower += GameValues.sandbox.MANPOWER_1;
                 Game.menuManager.addToastPositive(Game.lang.get("Manpower") + ": ", "+" + GameValues.sandbox.MANPOWER_1, Game_Calendar.IMG_MANPOWER);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsRectIMG_Bonuses("", "-" + GameValues.sandbox.LEGACY_1, Images.legacy, paddingLeft, buttonY, buttonW, buttonH, maxIconW, CFG.FONT_REGULAR_SMALL, CFG.FONT_REGULAR_SMALL) {
             public Color getColorBonus() {
                 return Colors.COLOR_TEXT_NEGATIVE;
@@ -286,7 +286,7 @@ public class InGame_Sandbox extends Menu {
                 Game.menuManager.addToastPositive(Game.lang.get("Legacy") + ": ", "+" + GameValues.sandbox.LEGACY_1, Images.legacy);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsRectIMG_Bonuses("", "-" + GameValues.sandbox.RESEARCH_1, Game_Calendar.IMG_TECHNOLOGY, paddingLeft, buttonY, buttonW, buttonH, maxIconW, CFG.FONT_REGULAR_SMALL, CFG.FONT_REGULAR_SMALL) {
             public Color getColorBonus() {
                 return Colors.COLOR_TEXT_NEGATIVE;
@@ -327,7 +327,7 @@ public class InGame_Sandbox extends Menu {
                 Game.menuManager.addToastPositive(Game.lang.get("Research") + ": ", "+" + GameValues.sandbox.RESEARCH_1, Game_Calendar.IMG_TECHNOLOGY);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         //Force win
         menuElements.add(new ButtonStatsBudget(Game.lang.get("Victory"), Images.victoryPoints, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
@@ -357,7 +357,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         //Finish research
         menuElements.add(new ButtonStatsBudget(Game.lang.get("ResearchAcceleration"), Images.technology, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
@@ -374,10 +374,10 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
 
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Provinces"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("Armies"), Game_Calendar.IMG_MANPOWER, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 Renderer.drawArmyInProvince = true;
@@ -395,7 +395,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("Buildings"), Images.buildings, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioDiplomacy.goBackTo = View.IN_GAME;
@@ -412,7 +412,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("Religion"), Images.religion, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 CFG.brushTool = false;
@@ -434,7 +434,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("AssignProvinces"), Images.provinces, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 CFG.iCreateScenario_AssignProvinces_Civ = 0;
@@ -452,9 +452,9 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Diplomacy"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("DeclareWar"), Images.war, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioDeclareWarList.activeCivID = 0;
@@ -473,7 +473,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("Truces"), Images.truce, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioTrucesList.activeCivID = 0;
@@ -492,7 +492,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get(Game_Ages.getVassals()), Images.vassal, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioVassalsList.activeCivID = 0;
@@ -511,7 +511,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("Relations"), Images.relations, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioRelationsList.activeCivID = 0;
@@ -529,7 +529,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("Alliances"), Images.alliance, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioAlliancesList.activeCivID = 0;
@@ -548,7 +548,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("DefensivePacts"), Images.defensivePact, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioDefensiveList.activeCivID = 0;
@@ -567,7 +567,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("NonAggressionPacts"), Images.nonAggression, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioNonAggressionList.activeCivID = 0;
@@ -586,7 +586,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("GuaranteeIndependence"), Images.guaranteeIndependence, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioGuaranteeList.activeCivID = 0;
@@ -605,7 +605,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         menuElements.add(new ButtonStatsBudget(Game.lang.get("MilitaryAccess"), Images.militaryAccess, paddingLeft, buttonY, menuWidth - paddingLeft * 2, CFG.BUTTON_HEIGHT4, ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 4, true) {
             public void actionElement() {
                 ScenarioMilitaryAccessList.activeCivID = 0;
@@ -624,7 +624,7 @@ public class InGame_Sandbox extends Menu {
                 this.menuElementHover = new MenuElement_Hover(nElements, true);
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight() + CFG.PADDING;
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         int tMenuHeight = Math.min(buttonY, CFG.GAME_HEIGHT - menuY * 2);
         menuElements.add(new Empty(0, 0, menuWidth, Math.max(buttonY, tMenuHeight)));
         this.initMenu(new MenuTitleIMG(Game.lang.get("Sandbox"), true, false, Images.title500) {

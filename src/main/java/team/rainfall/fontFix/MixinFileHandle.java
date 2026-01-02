@@ -1,6 +1,5 @@
 package team.rainfall.fontFix;
 
-import com.badlogic.gdx.utils.Null;
 import team.rainfall.finality.FinalityLogger;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import com.badlogic.gdx.files.FileHandle;
@@ -30,7 +29,15 @@ public abstract class MixinFileHandle {
                     case "GB18030":
                         charset = "GB18030";
                     default:
-                        charset = Charset.defaultCharset().name();
+                        if(Config.isConfigLoaded()){
+                            if(!Config.getConfig().defaultCharset.equals("NONE")) {
+                                charset = Config.getConfig().defaultCharset;
+                            }else {
+                                charset = Charset.defaultCharset().name();
+                            }
+                        }else {
+                            charset = Charset.defaultCharset().name();
+                        }
                         break;
                 }
                 readCount++;

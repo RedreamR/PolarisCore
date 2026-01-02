@@ -1,7 +1,5 @@
 package team.rainfall.fontFix.utils;
 
-import aoc.kingdoms.lukasz.textures.Image;
-import aoc.kingdoms.lukasz.textures.ImageManager;
 import aoc.kingdoms.lukasz.textures.Images;
 import team.rainfall.finality.FinalityLogger;
 

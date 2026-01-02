@@ -73,7 +73,7 @@ public class Dialog extends Menu {
                     Game.menuManager.dialogMenu.getTitle().setText(Game.lang.get("ConvertReligion") + ": " + Game.lang.get("AllProvinces") + "?");
                     break;
                 case UNLOCK_LEGACY:
-                    Game.menuManager.dialogMenu.getTitle().setText(Game.lang.get("Unlock") + ": " + Game.lang.get(((LegacyManager.Legacy)LegacyManager.legacies.get(InGame_Legacies.UNLOCK_LEGACY_ID)).Name));
+                    Game.menuManager.dialogMenu.getTitle().setText(Game.lang.get("Unlock") + ": " + Game.lang.get(LegacyManager.legacies.get(InGame_Legacies.UNLOCK_LEGACY_ID).Name));
                     break;
                 case REVERSE_WASTELAND:
                     Game.menuManager.dialogMenu.getTitle().setText(Game.lang.get("Reverse") + "?");
@@ -240,7 +240,6 @@ public class Dialog extends Menu {
                         Game.menuManager.addToast(Game.lang.get("Error"));
                     }
 
-                    return;
             }
         } catch (IndexOutOfBoundsException ex) {
             CFG.exceptionStack(ex);
@@ -408,7 +407,7 @@ public class Dialog extends Menu {
         dialogType = Dialog.DialogType.EXIT_GAME;
     }
 
-    public static enum DialogType {
+    public enum DialogType {
         EXIT_GAME,
         PAUSE_GAME,
         FIRE_ADVISOR,
@@ -425,7 +424,7 @@ public class Dialog extends Menu {
         CONVERT_RELIGION_ALL_PROVINCES,
         GO_TO_LINK;
 
-        private DialogType() {
+        DialogType() {
         }
     }
 }
