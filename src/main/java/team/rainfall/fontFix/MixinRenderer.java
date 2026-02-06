@@ -40,11 +40,12 @@ public class MixinRenderer {
     }
 
     public static final void loadFont(String sFont, String charset, int fontSize) {
+
         float texSize = charset.getBytes().length;
         int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
         //FinalityLogger.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
-        if (!CFG.isDesktop()) {
+        if (!CFG.isDesktop() && !FontFix.getDI()) {
             FreeTypeFontGenerator.setMaxTextureSize(Config.getConfig().extendCharset ? 8192 : 4096);
         }
         FreeTypeFontGenerator generator;
@@ -60,7 +61,7 @@ public class MixinRenderer {
 
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        if (CFG.isDesktop()) {
+        if (CFG.isDesktop() && !FontFix.getDI()) {
             params.characters = charset;
             params.incremental = false;
         } else {
@@ -73,7 +74,7 @@ public class MixinRenderer {
         params.magFilter = Texture.TextureFilter.Linear;
         fontMain.add(generator.generateFont(params));
         fontMainSize = fontMain.size();
-        if (CFG.isDesktop()) {
+        if (CFG.isDesktop() && !FontFix.getDI()) {
             generator.dispose();
         }
     }

@@ -43,7 +43,6 @@ public class InGame_CivBonuses extends Menu {
     public static int iCivID;
     protected static final int ANIMATION_TIME = 150;
     public static long lTime = 0L;
-
     public InGame_CivBonuses() {
         List<MenuElement> menuElements = new ArrayList();
         int paddingLeft = Images.boxTitleBORDERWIDTH + CFG.PADDING;
@@ -59,18 +58,19 @@ public class InGame_CivBonuses extends Menu {
             int buttonH2 = (int)((float)buttonW * 1.1F);
             int buttonY = buttonYPadding + CFG.PADDING;
             int a = 0;
-            LoadSavedGameManager.loadSave_CivsEventsVariables();
-            for (String string : Game.getCiv(iCivID).eventsDataVariables.v) {
-                if(string.startsWith("$$NationalSpirit_")){
-                    String s2 = string.replace("$$NationalSpirit_","");
-                    String[] s3 = s2.split("-");
-                    NationalSpirit nationalSpirit = NationalSpiritManager.INSTANCE.getNS(s3[0]);
-                    float fl = a / 5f;
-                    menuElements.add(new ButtonNS_Info(nationalSpirit, (int) (paddingLeft + menuWidth * fl),buttonY,buttonW,buttonH2,true));
-                    a++;
-                    if(a > 4){
-                        a = 0;
-                        buttonY = buttonY + menuElements.get(menuElements.size() - 1).getHeight();
+            if(Game.getCiv(iCivID).eventsDataVariables != null && Game.getCiv(iCivID).eventsDataVariables.v != null && !Game.getCiv(iCivID).eventsDataVariables.v.isEmpty()) {
+                for (String string : Game.getCiv(iCivID).eventsDataVariables.v) {
+                    if (string.startsWith("$$NationalSpirit_")) {
+                        String s2 = string.replace("$$NationalSpirit_", "");
+                        String[] s3 = s2.split("-");
+                        NationalSpirit nationalSpirit = NationalSpiritManager.INSTANCE.getNS(s3[0]);
+                        float fl = a / 5f;
+                        menuElements.add(new ButtonNS_Info(nationalSpirit, (int) (paddingLeft + menuWidth * fl), buttonY, buttonW, buttonH2, true));
+                        a++;
+                        if (a > 4) {
+                            a = 0;
+                            buttonY = buttonY + menuElements.get(menuElements.size() - 1).getHeight();
+                        }
                     }
                 }
             }

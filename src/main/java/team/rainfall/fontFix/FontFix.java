@@ -2,16 +2,42 @@ package team.rainfall.fontFix;
 
 
 import aoc.kingdoms.lukasz.jakowski.*;
+import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import aoc.kingdoms.lukasz.map.civilization.save.CivData3;
 import aoc.kingdoms.lukasz.menusInGame.InGame_CivBonuses;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import team.rainfall.finality.FinalityLogger;
+import team.rainfall.fontFix.utils.Consts;
+
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.masterVolume;
 import static aoc.kingdoms.lukasz.jakowski.SoundsManager.musicVolume;
+/*
+    Polaris Core
+    Copyright (C) 2026  Team Rainfall
 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 public class FontFix {
+    public static boolean isCommandMode = false;
     //假装自己是Polaris AoH3，没事别开（因为会带起Sternstunden）
     public static final boolean fakeAndroid = false;
     //玄星的定制提示
@@ -19,38 +45,120 @@ public class FontFix {
 
     public static int manpowerSid = -1;
     public static int musicIconID = -1;
+    //渲染线程
+    public static Thread renderThread = null;
     //是否尝试过加载compactScale
     public static boolean tried = false;
     public static CompactScale compactScale = null;
     public static final boolean NO_GOAL = false;
     public static boolean titleSet = false;
     public static final String CORE_VERSION = "4.1.0";
-    public static final String POLARIS_VERSION = "2.11 \"Rainfall\" Patch 1";
+    public static final String POLARIS_VERSION = "2.13";
     public static int isLocalStorage = 0;
-    public static boolean isXuanxing(){
-        if(CFG.isDesktop() && !fakeAndroid) return false;
+    public static boolean getGlyphExist(BitmapFont.Glyph[][] glyphs,char ch) {
+        BitmapFont.Glyph[] page = glyphs[ch / 512];
+        return page != null;
+    }// 在 FontFix 类中定义
+    public static final Lock lock = new ReentrantLock();
+    public static final Condition finished = lock.newCondition();
+    public static boolean desktopIncremental = false;
+    public static boolean di_set = false;
+    public static boolean getDI(){
+        if(di_set) return desktopIncremental;
+        desktopIncremental = FileManager.loadFile("rainfall/DesktopIncremental").exists();
+        di_set = true;
+        return desktopIncremental;
+    }
+    public static GlyphLayout getGlyphLayoutData(BitmapFont font, CharSequence str) {
+        if (Thread.currentThread().getName().contains(Consts.GL_THREAD)) {
+            // 如果已经在GL线程，直接执行，不需要异步
+
+            GlyphLayout layout = new GlyphLayout();
+            layout.setText(font, str);
+            return layout;
+        }
+
+        lock.lock();
+        try {
+            AtomicReference<GlyphLayout> ref = new AtomicReference<>();
+            Gdx.app.postRunnable(() -> {
+                lock.lock();
+                try {
+                    GlyphLayout glyphLayout = new GlyphLayout();
+                    glyphLayout.setText(font, str);
+                    ref.set(glyphLayout);
+                    finished.signal();
+                } finally {
+                    lock.unlock();
+                }
+            });
+            finished.await();
+            return ref.get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return null;
+        } finally {
+            lock.unlock();
+        }
+    }
+    public static void generateChar(char c,int id) {
+        if(Thread.currentThread().getName().contains("GL")) return;
+        if(getGlyphExist(Renderer.fontMain.get(id).getData().glyphs,c)) return;
+        lock.lock();
+        Gdx.app.postRunnable(() -> {
+            try {
+                Renderer.fontMain.get(id).getData().getGlyph(c);
+            }catch (Exception ignored){
+
+            }
+            lock.unlock();
+        });
+    }
+
+    public static void addActiveArmy(int nProvinceID, String sKey) {
+        try {
+            int tID = Game.getProvince(nProvinceID).getArmyKeyID(sKey);
+            if (tID >= 0) {
+                Game.HoveredArmy nHA = new Game.HoveredArmy();
+                nHA.key = Game.getProvince(nProvinceID).getArmy(tID).key;
+                nHA.iCivID = Game.getProvince(nProvinceID).getArmy(tID).civID;
+                nHA.iProvinceID = nProvinceID;
+                nHA.iArmyID = tID;
+                Game.addActiveArmy(nHA);
+            } else {
+                FinalityLogger.debug("AAA Fail");
+            }
+        } catch (IndexOutOfBoundsException var4) {
+        }
+    }
+
+    public static boolean isXuanxing() {
+        if (CFG.isDesktop() && !fakeAndroid) return false;
         return Sternstunden.getPackageString().contains("age.of.history3.polaris.xuanxing.cbtm") || isXuanxing;
     }
-    public static boolean canUseGoal(){
-        if(NO_GOAL) return false;
+
+    public static boolean canUseGoal() {
+        if (NO_GOAL) return false;
         try {
-            int i = (int)Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalID").invoke(null);
+            int i = (int) Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalID").invoke(null);
             return i > -2;
         } catch (Exception e) {
-            FinalityLogger.error("GoalERR ",e);
+            FinalityLogger.error("GoalERR ", e);
             return false;
         }
     }
-    public static int getGoalID(){
+
+    public static int getGoalID() {
         try {
-            return (int)Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalID").invoke(null);
+            return (int) Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalID").invoke(null);
         } catch (Exception e) {
             return -1;
         }
     }
-    public static int getGoalDura(){
+
+    public static int getGoalDura() {
         try {
-            return (int)Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalDura").invoke(null);
+            return (int) Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalDura").invoke(null);
         } catch (Exception e) {
             return -1;
         }
@@ -108,7 +216,7 @@ public class FontFix {
 
     public static void playStartMusic() {
         try {
-            if(CFG.isAndroid() || fakeAndroid) {
+            if (CFG.isAndroid() || fakeAndroid) {
                 Sternstunden.init();
             }
             setTitle();
@@ -182,7 +290,8 @@ public class FontFix {
             }
         }
     }
-    public static int getDemilitarization(int iCivID){
+
+    public static int getDemilitarization(int iCivID) {
         CivData3 civData3 = Game.getCiv(iCivID).civData3;
         try {
             int d = (int) CivData3.class.getDeclaredField("d").get(civData3);
@@ -192,11 +301,12 @@ public class FontFix {
         }
         return 0;
     }
-    public static boolean isDemilitarization(int iCivID){
+
+    public static boolean isDemilitarization(int iCivID) {
         CivData3 civData3 = Game.getCiv(iCivID).civData3;
         try {
             int d = (int) CivData3.class.getDeclaredField("d").get(civData3);
-            if(d > Game_Calendar.TURN_ID){
+            if (d > Game_Calendar.TURN_ID) {
                 return true;
             }
         } catch (IllegalAccessException | NoSuchFieldException ignored) {

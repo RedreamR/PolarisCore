@@ -3,12 +3,10 @@ package team.rainfall.fontFix;
 import aoc.kingdoms.lukasz.jakowski.CFG;
 import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
-import aoc.kingdoms.lukasz.map.IdeologiesManager;
 import aoc.kingdoms.lukasz.textures.Image;
 import com.badlogic.gdx.files.FileHandle;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.fontFix.utils.RandomNameCache;
-import team.rainfall.fontFix.utils.Timer;
 
 import java.util.ArrayList;
 import java.util.List;

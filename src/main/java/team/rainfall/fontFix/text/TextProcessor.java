@@ -3,13 +3,17 @@ package team.rainfall.fontFix.text;
 import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import aoc.kingdoms.lukasz.textures.Image;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import team.rainfall.finality.FinalityLogger;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextProcessor {
     public static ArrayList<String> tokenize(String string) {
         ArrayList<String> tokens = new ArrayList<>();
         StringBuilder currentToken = new StringBuilder();
+        string = processPlaceholders(string);
         for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);
             if (c == '§' && i + 2 < string.length() && string.charAt(i + 1) == '[') {
@@ -182,10 +186,39 @@ public class TextProcessor {
         return lines;
     }
 
+    public static String format(String s){
+        if(s == null || !s.contains(".")){
+            return "[Invalid String]";
+        }
+        try {
+            switch (s.split("\\.")[0]) {
+                case "civ":
+                    return TextFuncService.formatCiv(s);
+                case "player":
+                    return TextFuncService.formatPlayer(s);
+            }
+        }catch (Throwable e){
+            FinalityLogger.error("[PolarisCore] Failed to format text: " + s, e);
+        }
+        return s;
+    }
+
+    public static String processPlaceholders(String input) {
+        Pattern pattern = Pattern.compile("§\\{([^}]*)}");
+        Matcher matcher = pattern.matcher(input);
+        StringBuffer result = new StringBuffer();
+        while (matcher.find()) {
+            String placeholderContent = matcher.group(1);
+            String replacement = format(placeholderContent.trim());
+            matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
+        }
+        matcher.appendTail(result);
+        return result.toString();
+    }
+
     /**
      * Determine if ch is a CJ(Chinese and Japanese) Character.
      * Ignore Korean because it uses the same split logic as Indo-European language.
-     *
      * @param ch the character to determine
      * @return true if ch is a CJ Character, false otherwise
      * @author RedreamR

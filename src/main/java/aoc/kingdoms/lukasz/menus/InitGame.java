@@ -113,6 +113,9 @@ public class InitGame extends Menu {
         }
     }
     public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean menuIsActive, Status titleStatus) {
+        if(FontFix.renderThread == null){
+            FontFix.renderThread = Thread.currentThread();
+        }
         if (splash_id >= 0) {
             this.initGame();
             if(splash_id > Config.getConfig().splashScreen.size - 1){

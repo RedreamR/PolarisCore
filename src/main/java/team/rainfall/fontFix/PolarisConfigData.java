@@ -17,7 +17,7 @@ public class PolarisConfigData {
     public boolean extendCharset = false;
     public String defaultCharset = "NONE";
     //A simple method to detect encode,may cause detection mistake
-    public boolean fastEncodeCheck = true;
+    public boolean fastEncodeCheck = false;
     public boolean useFluctlight = true;
     public boolean fastLoadFlag = true;
     public boolean applyNSv2 = true;

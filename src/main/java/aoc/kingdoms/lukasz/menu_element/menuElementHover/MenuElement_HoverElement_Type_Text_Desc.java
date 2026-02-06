@@ -82,9 +82,9 @@ public class MenuElement_HoverElement_Type_Text_Desc implements MenuElement_Hove
 
     public int getHeight() {
         int extraY = 0;
-        for(int i = 0; i < this.ffLines.size(); ++i) {
-            if(this.ffLines.get(i).isImageInText()){
-                extraY += (int) ffLines.get(i).lineHeight - (this.iTextHeight + CFG.PADDING);
+        for (Line ffLine : this.ffLines) {
+            if (ffLine.isImageInText()) {
+                extraY += (int) ffLine.lineHeight - (this.iTextHeight + CFG.PADDING);
             }
         }
         return CFG.PADDING + CFG.TEXT_HEIGHT_SMALL * this.ffLines.size() + CFG.PADDING * 2 * (this.ffLines.size() - 1) + extraY;

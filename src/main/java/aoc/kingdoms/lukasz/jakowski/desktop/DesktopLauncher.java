@@ -21,9 +21,9 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle("Age of History 3");
-        config.setWindowIcon(FileType.Internal, new String[]{"gfx/icon/icon_16x16.png"});
-        config.setWindowIcon(FileType.Internal, new String[]{"gfx/icon/icon_32x32.png"});
-        config.setWindowIcon(FileType.Internal, new String[]{"gfx/icon/icon_128x128.png"});
+        config.setWindowIcon(FileType.Internal, "gfx/icon/icon_16x16.png");
+        config.setWindowIcon(FileType.Internal, "gfx/icon/icon_32x32.png");
+        config.setWindowIcon(FileType.Internal, "gfx/icon/icon_128x128.png");
         config.setResizable(false);
         int tWidth = -1;
         int tHeight = -1;
