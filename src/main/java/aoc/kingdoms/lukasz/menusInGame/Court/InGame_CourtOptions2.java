@@ -128,9 +128,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         InGame_CourtOptions.iGovernmentID = tID;
         menuElements.add(new IconCourt(Game.lang.get("Government"), Images.government, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
@@ -157,7 +157,7 @@ public class InGame_CourtOptions2 extends Menu {
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
                 nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("Level") + ": ", CFG.FONT_REGULAR));
-                nData.add(new MenuElement_HoverElement_Type_TextTitle("" + Game.getCiv(Game.player.iCivID).getCapitalLevel() + " / " + Game.getCapital_MaxLvl(Game.player.iCivID), CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.getCiv(Game.player.iCivID).getCapitalLevel() + " / " + Game.getCapital_MaxLvl(Game.player.iCivID), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle(Images.capital, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
                 nData.clear();
@@ -168,9 +168,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         if (GameValues.zoom.SIDEBAR_ZOOM_SCALE_BUTTONS) {
             menuElements.add(new IconCourt(Game.lang.get("Scale") + " +", Images.plus, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
                 public void actionElement() {
@@ -187,9 +187,9 @@ public class InGame_CourtOptions2 extends Menu {
                     this.menuElementHover = new MenuElement_Hover(nElements, true);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight();
             menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight();
             menuElements.add(new IconCourt(Game.lang.get("Scale") + " -", Images.minus, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
                 public void actionElement() {
                     Game.mapScale.scrollScale(1);
@@ -205,9 +205,9 @@ public class InGame_CourtOptions2 extends Menu {
                     this.menuElementHover = new MenuElement_Hover(nElements, true);
                 }
             });
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight();
             menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-            buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         }
 
         InGame_CourtOptions.iLawID = tID;
@@ -245,9 +245,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         InGame_CourtOptions.buildID = tID;
         menuElements.add(new IconCourt(Game.lang.get("Buildings"), Images.build, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
@@ -268,7 +268,7 @@ public class InGame_CourtOptions2 extends Menu {
                 }
 
                 nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("Average") + ": ", CFG.FONT_REGULAR));
-                nData.add(new MenuElement_HoverElement_Type_TextTitle("" + CFG.getPrecision2(fAverage / (float)Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100), CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_TextTitle(CFG.getPrecision2(fAverage / (float) Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle(Images.build, CFG.PADDING, 0));
                 nData.add(new MenuElement_HoverElement_Type_FlagTitle(Game.player.iCivID, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -290,9 +290,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new IconCourt(Game.lang.get("TaxEfficiency"), Images.taxUp, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
                 if (this.id != InGame_CourtOptions.iActiveID) {
@@ -323,7 +323,7 @@ public class InGame_CourtOptions2 extends Menu {
                 }
 
                 nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("Average") + ": ", CFG.FONT_REGULAR));
-                nData.add(new MenuElement_HoverElement_Type_TextTitle("" + CFG.getPrecision2(fAverage / (float)Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100) + "%", CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_TextTitle(CFG.getPrecision2(fAverage / (float)Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100) + "%", CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle(Images.tax, CFG.PADDING, 0));
                 nData.add(new MenuElement_HoverElement_Type_FlagTitle(Game.player.iCivID, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -335,9 +335,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new IconCourt(Game.lang.get("Economy"), Game_Calendar.IMG_ECONOMY_UP, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
                 if (this.id != InGame_CourtOptions.iActiveID) {
@@ -368,7 +368,7 @@ public class InGame_CourtOptions2 extends Menu {
                 }
 
                 nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("Average") + ": ", CFG.FONT_REGULAR));
-                nData.add(new MenuElement_HoverElement_Type_TextTitle("" + CFG.getPrecision2(fAverage / (float)Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100), CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_TextTitle(CFG.getPrecision2(fAverage / (float) Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle(Game_Calendar.IMG_ECONOMY, CFG.PADDING, 0));
                 nData.add(new MenuElement_HoverElement_Type_FlagTitle(Game.player.iCivID, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -380,9 +380,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new IconCourt(Game.lang.get("Infrastructure"), Images.infrastructureUp, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
                 if (this.id != InGame_CourtOptions.iActiveID) {
@@ -412,7 +412,7 @@ public class InGame_CourtOptions2 extends Menu {
                 }
 
                 nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("Average") + ": ", CFG.FONT_REGULAR));
-                nData.add(new MenuElement_HoverElement_Type_TextTitle("" + CFG.getPrecision2(fAverage / (float)Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100), CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_TextTitle(CFG.getPrecision2(fAverage / (float) Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle(Images.infrastructure, CFG.PADDING, 0));
                 nData.add(new MenuElement_HoverElement_Type_FlagTitle(Game.player.iCivID, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -424,9 +424,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new IconCourt(Game.lang.get("GrowthRate"), Images.populationUp, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
                 if (this.id != InGame_CourtOptions.iActiveID) {
@@ -457,7 +457,7 @@ public class InGame_CourtOptions2 extends Menu {
                 }
 
                 nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("Average") + ": ", CFG.FONT_REGULAR));
-                nData.add(new MenuElement_HoverElement_Type_TextTitle("" + CFG.getPrecision2(fAverage / (float)Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100) + "%", CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_TextTitle(CFG.getPrecision2(fAverage / (float)Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100) + "%", CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle(Images.populationGrowth, CFG.PADDING, 0));
                 nData.add(new MenuElement_HoverElement_Type_FlagTitle(Game.player.iCivID, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -473,10 +473,10 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
-        menuElements.add(new IconCourt(Game.lang.get("Manpower"), FontFix.manpowerSid == -1 ? FontFix.manpowerSid : Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
+        menuElements.add(new IconCourt(Game.lang.get("Manpower"), FontFix.manpowerSid != -1 ? FontFix.manpowerSid : Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
                 if (this.id != InGame_CourtOptions.iActiveID) {
                     InGame_CourtOptions.iActiveID = this.id;
@@ -506,7 +506,7 @@ public class InGame_CourtOptions2 extends Menu {
                 }
 
                 nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("Average") + ": ", CFG.FONT_REGULAR));
-                nData.add(new MenuElement_HoverElement_Type_TextTitle("" + CFG.getPrecision2(fAverage / (float)Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100), CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_TextTitle(CFG.getPrecision2(fAverage / (float) Game.getCiv(Game.player.iCivID).getNumOfProvinces(), 100), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle(Game_Calendar.IMG_MANPOWER, CFG.PADDING, 0));
                 nData.add(new MenuElement_HoverElement_Type_FlagTitle(Game.player.iCivID, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -522,9 +522,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         idCores = tID;
         menuElements.add(new IconCourt_Notification(Game.lang.get("Cores"), Images.core, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
@@ -565,7 +565,7 @@ public class InGame_CourtOptions2 extends Menu {
                 }
 
                 nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.lang.get("Cores") + ": ", CFG.FONT_REGULAR));
-                nData.add(new MenuElement_HoverElement_Type_TextTitle("" + tNum + " / " + Game.getCiv(Game.player.iCivID).getNumOfProvinces(), CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_TextTitle(tNum + " / " + Game.getCiv(Game.player.iCivID).getNumOfProvinces(), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle(Images.core, CFG.PADDING, 0));
                 nData.add(new MenuElement_HoverElement_Type_FlagTitle(Game.player.iCivID, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -577,9 +577,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         idReligion = tID;
         menuElements.add(new IconCourt_Notification(Game.lang.get("Religion"), Images.religion, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
@@ -620,7 +620,7 @@ public class InGame_CourtOptions2 extends Menu {
                 }
 
                 nData.add(new MenuElement_HoverElement_Type_TextTitle(Game.religionManager.getReligion(Game.getCiv(Game.player.iCivID).getReligionID()).Name + ": ", CFG.FONT_REGULAR));
-                nData.add(new MenuElement_HoverElement_Type_TextTitle("" + tNum + " / " + Game.getCiv(Game.player.iCivID).getNumOfProvinces(), CFG.FONT_BOLD, Colors.HOVER_GOLD));
+                nData.add(new MenuElement_HoverElement_Type_TextTitle(tNum + " / " + Game.getCiv(Game.player.iCivID).getNumOfProvinces(), CFG.FONT_BOLD, Colors.HOVER_GOLD));
                 nData.add(new MenuElement_HoverElement_Type_ImageTitle(Images.religion, CFG.PADDING, 0));
                 nData.add(new MenuElement_HoverElement_Type_FlagTitle(Game.player.iCivID, CFG.PADDING, 0));
                 nElements.add(new MenuElement_HoverElement(nData));
@@ -632,9 +632,9 @@ public class InGame_CourtOptions2 extends Menu {
                 return SoundsManager.getClickSound_CivOptions();
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new IconCourt(Game.lang.get("Sandbox"), Images.sandbox, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
                 if (Game.menuManager.getVisibleInGame_PopUp() && MenuManager.IN_GAME_POP_UP_MENU_ID == 42) {
@@ -663,24 +663,24 @@ public class InGame_CourtOptions2 extends Menu {
                 return Game.SANDBOX;
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw) {
             public boolean getVisible() {
                 return Game.SANDBOX;
             }
         });
-        buttonY += ((MenuElement)menuElements.get(menuElements.size() - 1)).getHeight();
+        buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         textMaxWidth = 0;
 
         for(int i = menuElements.size() - 1; i >= 0; --i) {
-            if (((MenuElement)menuElements.get(i)).getTextWidth() > textMaxWidth) {
-                textMaxWidth = ((MenuElement)menuElements.get(i)).getTextWidth();
+            if (menuElements.get(i).getTextWidth() > textMaxWidth) {
+                textMaxWidth = menuElements.get(i).getTextWidth();
             }
         }
 
         textMaxWidth += CFG.PADDING * 6;
         int menuHeight = Math.min(buttonY, CFG.GAME_HEIGHT - menuY - CFG.PADDING * 3);
-        this.initMenu((MenuTitle)null, menuX, menuY, buttonW + textMaxWidth + CFG.PADDING * 2, menuHeight, menuElements, !Game.settingsManager.enableHideSideMenu, false);
+        this.initMenu(null, menuX, menuY, buttonW + textMaxWidth + CFG.PADDING * 2, menuHeight, menuElements, !Game.settingsManager.enableHideSideMenu, false);
         this.drawScrollPositionAlways = false;
         this.drawScrollPositionAlways2 = false;
         HEIGHT = 0;

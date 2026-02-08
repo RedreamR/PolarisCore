@@ -52,13 +52,13 @@ public class FontFix {
     public static CompactScale compactScale = null;
     public static final boolean NO_GOAL = false;
     public static boolean titleSet = false;
-    public static final String CORE_VERSION = "4.1.0";
+    public static final String CORE_VERSION = "4.2.0";
     public static final String POLARIS_VERSION = "2.13";
     public static int isLocalStorage = 0;
     public static boolean getGlyphExist(BitmapFont.Glyph[][] glyphs,char ch) {
         BitmapFont.Glyph[] page = glyphs[ch / 512];
         return page != null;
-    }// 在 FontFix 类中定义
+    }
     public static final Lock lock = new ReentrantLock();
     public static final Condition finished = lock.newCondition();
     public static boolean desktopIncremental = false;

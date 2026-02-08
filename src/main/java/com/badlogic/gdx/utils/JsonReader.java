@@ -36,7 +36,7 @@ public class JsonReader implements BaseJsonReader {
     private JsonValue current;
 
     public JsonReader() {
-        this.elements = new Array<JsonValue>(8);
+        this.elements = new Array<>(8);
         this.lastChild = new Array<JsonValue>(8);
     }
 

@@ -3,10 +3,12 @@
 Open source for Polaris Core, a plugin aimed to provide significant QoL improvements.
 
 ## How to build
+
 1. Download the repository and open it with IntelliJ IDEA.
 2. Wait for Gradle Sync.
 3. run `gradlew clean shadowJar`
 4. Get the artifact in `build/libs.`
+
 ## Copyright
 
 Classes whose names start with "Mixin" or are under the package "aoc.kingdoms.lukasz" are the sole property of Lukasz Jakowski Games.

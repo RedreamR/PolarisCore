@@ -10,6 +10,7 @@ import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.GameValues;
 import aoc.kingdoms.lukasz.jakowski.Game_Calendar;
+import aoc.kingdoms.lukasz.map.IdeologiesManager.Ideology;
 import aoc.kingdoms.lukasz.map.civilization.Civilization;
 import aoc.kingdoms.lukasz.map.civilization.CivilizationBonuses;
 import aoc.kingdoms.lukasz.map.technology.TechnologyTree;
@@ -41,7 +42,7 @@ public class IdeologiesManager {
             this.lIdeologies.clear();
         }
 
-        this.lIdeologies = new ArrayList();
+        this.lIdeologies = new ArrayList<>();
 
         try {
             FileHandle fileList = FileManager.loadFile("game/Governments.json");
@@ -235,7 +236,7 @@ public class IdeologiesManager {
     }
 
     public final List<MenuElement> getMenuElements(int ideologyID, int iX, int iY, int iW, int iH) {
-        List<MenuElement> mElementsToSort = new ArrayList();
+        List<MenuElement> mElementsToSort = new ArrayList<>();
         int maxIconW = ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 2;
         if (this.getIdeology(ideologyID).MonthlyIncome != 0.0F) {
             mElementsToSort.add(new ButtonStatsRectIMG_Bonuses_Right_Color(Game.lang.get("MonthlyIncome"), (this.getIdeology(ideologyID).MonthlyIncome > 0.0F ? "+" : "") + CFG.getPrecision2(this.getIdeology(ideologyID).MonthlyIncome, 100), Images.gold, iX, 0, iW, iH, maxIconW, this.getIdeology(ideologyID).MonthlyIncome == 0.0F ? Colors.HOVER_NEUTRAL : (this.getIdeology(ideologyID).MonthlyIncome < 0.0F ? Colors.HOVER_NEGATIVE : Colors.HOVER_POSITIVE)));

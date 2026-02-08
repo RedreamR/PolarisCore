@@ -6,15 +6,11 @@
 package aoc.kingdoms.lukasz.jakowski;
 import static aoc.kingdoms.lukasz.jakowski.Steam.SteamManager.*;
 import aoc.kingdoms.lukasz.jakowski.Steam.SteamManager;
-import aoc.kingdoms.lukasz.menu.Colors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import team.rainfall.fontFix.FontFix;
 
-import java.awt.*;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class FileManager {
     public static LoadInterface loadInterface;
