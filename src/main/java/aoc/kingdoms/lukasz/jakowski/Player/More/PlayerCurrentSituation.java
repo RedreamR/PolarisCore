@@ -56,6 +56,7 @@ public class PlayerCurrentSituation {
 
     public final void updateCurrentSituation(int iCivID) {
         try {
+            FinalityLogger.debug("GTU 4");
             this.currentSituationNum = 0;
             if (Game.getCiv(Game.player.iCivID).getActiveTechResearch() < 0) {
                 this.noActiveResearch = true;
@@ -108,7 +109,7 @@ public class PlayerCurrentSituation {
                 this.upgradeCapitalCity = true;
                 ++this.currentSituationNum;
             }
-
+            FinalityLogger.debug("GTU 4");
             this.updateMissionsCanBeUnlocked(iCivID);
         } catch (Exception ex) {
             CFG.exceptionStack(ex);
@@ -334,7 +335,7 @@ public class PlayerCurrentSituation {
 
     public final void updateMissionsCanBeUnlocked(int iCivID) {
         try {
-            if (!this.allMissionsUnlocked && Game_Calendar.TURN_ID % GameValues.gameUpdate.GAME_UPDATE_CURRENT_SITUATION_MISSION_TREE_EVERY_X_DAYS == 0) {
+            if (Game_Calendar.TURN_ID % GameValues.gameUpdate.GAME_UPDATE_CURRENT_SITUATION_MISSION_TREE_EVERY_X_DAYS == 0) {
                 this.missionCanBeUnlocked = false;
                 this.missionCanBeUnlockedNum = 0;
                 if (Game.getCiv(iCivID).iMissionsSize > 0) {
