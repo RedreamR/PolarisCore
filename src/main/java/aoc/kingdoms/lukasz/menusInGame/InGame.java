@@ -780,44 +780,8 @@ public class InGame extends Menu {
         int rankPosXW2 = (int)Renderer.glyphLayout.width + ImageManager.getImage(Images.victoryPoints).getWidth() + CFG.PADDING * 4;
         int rankHeight = ImageManager.getImage(Images.topStats).getHeight() * 3 / 5;
 
-        menuElements.add(new ButtonStatsRectIMG_Rank("Normal", Images.manpower, elemPosX + CFG.PADDING, ImageManager.getImage(Images.topStats).getHeight() + CFG.PADDING / 2, rankPosXW2_CMD, rankHeight, ImageManager.getImage(Images.rankGold).getWidth()) {
-            public String getTextToDraw() {
-                if (FontFix.isCommandMode) {
-                    this.setText("Command");
-                }else {
-                    this.setText("Normal");
-                }
 
-                return super.getTextToDraw();
-            }
-
-            public int getSFX() {
-                return SoundsManager.SOUND_CLICK_TOP;
-            }
-
-            public void actionElement() {
-                FontFix.isCommandMode = !FontFix.isCommandMode;
-            }
-
-            public void actionElementPPM() {
-            }
-
-            public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("Army"), CFG.FONT_BOLD, Colors.HOVER_GOLD));
-                nData.add(new MenuElement_HoverElement_Type_ImageTitle_BG(Images.missions, CFG.PADDING, 0));
-                nElements.add(new MenuElement_HoverElement(nData));
-                nData.clear();
-                this.menuElementHover = new MenuElement_Hover(nElements);
-            }
-
-            protected Color getColor(boolean isActive) {
-                return Colors.getColorTopStats(isActive, this.getIsHovered());
-            }
-        });
-        int eX = menuElements.get(menuElements.size() - 1).getWidth();
-        menuElements.add(new ButtonStatsRectIMG_Rank("" + Game.getCiv(Game.player.iCivID).iCivRankPosition, CivilizationRanking.getCivilizationRanking_IMG_STAR_CIVID(Game.player.iCivID), elemPosX + eX, ImageManager.getImage(Images.topStats).getHeight() + CFG.PADDING / 2, rankPosXW, rankHeight, ImageManager.getImage(Images.rankGold).getWidth()) {
+        menuElements.add(new ButtonStatsRectIMG_Rank("" + Game.getCiv(Game.player.iCivID).iCivRankPosition, CivilizationRanking.getCivilizationRanking_IMG_STAR_CIVID(Game.player.iCivID), elemPosX, ImageManager.getImage(Images.topStats).getHeight() + CFG.PADDING / 2, rankPosXW, rankHeight, ImageManager.getImage(Images.rankGold).getWidth()) {
             public String getTextToDraw() {
                 if (this.iCurrent != Game.getCiv(Game.player.iCivID).iCivRankPosition) {
                     this.iCurrent = Game.getCiv(Game.player.iCivID).iCivRankPosition;
@@ -870,7 +834,7 @@ public class InGame extends Menu {
                 return Colors.getColorTopStats(isActive, this.getIsHovered());
             }
         });
-        eX += menuElements.get(menuElements.size() - 1).getWidth();
+        int eX = menuElements.get(menuElements.size() - 1).getWidth();
         if(FontFix.canUseGoal()) {
             menuElements.add(new ButtonStatsRectIMG_Rank("0", Images.missions, elemPosX + eX + CFG.PADDING, ImageManager.getImage(Images.topStats).getHeight() + CFG.PADDING / 2, rankPosXW, rankHeight, ImageManager.getImage(Images.rankGold).getWidth()) {
                 public String getTextToDraw() {
@@ -905,12 +869,12 @@ public class InGame extends Menu {
                         String missionName = (Game.getCiv(Game.player.iCivID).iMissionsSize > 0)
                                 ? Game.lang.get(Game.getCiv(Game.player.iCivID).lMissions.get(goalID).Name)
                                 : Game.lang.get(MissionTree.lMissions.get(goalID).Name);
-                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("OngoingGoal") + ":", missionName, Images.missions, CFG.FONT_REGULAR, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
+                        nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("OngoingFocus") + ":", missionName, Images.missions, CFG.FONT_REGULAR, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                         nElements.add(new MenuElement_HoverElement(nData));
                         nData.clear();
                         nData.add(new MenuElement_HoverElement_Type_Button_TextBonus(Game.lang.get("LeftDays")+" : ", "" + getCurrent(), Images.missions, CFG.FONT_REGULAR, CFG.FONT_REGULAR, Colors.HOVER_LEFT, Colors.HOVER_GOLD));
                     } else {
-                        nData.add(new MenuElement_HoverElement_Type_Text_Desc("NoOngoingGoal"));
+                        nData.add(new MenuElement_HoverElement_Type_Text_Desc(Game.lang.get("NoOngoingFocus")));
                     }
                     nElements.add(new MenuElement_HoverElement(nData));
                     nData.clear();

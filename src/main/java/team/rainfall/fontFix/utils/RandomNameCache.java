@@ -4,6 +4,7 @@ import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import team.rainfall.finality.FinalityLogger;
 import team.rainfall.fontFix.Config;
 
 import java.util.HashMap;
@@ -15,20 +16,25 @@ public class RandomNameCache {
     static HashMap<String,String > links = new HashMap<>();
     public static void init(){
         if(Config.getConfig().randNameCache){
-            Json json = new Json();
-            json.setIgnoreUnknownFields(true);
-            surName = json.fromJson(RandomNamesData.class,FileManager.loadFile("game/randomNames/surnames/nameData.json"));
-            json = new Json();
-            json.setIgnoreUnknownFields(true);
-            firstName = json.fromJson(RandomNamesData.class,FileManager.loadFile("game/randomNames/names/nameData.json"));
-            json = new Json();
-            json.setIgnoreUnknownFields(true);
-            rulerName = json.fromJson(RandomNamesData.class,FileManager.loadFile("game/rulersRandom/nameData.json"));
-            String linkString = FileManager.loadFile("game/rulersRandom/link/links").readString();
-            String[] split = linkString.split("\\)");
-            for (String s : split) {
-                String[] s1 = s.split(">");
-                links.put(s1[0],s1[1]);
+            try {
+                Json json = new Json();
+                json.setIgnoreUnknownFields(true);
+                surName = json.fromJson(RandomNamesData.class, FileManager.loadFile("game/randomNames/surnames/nameData.json"));
+                json = new Json();
+                json.setIgnoreUnknownFields(true);
+                firstName = json.fromJson(RandomNamesData.class, FileManager.loadFile("game/randomNames/names/nameData.json"));
+                json = new Json();
+                json.setIgnoreUnknownFields(true);
+                rulerName = json.fromJson(RandomNamesData.class, FileManager.loadFile("game/rulersRandom/nameData.json"));
+                String linkString = FileManager.loadFile("game/rulersRandom/link/links").readString();
+                String[] split = linkString.split("\\)");
+                for (String s : split) {
+                    String[] s1 = s.split(">");
+                    links.put(s1[0], s1[1]);
+                }
+            }catch (Exception e){
+                FinalityLogger.error("Failed to load randNameCache",e);
+                Config.getConfig().randNameCache = false;
             }
         }
     }

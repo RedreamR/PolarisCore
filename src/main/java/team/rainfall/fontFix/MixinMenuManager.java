@@ -7,8 +7,11 @@ import aoc.kingdoms.lukasz.map.province.ProvinceDraw;
 import aoc.kingdoms.lukasz.map.province.ProvinceTouchExtraAction;
 import aoc.kingdoms.lukasz.menu.View;
 import aoc.kingdoms.lukasz.menus.MainMenu;
+import team.rainfall.finality.luminosity2.CallbackInfo;
+import team.rainfall.finality.luminosity2.annotations.Inject;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
+import team.rainfall.finality.luminosity2.utils.InjectPosition;
 
 @Mixin(mixinClass = "aoc.kingdoms.lukasz.menu.MenuManager")
 public class MixinMenuManager {
@@ -28,22 +31,13 @@ public class MixinMenuManager {
         ProvinceDraw.updateDrawMoveUnits();
         Game.mapBG.updateWorldMap();
     }
-    public final void setViewID(View eView) {
+    @Inject(methodName = "setViewID",position = InjectPosition.HEAD,returnWithValue = true)
+    public final void setViewID2(View eView, CallbackInfo ci) {
         if(eView == View.MAINMENU){
             MainMenu.animTime = -1;
             Game.menuManager.setViewIDWithoutAnimation(eView);
-            return;
+            ci.cancel();
         }
-        Game.hoverManager.resetHoverActive_Menu();
-        this.fromViewID = this.viewID;
-        this.viewID = Game.menuManager.getViewID(eView);
-        this.toViewID = this.viewID;
-        this.updateDrawProvinces();
-        ProvinceTouchExtraAction.updateExtraAction();
-        AA_KeyManager.updateKeyExtraAction();
-        ProvinceBorderManager.updateAction();
-        ProvinceDraw.updateDrawMoveUnits();
-        Game.mapBG.updateWorldMap();
     }
     @Shadow
     private final void updateDrawProvinces() {

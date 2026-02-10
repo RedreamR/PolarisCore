@@ -32,4 +32,8 @@ public class PolarisConfigData {
     public boolean changeBGinInitGame = false;
     public boolean noOverlay = true;
     public boolean useNewTextDraw = true;
+    public float maxCivNameScale = 16.0f;
+    public float distanceScale = 0.65f;
+    public float scaleStep = 0.01f;
+    public int maxCivNameTries = 1000;
 }

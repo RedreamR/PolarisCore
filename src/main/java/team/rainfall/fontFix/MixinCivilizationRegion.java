@@ -5,13 +5,18 @@ import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.jakowski.GlyphLayout_Game;
 import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import aoc.kingdoms.lukasz.jakowski.zOther.Point_XY;
+import aoc.kingdoms.lukasz.map.province.Province;
+import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import aoc.kingdoms.lukasz.map.civilization.CivilizationRegion;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
+import team.rainfall.fontFix.utils.ProvinceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Mixin(mixinClass = "aoc.kingdoms.lukasz.map.civilization.CivilizationRegion")
 public abstract class MixinCivilizationRegion {
@@ -40,16 +45,20 @@ public abstract class MixinCivilizationRegion {
     private int numOfTries = 0;
 
     // 新增配置常量
-    private static final float SCALE_STEP = 0.03f;
-    private static final float MAX_FONT_SCALE = 15.0F; // 字体最大缩放限制
-    private static final int MAX_RETRIES = 1000;
-
+    public static float scaleStep = 0.1f;
+    public static float maxCivNameScale = 16.0F; // 字体最大缩放限制
+    public static int MAX_RETRIES = 1000;
+    public static float distanceScale = 0.65f;
     protected final float buildScaleOfText(int nFontID) {
         float outTextH = 1.0F;
-
+        maxCivNameScale = Config.getConfig().maxCivNameScale;
+        distanceScale = Config.getConfig().distanceScale;
+        scaleStep = Config.getConfig().scaleStep;
+        MAX_RETRIES = Config.getConfig().maxCivNameTries;
         try {
             if (this.shortestLine.size() > 1) {
                 float iDistance = (float) Math.sqrt(Math.pow(Game.getProvince(this.lProvinces.get(this.shortestLine.get(0))).iCenterShiftX - Game.getProvince(this.lProvinces.get(this.shortestLine.get(1))).iCenterShiftX, 2.0F) + Math.pow(Game.getProvince(this.lProvinces.get(this.shortestLine.get(0))).iCenterShiftY - Game.getProvince(this.lProvinces.get(this.shortestLine.get(1))).iCenterShiftY, 2.0F));
+                iDistance *= distanceScale;
                 GlyphLayout_Game glyphLayout = new GlyphLayout_Game();
                 synchronized (this) {
                     glyphLayout.setText(Renderer.fontBorder.get(nFontID), Game.getCiv(Game.getProvince(this.lProvinces.get(this.shortestLine.get(0))).getCivID()).sCivName_UpperCase);
@@ -60,30 +69,30 @@ public abstract class MixinCivilizationRegion {
                         while (true) {
                             if (iDistance > glyphLayout.width) {
                                 // 修改点：检查是否达到最大缩放限制
-                                if (tempScale >= MAX_FONT_SCALE) {
-                                    this.fontScale = MAX_FONT_SCALE;
+                                if (tempScale >= maxCivNameScale) {
+                                    this.fontScale = maxCivNameScale;
                                     // 确保最后一次测量使用的是最大缩放，以便获取正确的 outTextH
-                                    Renderer.fontBorder.get(nFontID).getData().setScale(MAX_FONT_SCALE);
+                                    Renderer.fontBorder.get(nFontID).getData().setScale(maxCivNameScale);
                                     glyphLayout.setText(Renderer.fontBorder.get(nFontID), Game.getCiv(Game.getProvince(this.lProvinces.get(this.shortestLine.get(0))).getCivID()).sCivName_UpperCase);
                                     outTextH = glyphLayout.height;
                                     break;
                                 }
 
-                                tempScale += SCALE_STEP;
+                                tempScale += scaleStep;
                                 Renderer.fontBorder.get(nFontID).getData().setScale(tempScale);
                                 glyphLayout.setText(Renderer.fontBorder.get(nFontID), Game.getCiv(Game.getProvince(this.lProvinces.get(this.shortestLine.get(0))).getCivID()).sCivName_UpperCase);
                                 outTextH = glyphLayout.height;
                                 if (iDistance < glyphLayout.width) {
-                                    this.fontScale = tempScale - SCALE_STEP;
+                                    this.fontScale = tempScale - scaleStep;
                                     break;
                                 }
                             } else {
-                                tempScale -= SCALE_STEP;
+                                tempScale -= scaleStep;
                                 Renderer.fontBorder.get(nFontID).getData().setScale(tempScale);
                                 glyphLayout.setText(Renderer.fontBorder.get(nFontID), Game.getCiv(Game.getProvince(this.lProvinces.get(this.shortestLine.get(0))).getCivID()).sCivName_UpperCase);
                                 outTextH = glyphLayout.height;
                                 if (iDistance > glyphLayout.width) {
-                                    this.fontScale = tempScale + SCALE_STEP;
+                                    this.fontScale = tempScale + scaleStep;
                                     break;
                                 }
                             }
@@ -130,7 +139,6 @@ public abstract class MixinCivilizationRegion {
 
     @Shadow
     public abstract void buildDrawData(int nFontID);
-
 
     public final boolean buildRegionPath() {
         try {
@@ -255,7 +263,7 @@ public abstract class MixinCivilizationRegion {
                         this.shortestLine.set(1, tempS);
                     }
 
-                    if (this.shortestLine.isEmpty() || this.shortestLine.get(0) == this.shortestLine.get(1)) {
+                    if (this.shortestLine.isEmpty() || Objects.equals(this.shortestLine.get(0), this.shortestLine.get(1))) {
                         this.shortestLine.clear();
                         this.triedToUse.clear();
                         return false;
@@ -274,7 +282,6 @@ public abstract class MixinCivilizationRegion {
                         return this.numOfTries++ < MAX_RETRIES && this.buildRegionPath();
                     }
 
-                    Point_XY var22 = null;
                     this.triedToUse.clear();
                 }
 
@@ -287,7 +294,7 @@ public abstract class MixinCivilizationRegion {
         }
     }
     @Shadow
-    private final Point_XY canDrawTextProperly(int fromProvinceID, int toProvinceID){
+    private final Point_XY canDrawTextProperly(int fromProvinceID, int toProvinceID) {
         return null;
     }
     @Shadow

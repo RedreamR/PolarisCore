@@ -122,9 +122,9 @@ public class PlayerCurrentSituation {
         this.newLawAvailableNum = 0;
 
         for(int i = 0; i < LawsManager.iLawsSize; ++i) {
-            for(int j = ((LawsManager.Law)LawsManager.laws.get(i)).RequiredTechID.length - 1; j > 0; --j) {
-                if (Game.getCiv(iCivID).getTechResearched(((LawsManager.Law)LawsManager.laws.get(i)).RequiredTechID[j]) && (((LawsManager.Law)LawsManager.laws.get(i)).RequiredGovernmentID == null || ((LawsManager.Law)LawsManager.laws.get(i)).RequiredGovernmentID[j] < 0 || ((LawsManager.Law)LawsManager.laws.get(i)).RequiredGovernmentID[j] == Game.getCiv(iCivID).getIdeologyID())) {
-                    if ((Integer)Game.getCiv(iCivID).laws.get(i) < j) {
+            for(int j = LawsManager.laws.get(i).RequiredTechID.length - 1; j > 0; --j) {
+                if (Game.getCiv(iCivID).getTechResearched(LawsManager.laws.get(i).RequiredTechID[j]) && (LawsManager.laws.get(i).RequiredGovernmentID == null || LawsManager.laws.get(i).RequiredGovernmentID[j] < 0 || LawsManager.laws.get(i).RequiredGovernmentID[j] == Game.getCiv(iCivID).getIdeologyID())) {
+                    if (Game.getCiv(iCivID).laws.get(i) < j) {
                         if (!this.newLawAvailable) {
                             ++this.currentSituationNum;
                         }
@@ -214,7 +214,7 @@ public class PlayerCurrentSituation {
             this.availableCivilizationLegacy = false;
 
             for(int i = 0; i < LegacyManager.iLegaciesSize; ++i) {
-                if ((Integer)this.playerLegaciesLVL.get(i) >= 0 && Game.getCiv(iCivID).fLegacy >= (float)((LegacyManager.Legacy)LegacyManager.legacies.get(i)).CostLegacy[(Integer)this.playerLegaciesLVL.get(i)]) {
+                if (this.playerLegaciesLVL.get(i) >= 0 && Game.getCiv(iCivID).fLegacy >= (float) LegacyManager.legacies.get(i).CostLegacy[this.playerLegaciesLVL.get(i)]) {
                     this.availableCivilizationLegacy = true;
                     ++this.currentSituationNum;
                     break;
@@ -236,7 +236,7 @@ public class PlayerCurrentSituation {
 
             for(int i = 0; i < LegacyManager.iLegaciesSize; ++i) {
                 int tLevel = Game.getCiv(iCivID).getLegacyLevel(i) + 1;
-                if (tLevel >= ((LegacyManager.Legacy)LegacyManager.legacies.get(i)).CostLegacy.length) {
+                if (tLevel >= LegacyManager.legacies.get(i).CostLegacy.length) {
                     tLevel = -1;
                 }
 

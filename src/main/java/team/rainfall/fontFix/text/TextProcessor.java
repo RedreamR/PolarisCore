@@ -204,7 +204,8 @@ public class TextProcessor {
     }
 
     public static String processPlaceholders(String input) {
-        Pattern pattern = Pattern.compile("§\\{([^}]*)}");
+        //Fuck Android and ICU4J
+        Pattern pattern = Pattern.compile("§\\{([^}]*)\\}");
         Matcher matcher = pattern.matcher(input);
         StringBuffer result = new StringBuffer();
         while (matcher.find()) {

@@ -37,7 +37,6 @@ import static aoc.kingdoms.lukasz.jakowski.SoundsManager.musicVolume;
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 public class FontFix {
-    public static boolean isCommandMode = false;
     //假装自己是Polaris AoH3，没事别开（因为会带起Sternstunden）
     public static final boolean fakeAndroid = false;
     //玄星的定制提示
