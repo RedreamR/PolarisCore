@@ -10,7 +10,7 @@ import aoc.kingdoms.lukasz.textures.Image;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.async.AsyncExecutor;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
 import team.rainfall.fontFix.utils.RandomNameCache;
@@ -273,7 +273,7 @@ public class MixinRulersManager {
                 }
             }
         } catch (Exception e){
-            FinalityLogger.error("FontFix.rulerDesc Err ",e);
+            FontFix.LOGGER.error("FontFix.rulerDesc Err ",e);
             return null;
         }
         return null;
@@ -286,7 +286,7 @@ public class MixinRulersManager {
                 }
             }
         } catch (Exception e){
-            FinalityLogger.error("FontFix.rulerDesc Err ",e);
+            FontFix.LOGGER.error("FontFix.rulerDesc Err ",e);
             return null;
         }
         return null;

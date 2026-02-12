@@ -14,7 +14,7 @@ import aoc.kingdoms.lukasz.map.LawsManager;
 import aoc.kingdoms.lukasz.map.LegacyManager;
 import aoc.kingdoms.lukasz.map.WondersManager;
 import aoc.kingdoms.lukasz.map.advisors.AdvisorManager;
-import team.rainfall.finality.FinalityLogger;
+ 
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,6 @@ public class PlayerCurrentSituation {
 
     public final void updateCurrentSituation(int iCivID) {
         try {
-            FinalityLogger.debug("GTU 4");
             this.currentSituationNum = 0;
             if (Game.getCiv(Game.player.iCivID).getActiveTechResearch() < 0) {
                 this.noActiveResearch = true;
@@ -109,7 +108,6 @@ public class PlayerCurrentSituation {
                 this.upgradeCapitalCity = true;
                 ++this.currentSituationNum;
             }
-            FinalityLogger.debug("GTU 4");
             this.updateMissionsCanBeUnlocked(iCivID);
         } catch (Exception ex) {
             CFG.exceptionStack(ex);

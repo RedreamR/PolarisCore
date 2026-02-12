@@ -2,7 +2,7 @@ package team.rainfall.fontFix;
 
 import com.badlogic.gdx.files.FileHandle;
 import org.mozilla.universalchardet.UniversalDetector;
-import team.rainfall.finality.FinalityLogger;
+ 
 
 import java.io.*;
 
@@ -33,7 +33,7 @@ public class EncodingDetector {
             reader.close();
             return encoding == null ? "NONE" : encoding;
         } catch (Exception e) {
-            FinalityLogger.error("Error while detecting charset: " + e.getMessage(), e);
+            FontFix.LOGGER.error("Error while detecting charset: " + e.getMessage(), e);
         }
         return "NONE";
     }
@@ -51,7 +51,7 @@ public class EncodingDetector {
             reader.close();
             return encoding == null ? "NONE" : encoding;
         } catch (Exception e) {
-            FinalityLogger.error("Error while detecting charset: " + e.getMessage(), e);
+            FontFix.LOGGER.error("Error while detecting charset: " + e.getMessage(), e);
         }
         return "NONE";
     }

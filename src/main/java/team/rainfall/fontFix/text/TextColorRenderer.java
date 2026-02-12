@@ -7,7 +7,7 @@ import aoc.kingdoms.lukasz.textures.ImageManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.config.ColorConfig;
 import team.rainfall.fontFix.utils.ColorUtil;

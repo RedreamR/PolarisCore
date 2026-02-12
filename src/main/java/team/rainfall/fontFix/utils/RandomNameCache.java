@@ -4,8 +4,9 @@ import aoc.kingdoms.lukasz.jakowski.FileManager;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.fontFix.Config;
+import team.rainfall.fontFix.FontFix;
 
 import java.util.HashMap;
 
@@ -33,7 +34,7 @@ public class RandomNameCache {
                     links.put(s1[0], s1[1]);
                 }
             }catch (Exception e){
-                FinalityLogger.error("Failed to load randNameCache",e);
+                FontFix.LOGGER.error("Failed to load randNameCache",e);
                 Config.getConfig().randNameCache = false;
             }
         }

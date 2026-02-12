@@ -44,7 +44,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
 import team.rainfall.fontFix.Sternstunden;
@@ -251,34 +251,13 @@ public class MainMenu extends Menu {
         buttonElementIDs.add(menuElements.size() - 1);
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
         int statsW = CFG.BUTTON_WIDTH;
-        if (FileManager.loadFile("game/Multiplayer.txt").exists()) {
-            menuElements.add(new ButtonGame2Sparks_Hovered(Game.lang.get("Campaign"), 1, -1, this.iXPos + paddingLeft, buttonY, (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, true) {
-                public void actionElement() {
-                    Game.menuManager.setViewID(View.SCENARIOS_CAMPAIGN);
-                    Game.menuManager.setOrderOfMenu_Scenarios();
-                }
-            });
-            buttonElementIDs.add(menuElements.size() - 1);
-            menuElements.add(new ButtonGame2Sparks_Hovered(Game.lang.get("Multiplayer"), 1, -1, this.iXPos + paddingLeft + CFG.PADDING + (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, buttonY, (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, true) {
-                public void actionElement() {
-                    try {
-                        MenuManager.class.getDeclaredMethod("setCustomViewID", String.class).invoke(Game.menuManager, "MP_Main");
-                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                        FinalityLogger.error("Resonance ERR", e);
-                        Game.menuManager.addToast_Error("Resonance is not installed");
-                    }
-                }
-            });
-            buttonElementIDs.add(menuElements.size() - 1);
-        } else {
-            menuElements.add(new ButtonGame2Sparks_Hovered(Game.lang.get("Campaign"), 1, -1, this.iXPos + paddingLeft, buttonY, this.iWidth - paddingLeft * 2, true) {
-                public void actionElement() {
-                    Game.menuManager.setViewID(View.SCENARIOS_CAMPAIGN);
-                    Game.menuManager.setOrderOfMenu_Scenarios();
-                }
-            });
-            buttonElementIDs.add(menuElements.size() - 1);
-        }
+        menuElements.add(new ButtonGame2Sparks_Hovered(Game.lang.get("Campaign"), 1, -1, this.iXPos + paddingLeft, buttonY, (this.iWidth - paddingLeft * 2 - CFG.PADDING) / 2, true) {
+            public void actionElement() {
+                Game.menuManager.setViewID(View.SCENARIOS_CAMPAIGN);
+                Game.menuManager.setOrderOfMenu_Scenarios();
+            }
+        });
+        buttonElementIDs.add(menuElements.size() - 1);
 
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 2;
         menuElements.add(new ButtonGame2(Game.lang.get("LoadGame"), 1, -1, this.iXPos + paddingLeft, buttonY, this.iWidth - paddingLeft * 2, true) {

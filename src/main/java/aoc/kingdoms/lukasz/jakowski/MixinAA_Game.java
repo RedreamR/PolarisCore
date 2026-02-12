@@ -6,10 +6,11 @@ import aoc.kingdoms.lukasz.map.province.ProvinceDraw;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.finality.loader.ParamParser;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
+import team.rainfall.fontFix.FontFix;
 
 import java.lang.reflect.Field;
 
@@ -28,7 +29,7 @@ public class MixinAA_Game extends ApplicationAdapter {
 
         }
         if (CFG.isDesktop() && !disableSteamAPI) {
-            FinalityLogger.debug("Steam init");
+            FontFix.LOGGER.debug("Steam init");
             SteamManager.init();
             SteamManager.loadSubscribedItems();
             SteamManager.userStats.requestCurrentStats();

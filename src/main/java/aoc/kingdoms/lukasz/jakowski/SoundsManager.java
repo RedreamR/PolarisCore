@@ -12,6 +12,11 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
+import games.rednblack.miniaudio.MASound;
+import games.rednblack.miniaudio.MiniAudio;
+import games.rednblack.miniaudio.gdxaudio.GdxMAMusic;
+import games.rednblack.miniaudio.gdxaudio.GdxMiniAudio;
+import games.rednblack.miniaudio.loader.MASoundLoader;
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
 import team.rainfall.fontFix.utils.MP3DurationParser;
@@ -148,7 +153,7 @@ public class SoundsManager {
     public int iDiplomacyButton = 0;
     public int iEconomy = 0;
     public int iIncreaseManpower = 0;
-
+    private GdxMiniAudio miniAudio;
 
     public short musicPlayed = 0;
 
@@ -186,6 +191,7 @@ public class SoundsManager {
         }
     }
     public SoundsManager() {
+        miniAudio = new GdxMiniAudio();
         SOUND_CLICK_MAIN = this.addSoundSFX("click." + getFileExtension());
         SOUND_CLICK_MAIN2 = this.addSoundSFX("click." + getFileExtension());
         SOUND_CLICK2 = this.addSound("click2." + getFileExtension());
@@ -342,14 +348,15 @@ public class SoundsManager {
             this.randomizePlayList();
         }
         try {
-            if (FileManager.loadFile("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()).exists()) {
-                setCurrentMusic(FileManager.loadFile("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()));
+            String s = this.lTitles.get(this.iCurrentMusicID);
+            if (FileManager.loadFile("audio/music/" + s + this.getFileType(s)).exists()) {
+                setCurrentMusic(FileManager.loadFile("audio/music/" + s + this.getFileType(s)));
                 this.currentMusic.setLooping(false);
                 this.currentMusic.play();
                 this.currentMusic.setVolume(musicVolume * masterVolume);
                 this.currentMusic.setOnCompletionListener(music -> SoundsManager.this.loadNextMusic());
-            } else if (Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()).exists()) {
-                setCurrentMusic(Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()));
+            } else if (Gdx.files.local("audio/music/" + s + this.getFileType(s)).exists()) {
+                setCurrentMusic(Gdx.files.local("audio/music/" + s + this.getFileType(s)));
                 this.currentMusic.setLooping(false);
                 this.currentMusic.play();
                 this.currentMusic.setVolume(musicVolume * masterVolume);
@@ -380,14 +387,15 @@ public class SoundsManager {
             }
         }
         try {
-            if (FileManager.loadFile("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()).exists()) {
-                setCurrentMusic(FileManager.loadFile("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()));
+            String s = this.lTitles.get(this.iCurrentMusicID);
+            if (FileManager.loadFile("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType(s)).exists()) {
+                setCurrentMusic(FileManager.loadFile("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType(s)));
                 this.currentMusic.setLooping(false);
                 this.currentMusic.play();
                 this.currentMusic.setVolume(musicVolume * masterVolume);
                 this.currentMusic.setOnCompletionListener(music -> SoundsManager.this.loadNextMusic());
-            } else if (Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()).exists()) {
-                setCurrentMusic(Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()));
+            } else if (Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType(s)).exists()) {
+                setCurrentMusic(Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType(s)));
                 this.currentMusic.setLooping(false);
                 this.currentMusic.play();
                 this.currentMusic.setVolume(musicVolume * masterVolume);
@@ -419,14 +427,14 @@ public class SoundsManager {
                 }
             }
             try {
-                if (FileManager.loadFile("audio/music/" + fileName + this.getFileType()).exists()) {
-                    setCurrentMusic(FileManager.loadFile("audio/music/" + fileName + this.getFileType()));
+                if (FileManager.loadFile("audio/music/" + fileName + this.getFileType(fileName)).exists()) {
+                    setCurrentMusic(FileManager.loadFile("audio/music/" + fileName + this.getFileType(fileName)));
                     this.currentMusic.setLooping(false);
                     this.currentMusic.play();
                     this.currentMusic.setVolume(musicVolume * masterVolume);
                     this.currentMusic.setOnCompletionListener(music -> SoundsManager.this.loadNextMusic());
-                } else if (Gdx.files.local("audio/music/" + fileName + this.getFileType()).exists()) {
-                    setCurrentMusic(Gdx.files.local("audio/music/" + fileName + this.getFileType()));
+                } else if (Gdx.files.local("audio/music/" + fileName + this.getFileType(fileName)).exists()) {
+                    setCurrentMusic(Gdx.files.local("audio/music/" + fileName + this.getFileType(fileName)));
                     this.currentMusic.setLooping(false);
                     this.currentMusic.play();
                     this.currentMusic.setVolume(musicVolume * masterVolume);
@@ -453,14 +461,16 @@ public class SoundsManager {
             this.WAR_MUSIC_LAST_TIME_PLAYED = CFG.currentTimeMillis;
 
             try {
-                setCurrentMusic(FileManager.loadFile("audio/music/" + this.lTitlesWar.get(Game.oR.nextInt(this.lTitlesWar.size())) + this.getFileType()));
+                String s = this.lTitlesWar.get(Game.oR.nextInt(this.lTitlesWar.size()));
+                setCurrentMusic(FileManager.loadFile("audio/music/" + this.lTitlesWar.get(Game.oR.nextInt(this.lTitlesWar.size())) + this.getFileType(s)));
                 this.currentMusic.setLooping(false);
                 this.currentMusic.play();
                 this.currentMusic.setVolume(musicVolume * masterVolume);
                 this.currentMusic.setOnCompletionListener(music -> SoundsManager.this.loadNextMusic());
             } catch (GdxRuntimeException var4) {
                 try {
-                    setCurrentMusic(Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()));
+                    String  s = this.lTitles.get(this.iCurrentMusicID);
+                    setCurrentMusic(Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType(s)));
                     this.currentMusic.setLooping(false);
                     this.currentMusic.play();
                     this.currentMusic.setVolume(musicVolume * masterVolume);
@@ -481,7 +491,7 @@ public class SoundsManager {
         this.iCurrentMusicID = id;
 
         try {
-            setCurrentMusic(FileManager.loadFile("audio/music/" + sTitle + this.getFileType()));
+            setCurrentMusic(FileManager.loadFile("audio/music/" + sTitle + this.getFileType(sTitle)));
             this.currentMusic.setLooping(false);
             this.currentMusic.play();
             this.currentMusic.setVolume(musicVolume * masterVolume);
@@ -489,7 +499,7 @@ public class SoundsManager {
             InGame_Audio.shouldRefresh = true;
         } catch (GdxRuntimeException var6) {
             try {
-                setCurrentMusic(Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType()));
+                setCurrentMusic(Gdx.files.local("audio/music/" + this.lTitles.get(this.iCurrentMusicID) + this.getFileType(this.lTitles.get(this.iCurrentMusicID))));
                 this.currentMusic.setLooping(false);
                 this.currentMusic.play();
                 this.currentMusic.setVolume(musicVolume * masterVolume);
@@ -515,7 +525,14 @@ public class SoundsManager {
         }
 
     }
-
+    public String getFileType(String s) {
+        //Just ignore ios.No one like it.
+        //return CFG.isIOS() ? ".mp3" : ".ogg";
+        if(s.endsWith(".flac") || s.endsWith(".mp3")){
+            return "";
+        }
+        return ".ogg";
+    }
     public String getFileType() {
         //Just ignore ios.No one like it.
         //return CFG.isIOS() ? ".mp3" : ".ogg";
@@ -540,12 +557,12 @@ public class SoundsManager {
 
     public final int addSoundSFX(String fileName) {
         try {
-            this.lSounds.add(Gdx.audio.newSound(FileManager.loadFile("audio/sfx/" + fileName)));
+            this.lSounds.add(miniAudio.newSound(FileManager.loadFile("audio/sfx/" + fileName)));
         } catch (GdxRuntimeException ex) {
             ex.printStackTrace();
 
             try {
-                this.lSounds.add(Gdx.audio.newSound(Gdx.files.local("audio/sfx/" + fileName)));
+                this.lSounds.add(miniAudio.newSound(Gdx.files.local("audio/sfx/" + fileName)));
             } catch (GdxRuntimeException var4) {
                 ex.printStackTrace();
             }
@@ -556,12 +573,12 @@ public class SoundsManager {
 
     public final int addSoundSFXRandom(String fileName) {
         try {
-            this.lSoundsRandom.add(Gdx.audio.newSound(FileManager.loadFile("audio/random/" + fileName)));
+            this.lSoundsRandom.add(miniAudio.newSound(FileManager.loadFile("audio/random/" + fileName)));
         } catch (GdxRuntimeException ex) {
             ex.printStackTrace();
 
             try {
-                this.lSoundsRandom.add(Gdx.audio.newSound(Gdx.files.local("audio/random/" + fileName)));
+                this.lSoundsRandom.add(miniAudio.newSound(Gdx.files.local("audio/random/" + fileName)));
             } catch (GdxRuntimeException var4) {
                 ex.printStackTrace();
             }
@@ -623,16 +640,16 @@ public class SoundsManager {
 
     }
     public final void setCurrentMusic(FileHandle fileHandle){
-        currentMusic =  Gdx.audio.newMusic(fileHandle);
+        currentMusic =  miniAudio.newMusic(fileHandle);
         try {
             byte[] header = new byte[64];
             int read = fileHandle.readBytes(header, 0, header.length);
-            if ("OggS".equals(new String(header, 0, 4))) {
-                currentMusicDuration = (int) OggDurationParser.getOggDuration(fileHandle);
+            if(currentMusic instanceof GdxMAMusic){
+                GdxMAMusic music = (GdxMAMusic) currentMusic;
+                currentMusicDuration = (int) music.getLength();
                 currentMusicDuraStr = FontFix.formatSecondsToMinutes(currentMusicDuration);
             }else {
-                currentMusicDuration = (int) MP3DurationParser.getMP3Duration(fileHandle);
-                currentMusicDuraStr = FontFix.formatSecondsToMinutes(currentMusicDuration);
+                currentMusicDuration = 0;
             }
             CFG.LOG("[PolarisCore-Radio]","tag loaded,dura "+currentMusicDuration);
         } catch (Exception e) {

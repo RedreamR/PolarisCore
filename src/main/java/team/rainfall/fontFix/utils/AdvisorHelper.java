@@ -7,7 +7,8 @@ import aoc.kingdoms.lukasz.map.civilization.CivilizationBonuses;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import team.rainfall.finality.FinalityLogger;
+import team.rainfall.fontFix.FontFix;
+
 
 import java.util.ArrayList;
 
@@ -65,7 +66,7 @@ public class AdvisorHelper {
                 return (CivilizationBonuses) obj;
             }
         } catch (IllegalAccessException | NoSuchFieldException e) {
-            FinalityLogger.error("",e);
+            FontFix.LOGGER.error("",e);
         }
         return null;
     }

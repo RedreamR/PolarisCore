@@ -10,7 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.finality.luminosity2.CallbackInfo;
 import team.rainfall.finality.luminosity2.annotations.Inject;
 import team.rainfall.finality.luminosity2.annotations.Mixin;
@@ -128,7 +128,7 @@ public class MixinMapScenarios {
                 }
             }
         } catch (Exception e){
-            FinalityLogger.error("FontFix.rulerDesc Err ",e);
+            FontFix.LOGGER.error("FontFix.rulerDesc Err ",e);
             return null;
         }
         return null;

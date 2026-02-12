@@ -20,4 +20,5 @@ The rest of the code is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-
 ### Additional terms under GPLv3 Section 7
 
 1. You must not remove the copyright declaration displayed in the software.
+
 2. You may not use the names of the authors or copyright holders to endorse or promote products derived from this software without prior written permission.

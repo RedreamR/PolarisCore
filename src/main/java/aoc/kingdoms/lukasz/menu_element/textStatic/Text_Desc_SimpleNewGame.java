@@ -13,16 +13,23 @@ import aoc.kingdoms.lukasz.textures.ImageManager;
 import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import team.rainfall.finality.FinalityLogger;
+
+import team.rainfall.fontFix.FontFix;
 import team.rainfall.fontFix.text.TextColorRenderer;
 import team.rainfall.fontFix.text.Word;
 
 public class Text_Desc_SimpleNewGame extends Text_Desc {
     int iLineSize = 0;
     int maxLineSize = 3;
+    public static int mls_static = -1;
+    public boolean extraRender = true;
     public Text_Desc_SimpleNewGame(String sText, int iPosX, int iPosY, int iWidth) {
         super(sText, iPosX, iPosY, iWidth);
-
+        FontFix.LOGGER.debug("MLS STATIC "+mls_static);
+        if(mls_static > 0) {
+            maxLineSize = mls_static;
+            mls_static = -1;
+        }
         if (!NewGameCiv.expandCivDesc) {
             if (this.ffLines.size() > maxLineSize) {
                 iLineSize = maxLineSize;
@@ -37,6 +44,7 @@ public class Text_Desc_SimpleNewGame extends Text_Desc {
     }
 
     public void refresh(){
+        FontFix.LOGGER.debug("TDSN Refresh");
         if (!NewGameCiv.expandCivDesc) {
             if (this.ffLines.size() > maxLineSize) {
                 iLineSize = maxLineSize;

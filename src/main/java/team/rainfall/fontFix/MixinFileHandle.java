@@ -1,6 +1,6 @@
 package team.rainfall.fontFix;
 
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import com.badlogic.gdx.files.FileHandle;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
@@ -41,11 +41,11 @@ public abstract class MixinFileHandle {
                         break;
                 }
                 readCount++;
-                //FinalityLogger.debug("PC.charset "+this.path()+";"+charset+";"+readCount);
+                //FontFix.LOGGER.debug("PC.charset "+this.path()+";"+charset+";"+readCount);
 
             }catch (NullPointerException ignored){
             } catch (Throwable throwable) {
-                FinalityLogger.error("Error while detecting charset", throwable);
+                FontFix.LOGGER.error("Error while detecting charset", throwable);
             }
         }
         return this.readString(charset);

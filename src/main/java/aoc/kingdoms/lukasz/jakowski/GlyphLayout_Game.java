@@ -7,7 +7,7 @@ package aoc.kingdoms.lukasz.jakowski;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
 import team.rainfall.fontFix.utils.Consts;
@@ -42,7 +42,7 @@ public class GlyphLayout_Game {
                 return false;
             }
         } catch (Exception var4) {
-            FinalityLogger.error("ERR setText ",var4);
+            FontFix.LOGGER.error("ERR setText ",var4);
             return false;
         }
     }

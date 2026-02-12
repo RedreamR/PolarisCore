@@ -1,7 +1,7 @@
 package team.rainfall.fontFix;
 
 import com.badlogic.gdx.files.FileHandle;
-import team.rainfall.finality.FinalityLogger;
+ 
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -16,7 +16,7 @@ public class CompactScale {
         System.gc();
     }
     public static CompactScale readCompactFile(FileHandle fileHandle) throws IOException {
-        FinalityLogger.debug("READ FROM COMPACT FILE");
+        FontFix.LOGGER.debug("READ FROM COMPACT FILE");
         ArrayList<Scale> scales = new ArrayList<>();
         try (DataInputStream dis = new DataInputStream(Files.newInputStream(fileHandle.file().toPath()))) {
             // 读取单元数量 (2字节)
@@ -28,7 +28,7 @@ public class CompactScale {
 
             // 读取所有单元
             for (int i = 0; i < unitCount; i++) {
-                //FinalityLogger.debug("LOAD ID "+i+",ADDR "+dis.available());
+                //FontFix.LOGGER.debug("LOAD ID "+i+",ADDR "+dis.available());
                 // 读取单元ID (2字节)
                 byte[] idBytes = new byte[2];
                 dis.readFully(idBytes);
@@ -45,7 +45,7 @@ public class CompactScale {
 
                 // 读取数据段
                 byte[] data = new byte[length];
-                //FinalityLogger.debug("ADDR2 "+dis.available()+" length"+length);
+                //FontFix.LOGGER.debug("ADDR2 "+dis.available()+" length"+length);
                 dis.readFully(data);
 
                 // 创建Scale对象并添加到列表

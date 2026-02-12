@@ -6,7 +6,7 @@ import aoc.kingdoms.lukasz.menu.View;
 import aoc.kingdoms.lukasz.menus.InitGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 
 @Mixin(mixinClass =  "aoc.kingdoms.lukasz.jakowski.AA_Game$1")
@@ -23,7 +23,7 @@ public class MixinAA_Game$1 {
                 return true;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.R)){
-                FinalityLogger.debug("Try to reload");
+                FontFix.LOGGER.debug("Try to reload");
                 InitGame.fromViewID = Game.menuManager.getViewID();
                 InitGame.reloadOnResume = true;
                 InitGame.fullReload = true;

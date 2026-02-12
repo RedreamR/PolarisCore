@@ -6,7 +6,7 @@ import aoc.kingdoms.lukasz.menu.Colors;
 import aoc.kingdoms.lukasz.menus.MainMenu;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Json;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.fontFix.config.*;
 
 import java.lang.reflect.Field;
@@ -26,7 +26,7 @@ public class Config {
                 json.setIgnoreUnknownFields(true);
                 elementColorsConfig = json.fromJson(ElementColorsConfig.class, FileManager.loadFile("rainfall/polaris_core_colors.json"));
             } catch (Exception e) {
-                FinalityLogger.error("Failed to load element color config file", e);
+                FontFix.LOGGER.error("Failed to load element color config file", e);
                 elementColorsConfig = new ElementColorsConfig();
             }
         }
@@ -49,7 +49,7 @@ public class Config {
                 json.setIgnoreUnknownFields(true);
                 gradientConfig = json.fromJson(GradientConfig.class, FileManager.loadFile("rainfall/polaris_core_grad.json"));
             } catch (Exception e) {
-                FinalityLogger.error("Failed to load anim config file", e);
+                FontFix.LOGGER.error("Failed to load anim config file", e);
                 gradientConfig = new GradientConfig();
             }
         }
@@ -63,7 +63,7 @@ public class Config {
                 json.setIgnoreUnknownFields(true);
                 animationConfig = json.fromJson(AnimationConfig.class, FileManager.loadFile("rainfall/polaris_core_anim.json"));
             } catch (Exception e) {
-                FinalityLogger.error("Failed to load anim config file", e);
+                FontFix.LOGGER.error("Failed to load anim config file", e);
                 animationConfig = new AnimationConfig();
             }
         }
@@ -83,7 +83,7 @@ public class Config {
                     }
                 }
             } catch (Exception e) {
-                FinalityLogger.error("Failed to load config file", e);
+                FontFix.LOGGER.error("Failed to load config file", e);
                 buildDefaultConfig();
             }
         }

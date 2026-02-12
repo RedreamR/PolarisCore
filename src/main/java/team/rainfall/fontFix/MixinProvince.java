@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.finality.luminosity2.annotations.Shadow;
 
@@ -41,7 +41,7 @@ public class MixinProvince {
             FileHandle fileHandle = FileManager.loadFile(var10000.append(this.iLevelOfPort == -4 ? 1 : (int)((float)Game.mapBG.iMapScale / Game.mapBG.iMapExtraScale)).append("/").append("compactScale").toString());
             FontFix.compactScale = CompactScale.readCompactFile(fileHandle);
         } catch (Exception e) {
-            FinalityLogger.error("COMPACT LOAD ERROR",e);
+            FontFix.LOGGER.error("COMPACT LOAD ERROR",e);
             FontFix.tried = true;
         }
     }
@@ -56,7 +56,7 @@ public class MixinProvince {
             }
             if(FontFix.compactScale != null){
                 try {
-                    //FinalityLogger.debug("COMPACT LOADED " + this.iProvinceID);
+                    //FontFix.LOGGER.debug("COMPACT LOADED " + this.iProvinceID);
                     byte[] data = null;
                     for (CompactScale.Scale scale : FontFix.compactScale.scales) {
                         if(scale.getId() == this.iProvinceID){

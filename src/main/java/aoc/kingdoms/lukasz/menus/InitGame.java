@@ -54,7 +54,7 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
-import team.rainfall.finality.FinalityLogger;
+ 
 
 import team.rainfall.fluctlight.Fluctlight;
 import team.rainfall.fluctlight.Task;
@@ -867,7 +867,7 @@ public class InitGame extends Menu {
                             Game.mapScale.setEnableScaling(true);
                             Game.setUpdateProvincesInView(true);
                             CivilizationRegionsManager.updateRegionsInView = true;
-                            FinalityLogger.info("Loaded with " + (System.currentTimeMillis() - timer) + "ms");
+                            FontFix.LOGGER.info("Loaded with " + (System.currentTimeMillis() - timer) + "ms");
                             Game.menuManager.setViewIDWithoutAnimation(View.MAINMENU);
                             this.justOnce = false;
                             Game.gameThread.start();

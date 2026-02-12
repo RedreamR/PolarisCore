@@ -3,7 +3,8 @@ package team.rainfall.fontFix.text;
 import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import aoc.kingdoms.lukasz.textures.Image;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import team.rainfall.finality.FinalityLogger;
+import team.rainfall.fontFix.FontFix;
+
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -198,7 +199,7 @@ public class TextProcessor {
                     return TextFuncService.formatPlayer(s);
             }
         }catch (Throwable e){
-            FinalityLogger.error("[PolarisCore] Failed to format text: " + s, e);
+            FontFix.LOGGER.error("Failed to format text: " + s, e);
         }
         return s;
     }

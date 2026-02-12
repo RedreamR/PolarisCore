@@ -14,7 +14,7 @@ import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.fontFix.TextSplitter;
 import team.rainfall.fontFix.text.Line;
 import team.rainfall.fontFix.text.TextColorRenderer;

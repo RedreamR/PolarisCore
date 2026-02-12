@@ -31,7 +31,8 @@ import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
-import team.rainfall.finality.FinalityLogger;
+
+import team.rainfall.fontFix.FontFix;
 import team.rainfall.fontFix.NationalSpirit;
 import team.rainfall.fontFix.NationalSpiritManager;
 
@@ -52,7 +53,7 @@ public class InGame_CivBonuses extends Menu {
         int buttonYPadding = CFG.PADDING;
         int maxIconW = ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 2;
         int buttonH = CFG.TEXT_HEIGHT + CFG.PADDING * 6;
-        FinalityLogger.debug("NS!!!222");
+        FontFix.LOGGER.debug("NS!!!222");
         if (nationSpirit) {
             int buttonW = (menuWidth - paddingLeft * 2 - CFG.PADDING * 3) / 5;
             int buttonH2 = (int)((float)buttonW * 1.1F);

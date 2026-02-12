@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class MixinRenderer {
 
         float texSize = charset.getBytes().length;
         int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
-        //FinalityLogger.debug("FontFix.textureSize = " + texSize2);
+        //FontFix.LOGGER.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
         if (!CFG.isDesktop() && !FontFix.getDI()) {
             FreeTypeFontGenerator.setMaxTextureSize(Config.getConfig().extendCharset ? 8192 : 4096);
@@ -82,7 +82,7 @@ public class MixinRenderer {
     public static final void loadFontBorder(String sFont, String charset) {
         float texSize = charset.getBytes().length;
         int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
-        FinalityLogger.debug("FontFix.textureSize = " + texSize2);
+        FontFix.LOGGER.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
         if (!CFG.isDesktop()) FreeTypeFontGenerator.setMaxTextureSize(4096);
         FreeTypeFontGenerator generator = null;

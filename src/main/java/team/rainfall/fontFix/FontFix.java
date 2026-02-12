@@ -6,10 +6,15 @@ import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import aoc.kingdoms.lukasz.map.civilization.save.CivData3;
 import aoc.kingdoms.lukasz.menusInGame.InGame_CivBonuses;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import team.rainfall.finality.FinalityLogger;
+
+import games.rednblack.miniaudio.MiniAudio;
+import games.rednblack.miniaudio.gdxaudio.GdxMAMusic;
+import games.rednblack.miniaudio.gdxaudio.GdxMiniAudio;
+import team.rainfall.finality.api.logging.Logger;
 import team.rainfall.fontFix.utils.Consts;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -41,7 +46,7 @@ public class FontFix {
     public static final boolean fakeAndroid = false;
     //玄星的定制提示
     public static final boolean isXuanxing = false;
-
+    public static final Logger LOGGER = Logger.getLogger("PolarisCore");
     public static int manpowerSid = -1;
     public static int musicIconID = -1;
     //渲染线程
@@ -54,10 +59,6 @@ public class FontFix {
     public static final String CORE_VERSION = "4.2.0";
     public static final String POLARIS_VERSION = "2.13";
     public static int isLocalStorage = 0;
-    public static boolean getGlyphExist(BitmapFont.Glyph[][] glyphs,char ch) {
-        BitmapFont.Glyph[] page = glyphs[ch / 512];
-        return page != null;
-    }
     public static final Lock lock = new ReentrantLock();
     public static final Condition finished = lock.newCondition();
     public static boolean desktopIncremental = false;
@@ -70,8 +71,6 @@ public class FontFix {
     }
     public static GlyphLayout getGlyphLayoutData(BitmapFont font, CharSequence str) {
         if (Thread.currentThread().getName().contains(Consts.GL_THREAD)) {
-            // 如果已经在GL线程，直接执行，不需要异步
-
             GlyphLayout layout = new GlyphLayout();
             layout.setText(font, str);
             return layout;
@@ -100,36 +99,6 @@ public class FontFix {
             lock.unlock();
         }
     }
-    public static void generateChar(char c,int id) {
-        if(Thread.currentThread().getName().contains("GL")) return;
-        if(getGlyphExist(Renderer.fontMain.get(id).getData().glyphs,c)) return;
-        lock.lock();
-        Gdx.app.postRunnable(() -> {
-            try {
-                Renderer.fontMain.get(id).getData().getGlyph(c);
-            }catch (Exception ignored){
-
-            }
-            lock.unlock();
-        });
-    }
-
-    public static void addActiveArmy(int nProvinceID, String sKey) {
-        try {
-            int tID = Game.getProvince(nProvinceID).getArmyKeyID(sKey);
-            if (tID >= 0) {
-                Game.HoveredArmy nHA = new Game.HoveredArmy();
-                nHA.key = Game.getProvince(nProvinceID).getArmy(tID).key;
-                nHA.iCivID = Game.getProvince(nProvinceID).getArmy(tID).civID;
-                nHA.iProvinceID = nProvinceID;
-                nHA.iArmyID = tID;
-                Game.addActiveArmy(nHA);
-            } else {
-                FinalityLogger.debug("AAA Fail");
-            }
-        } catch (IndexOutOfBoundsException var4) {
-        }
-    }
 
     public static boolean isXuanxing() {
         if (CFG.isDesktop() && !fakeAndroid) return false;
@@ -142,7 +111,7 @@ public class FontFix {
             int i = (int) Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("getGoalID").invoke(null);
             return i > -2;
         } catch (Exception e) {
-            FinalityLogger.error("GoalERR ", e);
+            FontFix.LOGGER.error("GoalERR ", e);
             return false;
         }
     }
@@ -186,7 +155,7 @@ public class FontFix {
                     Gdx.app.getGraphics().setTitle("Age of History 3");
                 }
             } catch (Exception ignored) {
-                FinalityLogger.warn("Failed to set custom title");
+                LOGGER.warn("Failed to set custom title");
             }
             titleSet = true;
         }

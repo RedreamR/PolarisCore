@@ -8,7 +8,7 @@ import aoc.kingdoms.lukasz.jakowski.setting.SettingsManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.finality.luminosity2.annotations.Mixin;
 import team.rainfall.fontFix.FontFix;
 

@@ -34,7 +34,7 @@ public class NationalSpiritManager {
                 nsImages.put(nationalSpirit.id, i);
             }
         } catch (Exception e) {
-            Gdx.app.error("PolarisCore", "Failed to load NS", e);
+            FontFix.LOGGER.error("Failed to load National Spirit",e);
         }
     }
 

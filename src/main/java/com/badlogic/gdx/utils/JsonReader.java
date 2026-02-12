@@ -3,9 +3,10 @@
 package com.badlogic.gdx.utils;
 
 import com.badlogic.gdx.files.FileHandle;
-import team.rainfall.finality.FinalityLogger;
+ 
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.EncodingDetector;
+import team.rainfall.fontFix.FontFix;
 
 import java.io.InputStreamReader;
 import java.io.InputStream;
@@ -92,7 +93,7 @@ public class JsonReader implements BaseJsonReader {
             }
         } catch (NullPointerException ignored) {
         } catch (Throwable throwable) {
-            FinalityLogger.error("Error while detecting charset", throwable);
+            FontFix.LOGGER.error("Error while detecting charset", throwable);
         }
 
         if (charset == null) {
@@ -152,7 +153,7 @@ public class JsonReader implements BaseJsonReader {
             }
         } catch (NullPointerException ignored) {
         } catch (Throwable throwable) {
-            FinalityLogger.error("Error while detecting charset", throwable);
+            FontFix.LOGGER.error("Error while detecting charset", throwable);
         }
         if (charset == null) {
             charset = "UTF-8";

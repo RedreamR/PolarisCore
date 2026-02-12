@@ -49,12 +49,15 @@ public abstract class MixinCivilizationRegion {
     public static float maxCivNameScale = 16.0F; // 字体最大缩放限制
     public static int MAX_RETRIES = 1000;
     public static float distanceScale = 0.65f;
-    protected final float buildScaleOfText(int nFontID) {
-        float outTextH = 1.0F;
+    public static void loadValue(){
         maxCivNameScale = Config.getConfig().maxCivNameScale;
         distanceScale = Config.getConfig().distanceScale;
         scaleStep = Config.getConfig().scaleStep;
         MAX_RETRIES = Config.getConfig().maxCivNameTries;
+    }
+    protected final float buildScaleOfText(int nFontID) {
+        loadValue();
+        float outTextH = 1.0F;
         try {
             if (this.shortestLine.size() > 1) {
                 float iDistance = (float) Math.sqrt(Math.pow(Game.getProvince(this.lProvinces.get(this.shortestLine.get(0))).iCenterShiftX - Game.getProvince(this.lProvinces.get(this.shortestLine.get(1))).iCenterShiftX, 2.0F) + Math.pow(Game.getProvince(this.lProvinces.get(this.shortestLine.get(0))).iCenterShiftY - Game.getProvince(this.lProvinces.get(this.shortestLine.get(1))).iCenterShiftY, 2.0F));
@@ -141,6 +144,7 @@ public abstract class MixinCivilizationRegion {
     public abstract void buildDrawData(int nFontID);
 
     public final boolean buildRegionPath() {
+        loadValue();
         try {
             this.drawName = false;
             this.buildMinMaxBounds();

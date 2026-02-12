@@ -1,6 +1,7 @@
 package team.rainfall.fontFix.utils;
 
-import team.rainfall.finality.FinalityLogger;
+
+import team.rainfall.fontFix.FontFix;
 
 public class Timer {
     private static long timer = 0;
@@ -17,10 +18,10 @@ public class Timer {
     }
     public static void end(){
         if(isNanotime){
-            FinalityLogger.debug("FontFix."+tag+" spending "+(System.nanoTime() - timer)+"ns");
+            FontFix.LOGGER.debug("FontFix."+tag+" spending "+(System.nanoTime() - timer)+"ns");
             System.nanoTime();
         }else {
-            FinalityLogger.debug("FontFix."+tag+" spending "+(System.currentTimeMillis() - timer)+"ms");
+            FontFix.LOGGER.debug("FontFix."+tag+" spending "+(System.currentTimeMillis() - timer)+"ms");
             System.currentTimeMillis();
         }
     }
