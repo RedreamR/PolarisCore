@@ -71,7 +71,7 @@ public class GdxMiniAudio implements Audio {
 
     public Music newMusic(FileHandle file) {
         boolean external = file.type() == FileType.Absolute;
-        return new GdxMAMusic(this.miniAudio.createSound(file.path(), (short)0, (MAGroup)null, external), this);
+        return new GdxMAMusic(this.miniAudio.createSound(file.path(), (short)0, null, external), this);
     }
 
     public boolean switchOutputDevice(String deviceIdentifier) {

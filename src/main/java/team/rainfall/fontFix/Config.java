@@ -6,7 +6,7 @@ import aoc.kingdoms.lukasz.menu.Colors;
 import aoc.kingdoms.lukasz.menus.MainMenu;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Json;
- 
+
 import team.rainfall.fontFix.config.*;
 
 import java.lang.reflect.Field;
@@ -16,9 +16,12 @@ public class Config {
     private static AnimationConfig animationConfig = null;
     private static GradientConfig gradientConfig = null;
     private static ElementColorsConfig elementColorsConfig = null;
-    public static boolean isConfigLoaded(){
+    private static UiConfig uiConfig = null;
+
+    public static boolean isConfigLoaded() {
         return configData != null;
     }
+
     public static void applyElementColorsConfig() {
         if (elementColorsConfig == null) {
             try {
@@ -38,7 +41,8 @@ public class Config {
                 String colorHex = (String) declaredField.get(elementColorsConfig);
                 Color color1 = Color.valueOf(colorHex);
                 Colors.class.getDeclaredField(name).set(null, color1);
-            } catch (IllegalAccessException | NoSuchFieldException ignored) {}
+            } catch (IllegalAccessException | NoSuchFieldException ignored) {
+            }
         }
     }
 
@@ -70,6 +74,20 @@ public class Config {
         return animationConfig;
     }
 
+    public static UiConfig getUiConfig() {
+        if (uiConfig == null) {
+            try {
+                Json json = new Json();
+                json.setIgnoreUnknownFields(true);
+                uiConfig = json.fromJson(UiConfig.class, FileManager.loadFile("rainfall/polaris_core_ui.json"));
+            } catch (Exception e) {
+                FontFix.LOGGER.error("Failed to load ui config file", e);
+                uiConfig = new UiConfig();
+            }
+        }
+        return uiConfig;
+    }
+
     public static PolarisConfigData getConfig() {
         if (configData == null) {
             try {
@@ -77,7 +95,7 @@ public class Config {
                 json.setIgnoreUnknownFields(true);
                 json.setElementType(PolarisConfigData.class, "links", LinkConfig.class);
                 configData = json.fromJson(PolarisConfigData.class, FileManager.loadFile("rainfall/polaris_core.json"));
-                if(CFG.isAndroid() || FontFix.fakeAndroid) {
+                if (CFG.isAndroid() || FontFix.fakeAndroid) {
                     if (Sternstunden.getPackageString().equals("age.of.history3.polaris") || Sternstunden.getPackageString().equals("MoonIsBrightTonight0")) {
                         configData.splashScreen.add(new SplashScreenConfig("polaris", 5000));
                     }

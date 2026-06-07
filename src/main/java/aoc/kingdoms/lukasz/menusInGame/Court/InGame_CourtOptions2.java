@@ -476,7 +476,7 @@ public class InGame_CourtOptions2 extends Menu {
         buttonY += menuElements.get(menuElements.size() - 1).getHeight();
         menuElements.add(new SpaceHorizontal(buttonX, buttonY, buttonW_Draw));
         buttonY += menuElements.get(menuElements.size() - 1).getHeight();
-        menuElements.add(new IconCourt(Game.lang.get("Manpower"), FontFix.manpowerSid != -1 ? FontFix.manpowerSid : Game_Calendar.IMG_MANPOWER_UP, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
+        menuElements.add(new IconCourt(Game.lang.get("Manpower"), FontFix.manpowerSid > 0 ? FontFix.manpowerSid : Game_Calendar.IMG_MANPOWER, buttonX, buttonY, buttonW, buttonH, tID++, buttonW_Draw) {
             public void actionElement() {
                 if (this.id != InGame_CourtOptions.iActiveID) {
                     InGame_CourtOptions.iActiveID = this.id;
@@ -515,7 +515,7 @@ public class InGame_CourtOptions2 extends Menu {
             }
 
             public int getImageID() {
-                return Game_Calendar.IMG_MANPOWER;
+                return FontFix.manpowerSid > 0 ? FontFix.manpowerSid : Game_Calendar.IMG_MANPOWER;
             }
 
             public int getSFX() {
@@ -855,16 +855,18 @@ public class InGame_CourtOptions2 extends Menu {
     }
 
     public static void actionMissions() {
-        if (Game.menuManager.getVisibleInGame_TechnologyTree()) {
-            Game.menuManager.setVisibleInGame_TechnologyTree(false);
-        } else {
-            Game.menuManager.rebuildInGame_MissionTree(false, true);
-            Game.addSimpleTask(new Game.SimpleTask("setOrderOfMenu_TechnologyTree") {
-                public void update() {
-                    Game.menuManager.setOrderOfMenu_TechnologyTree();
-                }
-            });
-        }
+//        if (Game.menuManager.getVisibleInGame_TechnologyTree()) {
+//            Game.menuManager.setVisibleInGame_TechnologyTree(false);
+//        } else {
+//            Game.menuManager.rebuildInGame_MissionTree(false, true);
+//            Game.addSimpleTask(new Game.SimpleTask("setOrderOfMenu_TechnologyTree") {
+//                public void update() {
+//                    Game.menuManager.setOrderOfMenu_TechnologyTree();
+//                }
+//            });
+//        }
+        Game.menuManager.rebuildInGame_CourtMissions();
+        Game.menuManager.setVisibleInGame_Court(true);
 
     }
 }

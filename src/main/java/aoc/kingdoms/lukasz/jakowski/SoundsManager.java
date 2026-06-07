@@ -17,10 +17,12 @@ import games.rednblack.miniaudio.MiniAudio;
 import games.rednblack.miniaudio.gdxaudio.GdxMAMusic;
 import games.rednblack.miniaudio.gdxaudio.GdxMiniAudio;
 import games.rednblack.miniaudio.loader.MASoundLoader;
+import team.rainfall.finality.FinalityLogger;
 import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
-import team.rainfall.fontFix.utils.MP3DurationParser;
-import team.rainfall.fontFix.utils.OggDurationParser;
+import team.rainfall.fontFix.Sternstunden;
+import team.rainfall.fontFix.utils.Const;
+import team.rainfall.fontFix.utils.MusicPool;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -153,7 +155,7 @@ public class SoundsManager {
     public int iDiplomacyButton = 0;
     public int iEconomy = 0;
     public int iIncreaseManpower = 0;
-    private GdxMiniAudio miniAudio;
+    public GdxMiniAudio miniAudio;
 
     public short musicPlayed = 0;
 
@@ -191,7 +193,12 @@ public class SoundsManager {
         }
     }
     public SoundsManager() {
-        miniAudio = new GdxMiniAudio();
+        if(Config.getConfig().miniAudio){
+            miniAudio = new GdxMiniAudio();
+
+        }else {
+            FinalityLogger.debug("Miniaudio is not enabled");
+        }
         SOUND_CLICK_MAIN = this.addSoundSFX("click." + getFileExtension());
         SOUND_CLICK_MAIN2 = this.addSoundSFX("click." + getFileExtension());
         SOUND_CLICK2 = this.addSound("click2." + getFileExtension());
@@ -521,7 +528,7 @@ public class SoundsManager {
     public final void disposeCurrentMusic() {
         if (this.currentMusic != null) {
             this.currentMusic.stop();
-            this.currentMusic.dispose();
+            MusicPool.POOL.disposeMusic(currentMusic);
         }
 
     }
@@ -554,8 +561,40 @@ public class SoundsManager {
 
         return this.lSounds.size() - 1;
     }
+    public final int addSoundSFX_old(String fileName) {
+        try {
+            this.lSounds.add(Gdx.audio.newSound(FileManager.loadFile("audio/sfx/" + fileName)));
+        } catch (GdxRuntimeException ex) {
+            ex.printStackTrace();
 
+            try {
+                this.lSounds.add(Gdx.audio.newSound(Gdx.files.local("audio/sfx/" + fileName)));
+            } catch (GdxRuntimeException var4) {
+                ex.printStackTrace();
+            }
+        }
+
+        return this.lSounds.size() - 1;
+    }
+    public final int addSoundSFXRandom_old(String fileName) {
+        try {
+            this.lSoundsRandom.add(Gdx.audio.newSound(FileManager.loadFile("audio/random/" + fileName)));
+        } catch (GdxRuntimeException ex) {
+            ex.printStackTrace();
+
+            try {
+                this.lSoundsRandom.add(Gdx.audio.newSound(Gdx.files.local("audio/random/" + fileName)));
+            } catch (GdxRuntimeException var4) {
+                ex.printStackTrace();
+            }
+        }
+
+        return this.lSoundsRandom.size() - 1;
+    }
     public final int addSoundSFX(String fileName) {
+        if(!Config.getConfig().miniAudio) {
+            return addSoundSFX_old(fileName);
+        }
         try {
             this.lSounds.add(miniAudio.newSound(FileManager.loadFile("audio/sfx/" + fileName)));
         } catch (GdxRuntimeException ex) {
@@ -572,6 +611,9 @@ public class SoundsManager {
     }
 
     public final int addSoundSFXRandom(String fileName) {
+        if(!Config.getConfig().miniAudio) {
+            return addSoundSFXRandom_old(fileName);
+        }
         try {
             this.lSoundsRandom.add(miniAudio.newSound(FileManager.loadFile("audio/random/" + fileName)));
         } catch (GdxRuntimeException ex) {
@@ -640,10 +682,12 @@ public class SoundsManager {
 
     }
     public final void setCurrentMusic(FileHandle fileHandle){
-        currentMusic =  miniAudio.newMusic(fileHandle);
+        if(Config.getConfig().miniAudio && miniAudio == null){
+            miniAudio = new GdxMiniAudio();
+        }
+
+        currentMusic = MusicPool.POOL.addMusic(fileHandle);
         try {
-            byte[] header = new byte[64];
-            int read = fileHandle.readBytes(header, 0, header.length);
             if(currentMusic instanceof GdxMAMusic){
                 GdxMAMusic music = (GdxMAMusic) currentMusic;
                 currentMusicDuration = (int) music.getLength();

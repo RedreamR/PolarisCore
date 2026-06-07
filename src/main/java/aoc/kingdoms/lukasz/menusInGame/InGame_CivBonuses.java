@@ -53,7 +53,6 @@ public class InGame_CivBonuses extends Menu {
         int buttonYPadding = CFG.PADDING;
         int maxIconW = ImageManager.getImage(Images.gold).getWidth() + CFG.PADDING * 2;
         int buttonH = CFG.TEXT_HEIGHT + CFG.PADDING * 6;
-        FontFix.LOGGER.debug("NS!!!222");
         if (nationSpirit) {
             int buttonW = (menuWidth - paddingLeft * 2 - CFG.PADDING * 3) / 5;
             int buttonH2 = (int)((float)buttonW * 1.1F);
@@ -592,7 +591,7 @@ public class InGame_CivBonuses extends Menu {
     public void updateLanguage() {
         super.updateLanguage();
         if(nationSpirit){
-            this.getTitle().setText(Game.lang.get("NationSpirit"));
+            this.getTitle().setText(Game.lang.get("NationalSpirit"));
         }else {
             this.getTitle().setText(Game.lang.get("CivilizationBonuses"));
         }

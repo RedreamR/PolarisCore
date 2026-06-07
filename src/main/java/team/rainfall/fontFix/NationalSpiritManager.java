@@ -50,7 +50,9 @@ public class NationalSpiritManager {
         }
         return null;
     }
-
+    public static boolean hasNS(int civID,String id){
+        return Game.getCiv(civID).eventsDataVariables.v.contains("$$NationalSpirit_" + id);
+    }
     public static void removeNS(int civID, String id) {
         if (Config.getConfig().applyNSv2) {
             removeNS2(civID, id);

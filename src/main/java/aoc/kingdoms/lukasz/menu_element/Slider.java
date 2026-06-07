@@ -16,16 +16,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Slider extends MenuElement {
     public int iMin;
-    public int iCurrent2 = 0;
     public int iMax;
     public int iCurrentPosX = -1;
     public String sText = null;
-    private int iCurrent;
+    public int iCurrent;
     private int iTextWidth = -1;
     private int iTextHeight = -1;
-    private long lTime = 0L;
+    protected long lTime = 0L;
     public int iDifference_CurrentPosX = 0;
-    private int iDifference_PosX = 0;
+    protected int iDifference_PosX = 0;
 
     public Slider() {
     }
@@ -116,30 +115,18 @@ public class Slider extends MenuElement {
             this.iCurrent = this.iMax;
         }
 
-        //current2
-        if (nX >= 0) {
-            nX -= this.getPosX();
-            this.iCurrent2 = (int)((float)nX * 100.0F / (float)this.getWidth() * (float)(this.iMax - this.iMin) / 100.0F + (float)this.iMin);
-        }
-
-        if (this.iCurrent2 < this.iMin) {
-            this.iCurrent2 = this.iMin;
-        } else if (this.iCurrent2 > this.iMax) {
-            this.iCurrent2 = this.iMax;
-        }
-
         this.updateCurrentPosX();
         this.updateTextWidth();
         this.iDifference_CurrentPosX = 0;
         this.iDifference_PosX = 0;
     }
 
-    private final void updateCurrentPosX() {
+    protected final void updateCurrentPosX() {
         this.iCurrentPosX = (int)((float)(this.iCurrent - this.iMin) * 100.0F / (float)(this.iMax - this.iMin) * (float)this.getWidth() / 100.0F);
     }
 
     public final void updateTextWidth() {
-        Renderer.glyphLayout.setText(Renderer.fontMain.get(this.fontID), this.getDrawText());
+        Renderer.glyphLayout.setText((BitmapFont)Renderer.fontMain.get(this.fontID), this.getDrawText());
         this.iTextWidth = (int)Renderer.glyphLayout.width;
         this.iTextHeight = (int)Renderer.glyphLayout.height;
     }
@@ -153,15 +140,15 @@ public class Slider extends MenuElement {
         this.updateTextWidth();
     }
 
-    public synchronized void setCurrent(int nCurrent) {
+    public void setCurrent(int nCurrent) {
         int tempCurr = this.iCurrentPosX;
         if (nCurrent > this.iMax) {
             this.iCurrent = this.iMax;
-        } else this.iCurrent = Math.max(nCurrent, this.iMin);
-
-        if (nCurrent > this.iMax) {
-            this.iCurrent2 = this.iMax;
-        } else this.iCurrent2 = Math.max(nCurrent, this.iMin);
+        } else if (nCurrent < this.iMin) {
+            this.iCurrent = this.iMin;
+        } else {
+            this.iCurrent = nCurrent;
+        }
 
         this.updateCurrentPosX();
         this.updateTextWidth();
@@ -172,20 +159,7 @@ public class Slider extends MenuElement {
         }
 
     }
-    public synchronized void setCurrent2(int nCurrent) {
-        int tempCurr = this.iCurrentPosX;
-        if (nCurrent > this.iMax) {
-            this.iCurrent = this.iMax;
-        } else this.iCurrent = Math.max(nCurrent, this.iMin);
-        this.updateCurrentPosX();
-        this.updateTextWidth();
-        if (tempCurr != this.iCurrentPosX) {
-            this.lTime = 0L;
-            this.iDifference_CurrentPosX = tempCurr - this.iCurrentPosX;
-            this.iDifference_PosX = this.iDifference_CurrentPosX;
-        }
 
-    }
     public final int getCurrent() {
         return this.iCurrent;
     }

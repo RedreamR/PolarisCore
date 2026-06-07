@@ -19,4 +19,7 @@ public class AnimationUtil {
     public static double easeOut(float f){
         return  1.0f - (1.0f - f) * (1.0f - f);
     }
+    public static void loadBackground(int i){
+
+    }
 }

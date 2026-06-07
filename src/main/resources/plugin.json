@@ -27,6 +27,8 @@
     "team.rainfall.fontFix.MixinScenarioCharacters",
     "team.rainfall.fontFix.MixinCharactersManager",
     "aoc.kingdoms.lukasz.jakowski.MixinAA_Game",
-    "team.rainfall.fontFix.MixinMenuManager"]
+    "team.rainfall.fontFix.MixinMenuManager",
+    "team.rainfall.fontFix.mixin.MixinCFG"
+  ]
 
 }

@@ -73,13 +73,14 @@ public class InitGame extends Menu {
             return null;
         }
     };
+    HoI4_InitGame hoi4 = null;
     public static int fromViewID = -1;
     public static boolean fullReload = true;
     public static boolean reloadOnResume = false;
     public static boolean finished64 = false;
     public static long timer2 = System.currentTimeMillis();
     static long timer = System.currentTimeMillis();
-    public String loadingName = "";
+    public static String loadingName = "";
     public static Image background = null;
     public static int backgroundID = -1;
     public static int backgroundSize = 1;
@@ -136,6 +137,17 @@ public class InitGame extends Menu {
 
 
         this.initGame();
+        if(HoI4_InitGame.available()){
+            if(hoi4 == null){
+                hoi4 = new HoI4_InitGame();
+            }
+            hoi4.render(oSB, iTranslateX, iTranslateY);
+            float p1 = (float) iStepID / iNumOfSteps;
+            float p2 = (float) (iStepID - iNumOfSteps) /  Game.map.getActiveMap_MapData().mapData.NumOfProvinces;
+            float progress = Math.min(p1,1f) * 0.7f + p2 * 0.3f;
+            hoi4.drawLoading(oSB,iTranslateX,iTranslateY,progress);
+            return;
+        }
         if (background != null) {
             oSB.setColor(new Color(0.047058824F, 0.047058824F, 0.047058824F, 1.0F));
             Images.pix.draw(oSB, iTranslateX, iTranslateY, CFG.GAME_WIDTH, CFG.GAME_HEIGHT);
@@ -173,6 +185,7 @@ public class InitGame extends Menu {
             float progress = Math.min(p1,1f) * 0.7f + p2 * 0.3f;
             Renderer.drawLoading(oSB, iTranslateX, iTranslateY, progress);
             Renderer.drawTextWithShadow(oSB, CFG.FONT_REGULAR_SMALL, this.loadingName, iTranslateX + CFG.PADDING * 4, iTranslateY + CFG.PADDING * 4, new Color(1.0F, 1.0F, 1.0F, 0.15F));
+
         }
 
     }
@@ -228,7 +241,7 @@ public class InitGame extends Menu {
     }
 
     public void setLoadText(String sText) {
-        this.loadingName = sText;
+        loadingName = sText;
     }
 
     public boolean loadMapOverlays() {
@@ -831,6 +844,7 @@ public class InitGame extends Menu {
                 } else if (iStepID == 148) {
                     NationalSpiritManager.INSTANCE.loadNS();
                     ShipManager.loadShipLines();
+                    MainMenu.prepareVideoPlayer();
                     this.setLoadText("Loading");
                 } else if (iStepID == 149) {
                     ShipManager.loadShipLines_Provinces();
@@ -1282,7 +1296,9 @@ public class InitGame extends Menu {
         Images.peace = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "peace.png");
         Images.disease = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "disease.png");
         Images.vassal = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "vassal.png");
-        FontFix.manpowerSid = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "manpower_sidebar.png");
+        if(FileManager.loadFile("ui/" + CFG.getRescouresPath() + "icons/" + "manpower_sidebar.png").exists()) {
+            FontFix.manpowerSid = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "manpower_sidebar.png");
+        }
         FontFix.musicIconID = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "music.png");
         Images.vassalBig = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "vassalBig.png");
         Images.resourceNone = ImageManager.addImage("ui/" + CFG.getRescouresPath() + "icons/" + "resourceNone.png");

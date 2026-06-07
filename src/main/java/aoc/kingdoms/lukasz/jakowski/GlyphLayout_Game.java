@@ -7,10 +7,9 @@ package aoc.kingdoms.lukasz.jakowski;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
- 
-import team.rainfall.fontFix.Config;
+
 import team.rainfall.fontFix.FontFix;
-import team.rainfall.fontFix.utils.Consts;
+import team.rainfall.fontFix.utils.Const;
 
 public class GlyphLayout_Game {
     public float width = 1.0F;
@@ -22,7 +21,7 @@ public class GlyphLayout_Game {
     public boolean setText(BitmapFont font, CharSequence str) {
         try {
             if (str != null && str.length() > 0) {
-                if(!Thread.currentThread().getName().contains(Consts.GL_THREAD) && FontFix.getDI()){
+                if(!Thread.currentThread().getName().contains(Const.GL_THREAD) && FontFix.getDI()){
                     GlyphLayout glyphLayout = FontFix.getGlyphLayoutData(font,str);
                     if (glyphLayout != null) {
                         this.width = glyphLayout.width;

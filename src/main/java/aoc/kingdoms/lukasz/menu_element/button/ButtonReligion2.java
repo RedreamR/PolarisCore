@@ -84,7 +84,7 @@ public class ButtonReligion2 extends Button {
             nData.add(new MenuElement_HoverElement_Type_Line());
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();
-            nData.add(new MenuElement_HoverElement_Type_Text_Desc(Game.religionManager.getReligion(this.religionID).Desc, CFG.FONT_REGULAR_SMALL, Colors.HOVER_LEFT2));
+            nData.add(new MenuElement_HoverElement_Type_Text_Desc(Game.lang.get(Game.religionManager.getReligion(this.religionID).Desc), CFG.FONT_REGULAR_SMALL, Colors.HOVER_LEFT2));
             nElements.add(new MenuElement_HoverElement(nData));
         }
         this.menuElementHover = new MenuElement_Hover(nElements);

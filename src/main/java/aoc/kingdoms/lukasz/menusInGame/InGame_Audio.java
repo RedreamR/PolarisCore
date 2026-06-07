@@ -32,7 +32,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
+import games.rednblack.miniaudio.gdxaudio.GdxMAMusic;
+import team.rainfall.finality.FinalityLogger;
+import team.rainfall.fontFix.Config;
+import team.rainfall.fontFix.FontFix;
+import team.rainfall.fontFix.Sternstunden;
 import team.rainfall.fontFix.utils.AnimationUtil;
+import team.rainfall.fontFix.utils.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,14 +125,20 @@ public class InGame_Audio extends Menu {
         });
         menuElements.add(new ButtonStatsRect_Active("||", (int) ((float) menuWidth * 1 / 3), buttonY, (int) ((float) menuWidth * 1 / 3), CFG.BUTTON_HEIGHT4) {
             public void actionElement() {
-                if (this.getText().equals("||")) {
+                if(Game.soundsManager.currentMusic.isPlaying()){
                     Game.soundsManager.currentMusic.pause();
-                    this.setText(">");
-                } else {
+                }else {
                     Game.soundsManager.currentMusic.play();
-                    this.setText("||");
                 }
+            }
 
+            @Override
+            public String getTextToDraw() {
+                if(Game.soundsManager.currentMusic.isPlaying()){
+                    return  "||";
+                }else {
+                     return  ">";
+                }
             }
 
             public void buildElementHover() {
@@ -164,67 +176,88 @@ public class InGame_Audio extends Menu {
             }
         });
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
-        menuElements.add(new Slider(Game.lang.get("Progress") + ": ", paddingLeft, buttonY, (int) (menuWidth * 0.85f) - paddingLeft, CFG.BUTTON_HEIGHT4, 0, 100, (int) (Game.soundsManager.currentMusic.getPosition())) {
-            int current = -1;
+        if(Config.getConfig().miniAudio) {
+            menuElements.add(new Slider(Game.lang.get("Progress") + ": ", paddingLeft, buttonY, (int) (menuWidth * 0.88f) - paddingLeft - CFG.PADDING, CFG.BUTTON_HEIGHT4, 0, 1000, (int) (Game.soundsManager.currentMusic.getPosition())) {
+                private volatile boolean noAnimation = false;
 
-            public void actionElement() {
-                current = iCurrent2;
-                setCurrent2(iCurrent2);
-            }
-
-            public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
-                if (current > -1) {
-                    this.setCurrent(current);
-                    Game.soundsManager.currentMusic.setPosition(Game.soundsManager.currentMusicDuration * (current / 100f));
-                    current = -5;
-                }
-                synchronized (this) {
-                    if (current < -1) {
-                        current++;
-                    }
-                    if (current == -1) {
-                        this.setCurrent2((int) (Game.soundsManager.currentMusic.getPosition() / Game.soundsManager.currentMusicDuration * 100f));
-                    }
-                }
-                if(shouldRefresh){
+                public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
                     menuElements.get(LRid).setText(Game.soundsManager.getCurrentMusicTittle());
                     Text_Title_v2_TextLR lr = (Text_Title_v2_TextLR) menuElements.get(LRid);
                     lr.sTextRight = Game.soundsManager.currentMusicDuraStr;
-                    shouldRefresh = false;
+                    if (!noAnimation) {
+                        if (Game.soundsManager.currentMusic instanceof GdxMAMusic) {
+                            GdxMAMusic music = (GdxMAMusic) Game.soundsManager.currentMusic;
+                            if (!music.isDisposed()) {
+                                this.setCurrent((int) (Game.soundsManager.currentMusic.getPosition() / Game.soundsManager.currentMusicDuration * 1000f));
+                            }
+                        }
+                    } else {
+                        noAnimation = false;
+                    }
+                    this.drawSliderBG(oSB, iTranslateX, iTranslateY, isActive, scrollableY);
+                    this.drawSliderText(oSB, iTranslateX, iTranslateY, isActive, scrollableY);
+                    this.drawSliderBorder(oSB, iTranslateX, iTranslateY, isActive, scrollableY);
+                    oSB.setColor(Color.WHITE);
                 }
-                this.drawSliderBG(oSB, iTranslateX, iTranslateY, isActive, scrollableY);
-                this.drawSliderText(oSB, iTranslateX, iTranslateY, isActive, scrollableY);
-                this.drawSliderBorder(oSB, iTranslateX, iTranslateY, isActive, scrollableY);
-                oSB.setColor(Color.WHITE);
-            }
 
-            public String getDrawText() {
-                return super.getDrawText() + "%";
-            }
-        });
-        menuElements.add(new ButtonGame(SoundsManager.getPlayModeShortStr(), (int) ((float) menuWidth * 0.9f), buttonY, (int) (menuWidth * 0.1f ) - CFG.PADDING, CFG.BUTTON_HEIGHT4) {
-            public void actionElement() {
-                SoundsManager.playMode++;
-                if(SoundsManager.playMode > 2){
-                    SoundsManager.playMode = 0;
+                public void updateSlider(int nX) {
+                    if (nX >= 0) {
+                        noAnimation = true;
+                        nX -= this.getPosX();
+                        this.iCurrent = (int) ((float) nX * 100.0F / (float) this.getWidth() * (float) (this.iMax - this.iMin) / 100.0F + (float) this.iMin);
+                        if (Game.soundsManager.currentMusic instanceof GdxMAMusic) {
+                            GdxMAMusic music = (GdxMAMusic) Game.soundsManager.currentMusic;
+                            if (!music.isDisposed()) {
+                                float progress = ((float) iCurrent / 1000) * Game.soundsManager.currentMusicDuration;
+                                Game.soundsManager.currentMusic.setPosition(progress);
+                            }
+                        }
+                    }
+
+                    if (this.iCurrent < this.iMin) {
+                        this.iCurrent = this.iMin;
+                    } else if (this.iCurrent > this.iMax) {
+                        this.iCurrent = this.iMax;
+                    }
+
+                    this.updateCurrentPosX();
+                    this.updateTextWidth();
+                    this.iDifference_CurrentPosX = 0;
+                    this.iDifference_PosX = 0;
+                    this.lTime = 0;
                 }
-                this.setText(SoundsManager.getPlayModeShortStr());
-            }
 
-            public void buildElementHover() {
-                List<MenuElement_HoverElement> nElements = new ArrayList();
-                List<MenuElement_HoverElement_Type> nData = new ArrayList();
-                nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("SwitchPlayMode"), Colors.HOVER_GOLD));
-                nElements.add(new MenuElement_HoverElement(nData));
-                nData.clear();
-                nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("PlayMode") + ": ", CFG.FONT_REGULAR_SMALL));
-                nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get(SoundsManager.getPlayModeStr()), CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
-                nElements.add(new MenuElement_HoverElement(nData));
-                nData.clear();
-                this.menuElementHover = new MenuElement_Hover(nElements);
-            }
-        });
-        buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+                public String getDrawText() {
+                    return FontFix.formatSecondsToMinutes((int) Game.soundsManager.currentMusic.getPosition());
+                }
+            });
+
+            menuElements.add(new ButtonGame(SoundsManager.getPlayModeShortStr(), (int) ((float) menuWidth * 0.88f), buttonY, (int) (menuWidth * 0.1f) - CFG.PADDING, menuElements.get(menuElements.size() - 1).getHeight()) {
+                public void actionElement() {
+                    SoundsManager.playMode++;
+                    if (SoundsManager.playMode > 2) {
+                        SoundsManager.playMode = 0;
+                    }
+                    this.setText(SoundsManager.getPlayModeShortStr());
+                }
+
+                public void buildElementHover() {
+                    List<MenuElement_HoverElement> nElements = new ArrayList();
+                    List<MenuElement_HoverElement_Type> nData = new ArrayList();
+                    nData.add(new MenuElement_HoverElement_Type_TextTitle_BG(Game.lang.get("SwitchPlayMode"), Colors.HOVER_GOLD));
+                    nElements.add(new MenuElement_HoverElement(nData));
+                    nData.clear();
+                    nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get("PlayMode") + ": ", CFG.FONT_REGULAR_SMALL));
+                    nData.add(new MenuElement_HoverElement_Type_Text(Game.lang.get(SoundsManager.getPlayModeStr()), CFG.FONT_BOLD_SMALL, Colors.HOVER_GOLD));
+                    nElements.add(new MenuElement_HoverElement(nData));
+                    nData.clear();
+                    this.menuElementHover = new MenuElement_Hover(nElements);
+                }
+            });
+            //Lukasz ignored height in the constructor of ButtonGame class
+            menuElements.get(menuElements.size() - 1).setHeight(CFG.BUTTON_HEIGHT4);
+            buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+        }
         menuElements.add(new Text_Title_v2_TextLR(Game.lang.get("Musics"), CFG.BUTTON_WIDTH / 4, Images.boxTitleBORDERWIDTH, buttonY, menuWidth - Images.boxTitleBORDERWIDTH * 2, CFG.TEXT_HEIGHT + CFG.PADDING * 4, ""));
         buttonY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
         for (int i = 0; i < Game.soundsManager.lTitles.size(); ++i) {

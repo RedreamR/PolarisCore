@@ -2,22 +2,31 @@ package team.rainfall.fontFix;
 
 import com.badlogic.gdx.files.FileHandle;
 import org.mozilla.universalchardet.UniversalDetector;
- 
+
 
 import java.io.*;
 
 public class EncodingDetector {
+    public final static EncodingDetector INSTANCE = new EncodingDetector();
     private static String bypassEncoding = null;
     UniversalDetector detector = new UniversalDetector(null);
-    public final static EncodingDetector INSTANCE = new EncodingDetector();
+
+    public static void setBypassEncoding(String s) {
+        bypassEncoding = s;
+    }
+
+    public static void resetBypassEncoding() {
+        bypassEncoding = null;
+    }
 
     public String detectStringCharset(FileHandle fileHandle) {
-        if(!fileHandle.exists()){
+        if (!fileHandle.exists()) {
             return "NONE";
         }
-        if(bypassEncoding != null){
+        if (bypassEncoding != null) {
             return bypassEncoding;
         }
+
         try {
             File file = fileHandle.file();
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -37,7 +46,8 @@ public class EncodingDetector {
         }
         return "NONE";
     }
-    public String detectInputStreamCharset(InputStream inputStream){
+
+    public String detectInputStreamCharset(InputStream inputStream) {
         try {
             BufferedInputStream reader = new BufferedInputStream(inputStream);
             byte[] buff = new byte[1024];
@@ -54,11 +64,5 @@ public class EncodingDetector {
             FontFix.LOGGER.error("Error while detecting charset: " + e.getMessage(), e);
         }
         return "NONE";
-    }
-    public static void setBypassEncoding(String s){
-        bypassEncoding = s;
-    }
-    public static void resetBypassEncoding(){
-        bypassEncoding = null;
     }
 }

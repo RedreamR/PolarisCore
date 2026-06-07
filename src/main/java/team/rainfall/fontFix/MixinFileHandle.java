@@ -9,11 +9,9 @@ import java.nio.charset.Charset;
 
 @Mixin(mixinClass = "com.badlogic.gdx.files.FileHandle")
 public abstract class MixinFileHandle {
-    public static int readCount = 0;
     public String readString() {
         String charset = null;
         if (EncodeChecker.shouldBeCheck((FileHandle) (Object) this)){
-        // || this.path().matches("map/.*/scenarios/.*/descriptions.*") || this.path().matches("map/.*/scenarios/.*/events.*",|| this.path().contains("mods")
             try {
                 charset = EncodingDetector.INSTANCE.detectStringCharset((FileHandle) (Object) this);
                 switch (charset) {
@@ -28,24 +26,26 @@ public abstract class MixinFileHandle {
                         break;
                     case "GB18030":
                         charset = "GB18030";
-                    default:
-                        if(Config.isConfigLoaded()){
-                            if(!Config.getConfig().defaultCharset.equals("NONE")) {
-                                charset = Config.getConfig().defaultCharset;
-                            }else {
-                                charset = Charset.defaultCharset().name();
-                            }
-                        }else {
-                            charset = Charset.defaultCharset().name();
-                        }
                         break;
+                    default:
+                        charset = null;
                 }
-                readCount++;
                 //FontFix.LOGGER.debug("PC.charset "+this.path()+";"+charset+";"+readCount);
 
             }catch (NullPointerException ignored){
             } catch (Throwable throwable) {
                 FontFix.LOGGER.error("Error while detecting charset", throwable);
+            }
+        }
+        if(charset == null) {
+            if (Config.isConfigLoaded()) {
+                if (!Config.getConfig().defaultCharset.equals("NONE")) {
+                    charset = Config.getConfig().defaultCharset;
+                } else {
+                    charset = Charset.defaultCharset().name();
+                }
+            } else {
+                charset = Charset.defaultCharset().name();
             }
         }
         return this.readString(charset);

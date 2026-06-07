@@ -27,6 +27,7 @@ import aoc.kingdoms.lukasz.menus.Dialog.DialogType;
 import aoc.kingdoms.lukasz.menusMapEditor.EditorSelectProvinces;
 import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import team.rainfall.fontFix.Config;
 import team.rainfall.fontFix.FontFix;
 
 import java.util.ArrayList;
@@ -168,11 +169,11 @@ public class Editor extends Menu {
         if(!CFG.isDesktop()) {
             menuElements.add(new ButtonMain(null, 1, textPosX, paddingLeft, buttonY, CFG.LEFT_MENU_WIDTH - paddingLeft * 2, true) {
                 public void updateLanguage() {
-                    this.setText("Team Rainfall QQ");
+                    this.setText(Config.getConfig().getTeamRainfallQQ());
                 }
 
                 public void actionElement() {
-                        Dialog.GO_TO_LINK = "https://qm.qq.com/q/ALylcUWbUk";
+                        Dialog.GO_TO_LINK = Config.getConfig().getTeamRainfallQQurl();
                         Dialog.setDialogType(DialogType.GO_TO_LINK);
                 }
             });

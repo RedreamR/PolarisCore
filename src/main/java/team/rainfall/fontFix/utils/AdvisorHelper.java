@@ -38,7 +38,7 @@ public class AdvisorHelper {
                             }
 
                             Advisor advisor = new Advisor(CFG.checkName(tData.Name), advIMG, bornYear, tData.ImageID);
-                            advisor.Desc = getDesc(tData);
+                            advisor.Desc = Game.lang.get(getDesc(tData));
                             CivilizationBonuses bonuses = getBonuses(tData);
                             if(bonuses != null){
                                 applyBonuses(advisor,bonuses);

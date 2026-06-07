@@ -12,7 +12,7 @@ public class GdxMAMusic implements Music, GdxEndListener {
     private final GdxMiniAudio gdxMiniAudio;
     private final MASound sound;
     private Music.OnCompletionListener listener;
-
+    private boolean isDisposed = false;
     public GdxMAMusic(MASound sound, GdxMiniAudio gdxMiniAudio) {
         this.sound = sound;
         this.gdxMiniAudio = gdxMiniAudio;
@@ -62,8 +62,11 @@ public class GdxMAMusic implements Music, GdxEndListener {
     public float getPosition() {
         return this.sound.getCursorPosition();
     }
-
+    public boolean isDisposed(){
+        return isDisposed;
+    }
     public void dispose() {
+        isDisposed = true;
         this.sound.dispose();
         this.listener = null;
     }

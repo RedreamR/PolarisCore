@@ -7,7 +7,8 @@ group = 'team.rainfall'
 version = '1.0-SNAPSHOT'
 
 repositories {
-    //阿里云镜像
+
+    mavenLocal()
     maven { url 'https://maven.aliyun.com/repository/public' }
     maven {
         url "https://plugins.gradle.org/m2/"
@@ -19,10 +20,15 @@ repositories {
 dependencies {
     // https://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet
     shadow fileTree(dir:'libs',includes: ['*.jar'])
+    implementation fileTree(dir:'libs_noshadow',includes: ['*.jar'])
+    shadow "team.rainfall.finality:finality-api:1.5.0"
 
     implementation("com.github.albfernandez:juniversalchardet:2.5.0")
     implementation "games.rednblack.miniaudio:miniaudio:0.7"
     implementation "games.rednblack.miniaudio:gdx-miniaudio-platform:0.7:natives-desktop"
+    implementation "com.badlogicgames.gdx-video:gdx-video-lwjgl3:1.3.4"
+    implementation "com.badlogicgames.gdx-video:gdx-video:1.3.4"
+    shadow "games.rednblack.miniaudio:gdx-miniaudio-platform:0.7:natives-arm64-v8a"
 }
 
 shadowJar {
@@ -30,6 +36,14 @@ shadowJar {
         exclude(dependency('com.badlogicgames.gdx:gdx'))
         exclude(dependency('com.badlogicgames.gdx:gdx-platform'))
         exclude(dependency('com.badlogicgames.gdx:gdx-jnigen-loader'))
+        exclude(dependency('com.badlogicgames.gdx:gdx-backend-lwjgl3'))
+        exclude(dependency('org.lwjgl:lwjgl'))
+        exclude(dependency('org.lwjgl:lwjgl-glfw'))
+        exclude(dependency('org.lwjgl:lwjgl-jemalloc'))
+        exclude(dependency('org.lwjgl:lwjgl-openal'))
+        exclude(dependency('org.lwjgl:lwjgl-opengl'))
+        exclude(dependency('org.lwjgl:lwjgl-stb'))
+
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

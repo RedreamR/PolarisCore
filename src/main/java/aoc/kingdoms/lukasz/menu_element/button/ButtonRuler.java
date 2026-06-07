@@ -109,7 +109,7 @@ public class ButtonRuler extends Button {
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();
             //Desc
-            nData.add(new MenuElement_HoverElement_Type_Text_Desc(Game.getCiv(iCivID).ruler.Desc));
+            nData.add(new MenuElement_HoverElement_Type_Text_Desc(Game.lang.get(Game.getCiv(iCivID).ruler.Desc)));
             nElements.add(new MenuElement_HoverElement(nData));
             nData.clear();
         }

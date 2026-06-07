@@ -3,6 +3,8 @@ package team.rainfall.fontFix.text;
 import aoc.kingdoms.lukasz.jakowski.Game;
 import aoc.kingdoms.lukasz.map.civilization.Civilization;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class TextFuncService {
     public static String formatCiv(String s) {
         String[] list = s.split("\\.");
@@ -19,18 +21,16 @@ public class TextFuncService {
             case "govName":
             case "gov_name":
                 return Game.ideologiesManager.getIdeology(civilization.getIdeologyID()).Name;
-            case "counter":
-                return formatCounter(s);
         }
         return s;
     }
     public static String formatCounter(String s){
+        String s1 = s.replace("counter.","");
         try {
-            Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("formatCounter", String.class);
-        }catch (NoSuchMethodException | ClassNotFoundException e){
+            return (String) Class.forName("team.rainfall.rfEvent.rfEvent").getMethod("formatCounter", String.class).invoke(null,s1);
+        } catch (NoSuchMethodException | ClassNotFoundException | InvocationTargetException | IllegalAccessException e){
             return s;
         }
-        return s;
     }
     public static String formatPlayer(String s){
         String[] list = s.split("\\.");

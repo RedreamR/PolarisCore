@@ -2,20 +2,15 @@ package team.rainfall.fontFix;
 
 
 import aoc.kingdoms.lukasz.jakowski.*;
-import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import aoc.kingdoms.lukasz.map.civilization.save.CivData3;
 import aoc.kingdoms.lukasz.menusInGame.InGame_CivBonuses;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
-import games.rednblack.miniaudio.MiniAudio;
-import games.rednblack.miniaudio.gdxaudio.GdxMAMusic;
-import games.rednblack.miniaudio.gdxaudio.GdxMiniAudio;
 import team.rainfall.finality.api.logging.Logger;
-import team.rainfall.fontFix.utils.Consts;
+import team.rainfall.fontFix.utils.Const;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
@@ -56,8 +51,8 @@ public class FontFix {
     public static CompactScale compactScale = null;
     public static final boolean NO_GOAL = false;
     public static boolean titleSet = false;
-    public static final String CORE_VERSION = "4.2.0";
-    public static final String POLARIS_VERSION = "2.13";
+    public static final String CORE_VERSION = "4.4.0";
+    public static final String POLARIS_VERSION = "2.14";
     public static int isLocalStorage = 0;
     public static final Lock lock = new ReentrantLock();
     public static final Condition finished = lock.newCondition();
@@ -70,7 +65,7 @@ public class FontFix {
         return desktopIncremental;
     }
     public static GlyphLayout getGlyphLayoutData(BitmapFont font, CharSequence str) {
-        if (Thread.currentThread().getName().contains(Consts.GL_THREAD)) {
+        if (Thread.currentThread().getName().contains(Const.GL_THREAD)) {
             GlyphLayout layout = new GlyphLayout();
             layout.setText(font, str);
             return layout;
@@ -192,7 +187,7 @@ public class FontFix {
             if (FileManager.loadFile("startMusic").exists()) {
                 Game.soundsManager.setCurrentMusic(FileManager.loadFile("audio/music/" + FileManager.loadFile("startMusic").readString()));
             } else {
-                Game.soundsManager.setCurrentMusic(FileManager.loadFile("audio/music/" + Game.soundsManager.lTitles.get(0) + Game.soundsManager.getFileType()));
+                Game.soundsManager.setCurrentMusic(FileManager.loadFile("audio/music/" + Game.soundsManager.lTitles.get(0) + Game.soundsManager.getFileType(Game.soundsManager.lTitles.get(0))));
             }
             Game.soundsManager.currentMusic.setLooping(false);
             Game.soundsManager.currentMusic.play();

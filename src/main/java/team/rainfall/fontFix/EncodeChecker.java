@@ -7,6 +7,7 @@ public class EncodeChecker {
         if(fileHandle.isDirectory() || !fileHandle.exists()){
             return false;
         }
+        if(fileHandle.name().startsWith("descriptor")) return false;
         if(fileHandle.name().equals("mod.txt") || fileHandle.name().equalsIgnoreCase("aoh.txt") || fileHandle.name().equalsIgnoreCase("startMusic")){
             return true;
         }

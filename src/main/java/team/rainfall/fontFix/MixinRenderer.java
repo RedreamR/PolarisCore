@@ -10,9 +10,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
- 
-import team.rainfall.finality.luminosity2.annotations.Mixin;
 
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
+import team.rainfall.finality.luminosity2.CallbackInfo;
+import team.rainfall.finality.luminosity2.annotations.Inject;
+import team.rainfall.finality.luminosity2.annotations.Mixin;
+import team.rainfall.fontFix.utils.MusicPool;
+
+import javax.security.auth.callback.Callback;
 import java.util.List;
 
 import static aoc.kingdoms.lukasz.jakowski.Renderer.Renderer.*;
@@ -25,6 +31,70 @@ public class MixinRenderer {
     public static int fontMainSize;
     public static List<BitmapFont> fontBorder;
     public static int fontBorderSize;
+
+    @Inject(methodName = "render")
+    public void inject$render(CallbackInfo callbackInfo) {
+        MusicPool.POOL.refresh();
+    }
+
+    //Shadow Font Rendering
+    public static void drawTextWithShadow(SpriteBatch oSB, String sText, int nPosX, int nPosY, Color color) {
+        drawTextWithShadow(oSB, 0, sText, nPosX, nPosY, color);
+    }
+
+    public static void drawTextWithShadow(SpriteBatch oSB, int fontID, String sText, int nPosX, int nPosY, Color color) {
+        try {
+            if (sText != null) {
+                fontMain.get(fontID).setColor(new Color(0.0F, 0.0F, 0.0F, 0.7F));
+                fontMain.get(fontID).draw(oSB, sText, (float)(nPosX - 1), (float)(-nPosY - 1));
+                fontMain.get(fontID).setColor(color);
+                fontMain.get(fontID).draw(oSB, sText, (float)nPosX, (float)(-nPosY));
+            }
+        } catch (Exception ignored) {
+        }
+
+    }
+
+    public static void drawTextWithShadowScale(SpriteBatch oSB, int fontID, String sText, int nPosX, int nPosY, Color color, float fScale) {
+        try {
+            if (sText != null) {
+                fontMain.get(fontID).getData().setScale(fScale);
+                fontMain.get(fontID).setColor(new Color(0.0F, 0.0F, 0.0F, 0.7F));
+                fontMain.get(fontID).draw(oSB, sText, (float)(nPosX - 1), (float)(-nPosY - 1));
+                fontMain.get(fontID).setColor(color);
+                fontMain.get(fontID).draw(oSB, sText, (float)nPosX, (float)(-nPosY));
+                fontMain.get(fontID).getData().setScale(1.0F);
+            }
+        } catch (Exception ignored) {
+        }
+
+    }
+
+    public static void drawTextWithShadowRotated(SpriteBatch oSB, String sText, int nPosX, int nPosY, Color color, float rotate) {
+        drawTextWithShadowRotated(oSB, 0, sText, nPosX, nPosY, color, rotate);
+    }
+
+    public static void drawTextWithShadowRotated(SpriteBatch oSB, int fontID, String sText, int nPosX, int nPosY, Color color, float rotate) {
+        if (sText != null) {
+            Matrix4 oldTransformMatrix = oSB.getTransformMatrix().cpy();
+            try {
+                Matrix4 mx4Font = new Matrix4();
+                mx4Font.rotate(textRotatedVector3, rotate);
+                mx4Font.setTranslation((float)nPosX, (float)(-nPosY), 0.0F);
+                oSB.setTransformMatrix(mx4Font);
+                fontMain.get(fontID).setColor(new Color(0.0F, 0.0F, 0.0F, 0.7F));
+                fontMain.get(fontID).draw(oSB, sText, -1.0F, -1.0F);
+                fontMain.get(fontID).setColor(color);
+                fontMain.get(fontID).draw(oSB, sText, 0.0F, 0.0F);
+            } catch (Exception ignored) {
+            } finally {
+                oSB.setTransformMatrix(oldTransformMatrix);
+            }
+        }
+
+    }
+
+
 
 
     public void dispose() {
@@ -39,11 +109,9 @@ public class MixinRenderer {
 
     }
 
-    public static final void loadFont(String sFont, String charset, int fontSize) {
-
+    public static void loadFont(String sFont, String charset, int fontSize) {
         float texSize = charset.getBytes().length;
         int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
-        //FontFix.LOGGER.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
         if (!CFG.isDesktop() && !FontFix.getDI()) {
             FreeTypeFontGenerator.setMaxTextureSize(Config.getConfig().extendCharset ? 8192 : 4096);
@@ -79,10 +147,9 @@ public class MixinRenderer {
         }
     }
 
-    public static final void loadFontBorder(String sFont, String charset) {
+    public static void loadFontBorder(String sFont, String charset) {
         float texSize = charset.getBytes().length;
         int texSize2 = (int) (texSize * ((float) 2 / 3) + 1024);
-        FontFix.LOGGER.debug("FontFix.textureSize = " + texSize2);
         FreeTypeFontGenerator.setMaxTextureSize(texSize2);
         if (!CFG.isDesktop()) FreeTypeFontGenerator.setMaxTextureSize(4096);
         FreeTypeFontGenerator generator = null;
@@ -116,7 +183,7 @@ public class MixinRenderer {
         }
     }
 
-    public static final void drawLoading(SpriteBatch oSB, int iTranslateX, int iTranslateY, float nProgress) {
+    public static void drawLoading(SpriteBatch oSB, int iTranslateX, int iTranslateY, float nProgress) {
         int nHeight = ImageManager.getImage(Images.logo).getHeight() + CFG.BUTTON_HEIGHT * 2;
         if (CFG.currentTimeMillis - 4000L > loadingTime) {
             try {

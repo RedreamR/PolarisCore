@@ -131,6 +131,7 @@ public class JsonReader implements BaseJsonReader {
                 throw new SerializationException("Error parsing file: " + file, ex);
             }
         }
+
         try {
             if (isSkip) {
                 charset = "UTF-8";
