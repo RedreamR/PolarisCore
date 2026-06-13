@@ -6,23 +6,18 @@
 package aoc.kingdoms.lukasz.menu_element.textStatic;
 
 import aoc.kingdoms.lukasz.jakowski.CFG;
-import aoc.kingdoms.lukasz.jakowski.GlyphLayout_Game;
 import aoc.kingdoms.lukasz.jakowski.Renderer.Renderer;
 import aoc.kingdoms.lukasz.menu.Colors;
 import aoc.kingdoms.lukasz.menu_element.MenuElement_Type;
 import aoc.kingdoms.lukasz.textures.Images;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
- 
-import team.rainfall.fontFix.TextSplitter;
+
 import team.rainfall.fontFix.text.Line;
 import team.rainfall.fontFix.text.TextColorRenderer;
 import team.rainfall.fontFix.text.TextProcessor;
-import team.rainfall.fontFix.text.Word;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Text_Desc extends Text_Static {
     public ArrayList<Line> ffLines = new ArrayList<>();
